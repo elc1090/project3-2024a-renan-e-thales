@@ -1,12 +1,12 @@
 <script lang="ts">
 
-import itemList from '../models/Items';
+import Items from '../models/Items';
 
 export default {
     name: 'HomePage',
     data() {
     return {
-      items: itemList
+      items: Items
     };
   }
 }

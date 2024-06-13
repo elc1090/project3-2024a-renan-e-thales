@@ -130,4 +130,3 @@ dist
 .pnp.*
 frontend/node_modules/
 frontend/pnpm-lock.yaml
-frontend/package.json

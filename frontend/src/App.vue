@@ -1,16 +1,18 @@
 <template>
-  <HomePage></HomePage>
+  <HomePage/>
 </template>
 
-<script>
-import HomePage from './components/HomePage.vue'
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component';
+import HomePage from './components/HomePage.vue';
+import './assets/style.scss';
 
-export default {
-  name: 'App',
+@Options({
   components: {
-    HomePage
-  }
-}
+    HomePage,
+  },
+})
+export default class App extends Vue {}
 </script>
 
 <style>
