@@ -45,9 +45,9 @@ export default {
                             </div>
                         </div>
                         <footer class="card-footer">
-                            <RouterLink :to="{ path: '/item',}" class="card-footer-item">Visualizar</RouterLink>
-                            <RouterLink :to="{ path: '/item',}" class="card-footer-item">Editar</RouterLink>
-                            <RouterLink :to="{ path: '/item',}" class="card-footer-item">Remover</RouterLink>
+                            <button class="card-footer-item"><RouterLink :to="{ path: '/item',}">Visualizar</RouterLink></button>
+                            <button class="card-footer-item"><RouterLink :to="{ path: '/item',}">Editar</RouterLink></button>
+                            <button class="card-footer-item"><RouterLink :to="{ path: '/item',}">Remover</RouterLink></button>
                         </footer>
                     </div>
                 </div>
