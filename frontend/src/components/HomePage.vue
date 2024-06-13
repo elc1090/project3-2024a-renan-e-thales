@@ -1,3 +1,18 @@
+<script lang="ts">
+
+import itemList from '../models/Items';
+
+export default {
+    name: 'HomePage',
+    data() {
+    return {
+      items: itemList
+    };
+  }
+}
+
+</script>
+
 <template>
     <section>
         <h1 class="is-primary">Home</h1>
@@ -30,9 +45,9 @@
                             </div>
                         </div>
                         <footer class="card-footer">
-                            <RouterLink :to="{ path: '/item',}" class="card-footer-item">Visualizar</RouterLink>
+                            <!-- <RouterLink :to="{ path: '/item',}" class="card-footer-item">Visualizar</RouterLink>
                             <RouterLink :to="{ path: '/item',}" class="card-footer-item">Editar</RouterLink>
-                            <RouterLink :to="{ path: '/item',}" class="card-footer-item">Remover</RouterLink>
+                            <RouterLink :to="{ path: '/item',}" class="card-footer-item">Remover</RouterLink> -->
                         </footer>
                     </div>
                 </div>
@@ -40,21 +55,6 @@
         </div>
     </section>
 </template>
-
-<script lang="ts">
-
-import itemList from '../models/Items'
-
-export default {
-    name: 'HomePage',
-    data() {
-    return {
-      items: itemList
-    };
-  }
-}
-
-</script>
 
 <style>
 .table-container {
