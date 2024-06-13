@@ -1,4 +1,4 @@
-# estoque-front
+# frontend
 
 ## Project setup
 ```
