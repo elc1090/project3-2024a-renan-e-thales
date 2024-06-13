@@ -1,0 +1,61 @@
+<script lang="ts">
+
+export default {
+    name: 'LoginPage',
+    data() {
+    return {
+    };
+  }
+}
+
+</script>
+
+<template>
+    <section>
+        <div class="container is-fluid is-mobile">
+            <div class="columns">
+                <div class="column is-half is-offset-one-quarter">
+                    <div class="card">
+                        <header class="card-header">
+                            <span class="card-header-title is-centered">Login</span>
+                        </header>
+                        <div class="card-content">
+                            <div class="login-form">
+                                <input
+                                    class="input is-primary"
+                                    type="text"
+                                    placeholder="Nome de usuário"
+                                />
+                                <input
+                                    class="input is-primary"
+                                    type="Password"
+                                    placeholder="senha"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>
+
+<style>
+
+section {
+    height: 100% !important;
+}
+
+input {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.card-header-title {
+    font-size: 30px;
+}
+
+.login-form {
+
+}
+</style>
