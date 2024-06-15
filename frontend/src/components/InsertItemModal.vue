@@ -51,7 +51,7 @@
     components: {},
     setup() {
       const isModalActive = ref(false);
-      const novoItem = ref(new Item('', 0, '', '', ''));
+      const novoItem = ref(new Item('', 0, '', '', '', ''));
       
       const openModal = () => {
         isModalActive.value = true;
@@ -66,6 +66,8 @@
 
         try {
 
+        } catch (err) {
+            console.log(err);
         }
 
         closeModal();
@@ -83,6 +85,6 @@
   </script>
   
   <style scoped>
-  
+
   </style>
   
