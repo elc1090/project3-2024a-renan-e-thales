@@ -21,16 +21,18 @@ export default {
                         </header>
                         <div class="card-content">
                             <div class="login-form">
-                                <input
-                                    class="input is-primary"
-                                    type="text"
-                                    placeholder="Nome de usuário"
-                                />
+                                <div class="field">
+                                    <input
+                                        class="input is-primary"
+                                        type="text"
+                                        placeholder="Nome de usuário"
+                                    />
+                                </div>
                                 <input
                                     class="input is-primary"
                                     type="Password"
-                                    placeholder="senha"
-                                />
+                                    placeholder="Senha"
+                                /><RouterLink class="button is-primary" to="/home">Entrar</RouterLink>
                             </div>
                         </div>
                     </div>
@@ -47,15 +49,10 @@ section {
 }
 
 input {
-    margin-top: 16px;
     margin-bottom: 16px;
 }
 
 .card-header-title {
     font-size: 30px;
-}
-
-.login-form {
-
 }
 </style>

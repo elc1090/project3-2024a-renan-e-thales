@@ -1,18 +1,28 @@
 <template>
-  <RouterView/>
+  <div id="app">
+    <RouterView/>
+    <LoadingDialog :visible="loadingStore.state.isLoading" />
+  </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import HomePage from './components/HomePage.vue';
 import './assets/style.scss';
 
-@Options({
+import { defineComponent } from 'vue';
+import LoadingDialog from './components/LoadingDialog.vue';
+import loadingStore from './store/loadingStore';
+
+export default defineComponent({
+  name: 'App',
   components: {
-    HomePage,
+    LoadingDialog
   },
-})
-export default class App extends Vue {}
+  setup() {
+    return {
+      loadingStore
+    };
+  }
+});
 </script>
 
 <style>
@@ -22,6 +32,6 @@ export default class App extends Vue {}
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  padding-top: 40px; 
 }
 </style>

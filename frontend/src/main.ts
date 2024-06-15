@@ -3,11 +3,14 @@ import { createMemoryHistory, createRouter } from 'vue-router'
 import App from './App.vue'
 import LoginPage from './components/LoginPage.vue'
 import HomePage from './components/HomePage.vue'
+import ItemPage from './components/ItemPage.vue'
+import '@mdi/font/css/materialdesignicons.css';
 
 const routes = [
   { path: '/', component: LoginPage },
   { path: '/login', component: LoginPage },
   { path: '/home', component: HomePage },
+  { path: '/item', component: ItemPage },
 ]
 
 const router = createRouter({
