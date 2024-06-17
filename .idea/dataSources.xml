@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="postgres@localhost" uuid="c84ceecf-0f9c-451e-bb62-559f6894f2b2">
+    <data-source source="LOCAL" name="postgres@ep-steep-leaf-a4bzoa0i-pooler.us-east-1.aws.neon.tech [2]" uuid="102e345f-3baa-4786-911f-1b34ecea84c5">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://ep-steep-leaf-a4bzoa0i-pooler.us-east-1.aws.neon.tech:5432/postgres</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

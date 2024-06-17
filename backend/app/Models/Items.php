@@ -18,11 +18,11 @@ class Items extends Authenticatable
      */
     protected $fillable = [
         'nome',
-        'qtd',
+        'quantidade',
         'kgl',
-        'desc',
-        'categ',
-        'dataVal'
+        'descrição',
+        'categoria',
+        'dataValidade'
     ];
 
     /**
@@ -32,7 +32,6 @@ class Items extends Authenticatable
      */
     protected $hidden = [
         'id',
-
     ];
 
 }
