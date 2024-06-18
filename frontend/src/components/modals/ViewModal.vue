@@ -7,11 +7,11 @@
                 <button class="delete" aria-label="close" @click="closeModal"></button>
             </header>
             <section class="modal-card-body">
-                <p>Nome: {{ item!.nome }}</p>
-                <p>Quantidade: {{ item!.qtd }} unidades</p>
-                <p>Peso unitário: {{ item!.kgl }}</p>
-                <p>Descrição: {{ item!.desc }}</p>
-                <p>Categoria: {{ item!.categ }}</p>
+                <p class="subtitle">Nome: <b>{{ item!.nome }}</b></p>
+                <p class="subtitle">Quantidade: <b>{{ item!.qtd }}</b> unidades</p>
+                <p class="subtitle">Peso unitário: <b>{{ item!.kgl }}</b></p>
+                <p class="subtitle">Descrição: <b>{{ item!.desc }}</b></p>
+                <p class="subtitle">Categoria: <b>{{ item!.categ }}</b></p>
             </section>
             <footer class="modal-card-foot">
                 <button class="button" @click="closeModal">Fechar</button>
@@ -41,6 +41,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
+.subtitle {
+    font-weight: 200 !important;
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -56,8 +61,7 @@ export default defineComponent({
 }
 
 .modal-card {
-    margin-top: 50%;
-    margin-bottom: 50%;
+    margin-top: 10%;
     height: fit-content !important;
     max-width: 550px;
     min-width: 350px;

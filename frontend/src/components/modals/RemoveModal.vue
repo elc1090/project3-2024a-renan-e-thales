@@ -7,6 +7,7 @@
                 <button class="delete" aria-label="close" @click="closeModal"></button>
             </header>
             <section class="modal-card-body">
+                <p class="subtitle">{{ item?.qtd }} -> {{ item!.qtd - ammount > 0 ? item!.qtd - ammount : 0 }}</p>
                 <div class="columns is-multiline">
                     <div class="column">
                         <button class="button is-small" @click="sub(100)">-100</button>
@@ -24,7 +25,7 @@
                 </div>
             </section>
             <footer class="modal-card-foot">
-                <button class="button is-danger" @click="closeModal">Remover</button>
+                <button class="button is-danger" @click="finishAction">Remover</button>
                 <button class="button" @click="closeModal">Cancelar</button>
             </footer>
         </div>
@@ -48,13 +49,18 @@ export default defineComponent({
     methods: {
         add(n: number) {
             this.ammount = this.ammount + n;
+            if (this.ammount > this.item!.qtd) this.ammount = this.item!.qtd;
         },
         sub(n: number) {
             this.ammount = this.ammount - n;
             if (this.ammount - n < 0) this.ammount = 0
         },
-        closeModal() {
+        finishAction() {
             this.$emit('sub', { id: this.item!.id, ammount: this.ammount });
+            this.ammount = 0;
+            this.$emit('close');
+        },
+        closeModal() {
             this.ammount = 0;
             this.$emit('close');
         }
@@ -84,8 +90,7 @@ export default defineComponent({
 }
 
 .modal-card {
-    margin-top: 50%;
-    margin-bottom: 50%;
+    margin-top: 10%;
     height: fit-content !important;
     max-width: 550px;
     min-width: 350px;

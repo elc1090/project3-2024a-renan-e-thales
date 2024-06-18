@@ -3,16 +3,31 @@
         <div class="modal-background" @click="closeModal"></div>
         <div class="modal-card">
             <header class="modal-card-head">
-                <p class="modal-card-title">Adicionar Unidades</p>
+                <p class="modal-card-title">Adicionar Novo Item</p>
                 <button class="delete" aria-label="close" @click="closeModal"></button>
             </header>
             <section class="modal-card-body">
                 <form>
-                    <input class="input" type="text" placeholder="Nome" v.model="nome" />
-                    <input class="input" type="text" placeholder="Quantidade inicial" v.model.number="qtd" />
-                    <input class="input" type="text" placeholder="Peso" v.model="peso" />
-                    <input class="input" type="text" placeholder="Descrição" v.model="description" />
-                    <input class="input" type="text" placeholder="Categoria" v.model="category" />
+                    <div class="field">
+                        <label class="label">Nome</label>
+                        <input class="input" type="text" placeholder="Nome" v.model="nome" />
+                    </div>
+                    <div class="field">
+                        <label class="label">Quantidade Inicial</label>
+                        <input class="input" type="text" placeholder="Quantidade inicial" v.model.number="qtd" />
+                    </div>
+                    <div class="field">
+                        <label class="label">Peso (m/g/L/Kg)</label>
+                        <input class="input" type="text" placeholder="Peso" v.model="peso" />
+                    </div>
+                    <div class="field">
+                        <label class="label">Descrição</label>
+                        <input class="input" type="text" placeholder="Descrição" v.model="description" />
+                    </div>
+                    <div class="field">
+                        <label class="label">Categoria</label>
+                        <input class="input" type="text" placeholder="Categoria" v.model="category" />
+                    </div>
                 </form>
             </section>
             <footer class="modal-card-foot">
@@ -36,13 +51,13 @@ export default defineComponent({
             description: '',
             category: '',
         }
-    }, 
+    },
     props: {
         show: Boolean,
     },
     methods: {
         closeModal() {
-            this.$emit('addItem', {item: new Item(this.nome, this.qtd, this.peso, this.description, this.category, Date.now().toString as unknown as string)});
+            this.$emit('addItem', { item: new Item(this.nome, this.qtd, this.peso, this.description, this.category, Date.now().toString as unknown as string) });
             this.$emit('close');
         }
     },
@@ -51,8 +66,12 @@ export default defineComponent({
 
 <style scoped>
 .input {
-    width: fit-content !important;
+    max-width: 100% !important;
     height: fit-content !important;
+}
+
+.field {
+    text-align: start !important;
 }
 
 .modal {
@@ -74,7 +93,7 @@ export default defineComponent({
 }
 
 .modal-card {
-    margin-top: 15%;
+    margin-top: 10%;
     height: fit-content !important;
     max-width: 80%;
     min-width: 350px;

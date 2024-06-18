@@ -7,6 +7,7 @@
                 <button class="delete" aria-label="close" @click="closeModal"></button>
             </header>
             <section class="modal-card-body">
+                <p class="subtitle">{{ item?.qtd }} -> {{ item!.qtd + ammount }}</p>
                 <div class="columns is-multiline">
                     <div class="column">
                         <button class="button is-small" @click="sub(100)">-100</button>
@@ -88,8 +89,7 @@ export default defineComponent({
 }
 
 .modal-card {
-    margin-top: 50%;
-    margin-bottom: 50%;
+    margin-top: 10%;
     height: fit-content !important;
     max-width: 80%;
     min-width: 350px;
