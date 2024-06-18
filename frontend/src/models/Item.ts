@@ -6,8 +6,13 @@ class Item {
   desc: string;
   categ: string;
   dataVal: Date;
+  isOpen: boolean = false;
 
   private static lastId: number = 0;
+
+  toggleOpen() {
+    this.isOpen = !this.isOpen;
+  }
 
   constructor(
     nome: string,
@@ -15,7 +20,7 @@ class Item {
     kgl: string,
     desc: string,
     categ: string,
-    dataVal: Date | string
+    dataVal: Date | string,
   ) {
     this.id = ++Item.lastId;
 
