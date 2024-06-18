@@ -5,7 +5,9 @@
 ![image](https://github.com/elc1090/project3-2024a-renan-e-thales/assets/76953726/8b8e32dd-79a1-4730-a16b-4a56999f86ff)
 ![image](https://github.com/elc1090/project3-2024a-renan-e-thales/assets/76953726/65c55ed1-e8c9-494f-85e1-ed718558cb40)
 
-Deploy: https://project3-2024a-renan-e-thales.vercel.app/
+Deploy front: https://project3-2024a-renan-e-thales.vercel.app/
+
+Deploy back: https://apiback.netlify.app/
 
 ### Desenvolvedores
 
