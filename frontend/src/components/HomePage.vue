@@ -72,9 +72,10 @@ export default defineComponent({
         ]);
 
         async function fetchItems() {
+          const baseUrl = "https://apiback.netlify.app/.netlify/functions";
             try {
                 loadingStore.setLoading(true);
-                fetch('https://apiback.netlify.app/.netlify/functions/itens')
+                fetch(`${baseUrl}/itens`)
                     .then(response => response.json())
                     .then(data => {
                         console.log(data); // Dados retornados pela sua função Netlify
