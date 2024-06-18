@@ -74,7 +74,7 @@ export default defineComponent({
         async function fetchItems() {
             try {
                 loadingStore.setLoading(true);
-                fetch('https://apiback.netlify.app/.netlify/functions/users')
+                fetch('https://apiback.netlify.app/.netlify/functions/itens')
                     .then(response => response.json())
                     .then(data => {
                         console.log(data); // Dados retornados pela sua função Netlify
