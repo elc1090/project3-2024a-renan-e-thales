@@ -7,7 +7,7 @@ class ItemsController extends Controller
 {
     public function index(Request $request){
         // Retrieve all items from the database
-        $items = Item::all();
+        $items = Items::all();
         return response()->json($items);
     }
 
@@ -19,10 +19,10 @@ class ItemsController extends Controller
         ]);
 
         // Create a new item and save it to the database
-        $item = new Item;
-        $item->nome = $request->nome;
+        $items = new Item;
+        $items ->nome = $request->nome;
         // Set other fields from the request
-        $item->save();
+        $items->save();
 
         return response()->json($item, 201);
     }
@@ -35,12 +35,12 @@ class ItemsController extends Controller
         ]);
 
         // Find the item by id and update it
-        $item = Item::findOrFail($id);
-        $item->nome = $request->nome;
+        $items = Item::findOrFail($id);
+        $items ->nome = $request->nome;
         // Update other fields from the request
-        $item->save();
+        $items ->save();
 
-        return response()->json($item);
+        return response()->json($items);
     }
 
     public function delete(Request $request, $id){
