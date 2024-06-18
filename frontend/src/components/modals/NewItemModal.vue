@@ -7,21 +7,13 @@
                 <button class="delete" aria-label="close" @click="closeModal"></button>
             </header>
             <section class="modal-card-body">
-                <div class="columns is-multiline">
-                    <div class="column">
-                        <button class="button is-small" @click="sub(100)">-100</button>
-                        <button class="button is-small" @click="sub(10)">-10</button>
-                        <button class="button is-small" @click="sub(1)">-1</button>
-                    </div>
-                    <div class="column">
-                        <input class="input" type="number"  v-model.number="ammount" />
-                    </div>
-                    <div class="column">
-                        <button class="button is-small" @click="add(1)">+1</button>
-                        <button class="button is-small" @click="add(10)">+10</button>
-                        <button class="button is-small" @click="add(100)">+100</button>
-                    </div>
-                </div>
+                <form>
+                    <input class="input" type="text" placeholder="Nome" v.model="nome" />
+                    <input class="input" type="text" placeholder="Quantidade inicial" v.model.number="qtd" />
+                    <input class="input" type="text" placeholder="Peso" v.model="peso" />
+                    <input class="input" type="text" placeholder="Descrição" v.model="description" />
+                    <input class="input" type="text" placeholder="Categoria" v.model="category" />
+                </form>
             </section>
             <footer class="modal-card-foot">
                 <button class="button is-success" @click="closeModal">Adicionar</button>
@@ -38,28 +30,22 @@ import { defineComponent } from 'vue';
 export default defineComponent({
     data() {
         return {
-            ammount: 0,
+            nome: '',
+            qtd: 0,
+            peso: '',
+            description: '',
+            category: '',
         }
     }, 
     props: {
         show: Boolean,
-        item: Object as () => Item
     },
     methods: {
-        add(n: number) {
-            this.ammount = this.ammount + n;
-        },
-        sub(n: number) {
-            this.ammount = this.ammount - n;
-            if(this.ammount - n < 0) this.ammount = 0
-        },
         closeModal() {
-            this.$emit('add', { id: this.item!.id, ammount: this.ammount });
-            this.ammount = 0;
+            this.$emit('addItem', {item: new Item(this.nome, this.qtd, this.peso, this.description, this.category, Date.now().toString as unknown as string)});
             this.$emit('close');
         }
     },
-   
 });
 </script>
 
@@ -88,8 +74,7 @@ export default defineComponent({
 }
 
 .modal-card {
-    margin-top: 50%;
-    margin-bottom: 50%;
+    margin-top: 15%;
     height: fit-content !important;
     max-width: 80%;
     min-width: 350px;

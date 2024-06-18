@@ -5,12 +5,14 @@ import apiClient from '../core/axios';
 import Item from '../models/Item';
 import loadingStore from '@/store/loadingStore';
 
+import NewItemModal from './modals/NewItemModal.vue';
 import AddModal from './modals/AddModal.vue';
 import RemoveModal from './modals/RemoveModal.vue';
 import ViewModal from './modals/ViewModal.vue';
 
 export default defineComponent({
     components: {
+        NewItemModal,
         AddModal,
         RemoveModal,
         ViewModal,
@@ -18,6 +20,7 @@ export default defineComponent({
     },
     data() {
         return {
+            showNewItemModal: false,
             showAddModal: false,
             showRemoveModal: false,
             showViewModal: false,
@@ -27,6 +30,9 @@ export default defineComponent({
     methods: {
         assignSelectedItem(item: Item) {
             this.selectedItem = item;
+        },
+        openNewItemModal() {
+            this.showNewItemModal = true;
         },
         openAddModal() {
             this.showAddModal = true;
@@ -39,6 +45,9 @@ export default defineComponent({
         },
         closeAddModal() {
             this.showAddModal = false;
+        },
+        closeNewItemModal() {
+            this.showNewItemModal = false;
         },
         closeRemoveModal() {
             this.showRemoveModal = false;
@@ -64,6 +73,7 @@ export default defineComponent({
 
         async function fetchItems() {
             try {
+                loadingStore.setLoading(true);
                 fetch('https://apiback.netlify.app/.netlify/functions/users')
                     .then(response => response.json())
                     .then(data => {
@@ -72,6 +82,8 @@ export default defineComponent({
                     .catch(error => {
                         console.error('Erro ao fazer a chamada para a API:', error);
                     });
+                    loadingStore.setLoading(false);
+
             } catch (error) {
                 console.error('Erro ao buscar itens:', error);
             }
@@ -119,6 +131,11 @@ export default defineComponent({
             }
         }
 
+        function handleAddItem(payload: { item: Item }) {
+            ItemsList.value.push(payload.item);
+            console.log(payload.item);
+        }
+
         onMounted(fetchItems);
 
         return {
@@ -132,6 +149,7 @@ export default defineComponent({
             handleAdd,
             handleSub,
             showMenu,
+            handleAddItem
         };
     }
 });
@@ -142,8 +160,8 @@ export default defineComponent({
     <h1 class="title">Home</h1>
     <section class="main-body">
         <div class="container is-fluid is-mobile">
-            <div v-if="!loadingStore.state.isLoading && items.length == 0">
-                <p class="no-items-message">No items found.</p>
+            <div v-if="!loadingStore.state.isLoading && ItemsList.length == 0">
+                <p class="subtitle no-items-message">No items found.</p>
             </div>
             <div class="columns is-multiline">
                 <div class="column is-quarter" v-for="item in ItemsList" :key="item.nome">
@@ -151,7 +169,7 @@ export default defineComponent({
                         <header class="card-header" @click="item.toggleOpen(), selectedItem = item">
                             <span class="card-header-title is-centered">{{ item.nome }}</span>
                             <span class="card-header-title card-header-content is-centered" v-if="!item.isOpen">{{
-                                item.qtd }}un</span>
+                                item.qtd }} un</span>
                             <span class="icon angle-icon">
                                 <font-awesome-icon icon="fa-angle-down" v-if="item.isOpen" />
                                 <font-awesome-icon icon="fa-angle-up" v-if="!item.isOpen" />
@@ -181,13 +199,15 @@ export default defineComponent({
                             <button class="card-footer-item" @click="openViewModal()">Detalhes do
                                 Item</button>
                         </footer>
-                        <AddModal :show="showAddModal" @close="closeAddModal" @add="handleAdd" :item="selectedItem" />
-                        <RemoveModal :show="showRemoveModal" @close="closeRemoveModal" @sub="handleSub"
-                            :item="selectedItem" :ammount="0" />
-                        <ViewModal :show="showViewModal" @close="closeViewModal" :item="selectedItem" />
                     </div>
                 </div>
             </div>
+            <button class="button is-primary" @click="openNewItemModal()">+ Novo Item</button>
+            <NewItemModal :show="showNewItemModal" @close="closeNewItemModal" :addItem="handleAddItem" ></NewItemModal>
+            <AddModal :show="showAddModal" @close="closeAddModal" @add="handleAdd" :item="selectedItem" />
+            <RemoveModal :show="showRemoveModal" @close="closeRemoveModal" @sub="handleSub"
+                :item="selectedItem" :ammount="0" />
+            <ViewModal :show="showViewModal" @close="closeViewModal" :item="selectedItem" />
         </div>
     </section>
 </template>
@@ -256,7 +276,7 @@ export default defineComponent({
 }
 
 .card {
-    min-width: 400;
+    min-width: 350px;
     padding: 0 0;
     margin: 0;
 }

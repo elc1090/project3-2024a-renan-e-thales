@@ -8,8 +8,8 @@
             </header>
             <section class="modal-card-body">
                 <p>Nome: {{ item!.nome }}</p>
-                <p>Quantidade: {{ item!.qtd }}</p>
-                <p>Peso: {{ item!.kgl }}</p>
+                <p>Quantidade: {{ item!.qtd }} unidades</p>
+                <p>Peso unitário: {{ item!.kgl }}</p>
                 <p>Descrição: {{ item!.desc }}</p>
                 <p>Categoria: {{ item!.categ }}</p>
             </section>
@@ -56,14 +56,22 @@ export default defineComponent({
 }
 
 .modal-card {
-    margin-top: 15%;
+    margin-top: 50%;
+    margin-bottom: 50%;
     height: fit-content !important;
-    max-width: 600px;
+    max-width: 550px;
+    min-width: 350px;
+    margin-left: auto;
+    margin-right: auto;
     width: 90%;
 }
 
 .modal-card-body {
     height: fit-content !important;
+}
+
+.button {
+    margin-right: 8px;
 }
 
 .modal-background {
