@@ -89,7 +89,7 @@ export default defineComponent({
 }
 
 .modal-card {
-    margin-top: 10%;
+    margin-top: 24px;
     height: fit-content !important;
     max-width: 80%;
     min-width: 350px;
