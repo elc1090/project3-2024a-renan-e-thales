@@ -2,7 +2,6 @@
 
 ![image](https://github.com/elc1090/project3-2024a-renan-e-thales/assets/76953726/9f2773cd-bf59-4464-826f-0f9413ec676b)
 ![image](https://github.com/elc1090/project3-2024a-renan-e-thales/assets/76953726/39402ff8-2861-4413-8a4a-cc5e34ec1e41)
-![image](https://github.com/elc1090/project3-2024a-renan-e-thales/assets/76953726/f437738e-50bb-4921-bfa5-d4f0079acb76)
 ![image](https://github.com/elc1090/project3-2024a-renan-e-thales/assets/76953726/8b8e32dd-79a1-4730-a16b-4a56999f86ff)
 ![image](https://github.com/elc1090/project3-2024a-renan-e-thales/assets/76953726/65c55ed1-e8c9-494f-85e1-ed718558cb40)
 
