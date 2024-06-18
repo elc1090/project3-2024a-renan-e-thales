@@ -45,7 +45,7 @@ export default {
 <style>
 
 section {
-    height: 100% !important;
+    height: 100vh !important;
 }
 
 input {
