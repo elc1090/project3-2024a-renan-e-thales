@@ -57,6 +57,7 @@ export default defineComponent({
         },
     },
     setup() {
+        const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
         let showMenu = ref<boolean>(false);
 
         const items = ref<Item[]>([]);
@@ -72,9 +73,10 @@ export default defineComponent({
         ]);
 
         async function fetchItems() {
-          const baseUrl = "https://apiback.netlify.app/.netlify/functions";
+            const baseUrl = "https://apiback.netlify.app/.netlify/functions";
             try {
                 loadingStore.setLoading(true);
+                await delay(5000);
                 fetch(`${baseUrl}/itens`)
                     .then(response => response.json())
                     .then(data => {
@@ -83,10 +85,11 @@ export default defineComponent({
                     .catch(error => {
                         console.error('Erro ao fazer a chamada para a API:', error);
                     });
-                    loadingStore.setLoading(false);
+                loadingStore.setLoading(false);
 
             } catch (error) {
                 console.error('Erro ao buscar itens:', error);
+                loadingStore.setLoading(false);
             }
         }
 
@@ -204,10 +207,10 @@ export default defineComponent({
                 </div>
             </div>
             <button class="button is-primary" @click="openNewItemModal()">+ Novo Item</button>
-            <NewItemModal :show="showNewItemModal" @close="closeNewItemModal" :addItem="handleAddItem" ></NewItemModal>
+            <NewItemModal :show="showNewItemModal" @close="closeNewItemModal" :addItem="handleAddItem"></NewItemModal>
             <AddModal :show="showAddModal" @close="closeAddModal" @add="handleAdd" :item="selectedItem" />
-            <RemoveModal :show="showRemoveModal" @close="closeRemoveModal" @sub="handleSub"
-                :item="selectedItem" :ammount="0" />
+            <RemoveModal :show="showRemoveModal" @close="closeRemoveModal" @sub="handleSub" :item="selectedItem"
+                :ammount="0" />
             <ViewModal :show="showViewModal" @close="closeViewModal" :item="selectedItem" />
         </div>
     </section>
@@ -277,9 +280,8 @@ export default defineComponent({
 }
 
 .card {
-    min-width: 350px;
+    min-width: 250px;
     padding: 0 0;
-    margin: 0;
 }
 
 .info-body-headers {
