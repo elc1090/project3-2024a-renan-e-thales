@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   final TextEditingController _qtdTextController = TextEditingController(text: "0");
   final TextEditingController _validadeTextController = TextEditingController();
   late TabController _tabsController;
+  List<String> categoriasEscolhidas = [];
 
   bool _isSearchOpen = false;
 
@@ -254,36 +255,89 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   const SizedBox(
                     height: 16,
                   ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.allow(RegExp(r'[0-9/]')),
-                      InputFormatter(
-                        sample: "XX/XX/XXXX",
-                        separator: "/",
-                      ),
-                    ],
-                    controller: _validadeTextController,
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(onPressed: () => _openCategoriasBottomsheet(context), icon: const Icon(Icons.category_outlined)),
-                      labelText: "categoria",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 2),
-                      ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Theme.of(context).colorScheme.primary),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: CustomText(
+                                "categorias",
+                                size: 12,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () => _openCategoriasBottomsheet(context),
+                              icon: const Icon(Icons.add),
+                              visualDensity: VisualDensity.compact,
+                            ),
+                          ],
+                        ),
+                        Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.start,
+                          runAlignment: WrapAlignment.start,
+                          children: [
+                            if (categoriasEscolhidas.isEmpty)
+                              Row(
+                                children: [
+                                  CustomText(
+                                    "Adicione categorias clicando no botão ",
+                                    size: 14,
+                                    color: Colors.grey[900],
+                                  ),
+                                  Icon(
+                                    Icons.add_circle_outline,
+                                    size: 16,
+                                    color: Colors.grey[900],
+                                  ),
+                                ],
+                              ),
+                            for (var categ in categoriasEscolhidas)
+                              Container(
+                                padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4),
+                                margin: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Theme.of(context).colorScheme.primary),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  children: [
+                                    CustomText(
+                                      categ,
+                                      size: 14,
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          categoriasEscolhidas.remove(categ);
+                                        });
+                                      },
+                                      splashRadius: 2,
+                                      visualDensity: VisualDensity.compact,
+                                      icon: const Icon(Icons.close),
+                                    )
+                                  ],
+                                ),
+                              ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 16),
                   Center(
                     child: ElevatedButton(
                       onPressed: () {},
-                      child: Text("Adicionar"),
+                      child: Text("+ Adicionar"),
                     ),
                   ),
                 ],
@@ -306,15 +360,16 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     }
   }
 
-  _openCategoriasBottomsheet(BuildContext context) {
-    showBottomSheet(
+  _openCategoriasBottomsheet(BuildContext context) async {
+    await showModalBottomSheet(
         context: context,
         builder: (context) {
-          return Container(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-            child: ListView.builder(
-              itemCount: controller.categorias!.isNotEmpty ? controller.categorias!.length : 1,
-              itemBuilder: (context, index) => ListTile(
+          return StatefulBuilder(builder: (context, fn) {
+            return Container(
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+              child: ListView.builder(
+                itemCount: controller.categorias!.isNotEmpty ? controller.categorias!.length : 1,
+                itemBuilder: (context, index) => ListTile(
                   title: controller.categorias!.isNotEmpty
                       ? CustomText(
                           controller.categorias![index],
@@ -323,9 +378,31 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       : CustomText(
                           "Nenhuma categoria cadastrada",
                           size: 16,
-                        )),
-            ),
-          );
+                        ),
+                  leading: controller.categorias!.isNotEmpty
+                      ? IconButton(
+                          onPressed: () {
+                            fn(() {
+                              if (categoriasEscolhidas.contains(controller.categorias![index])) {
+                                setState(() {
+                                  categoriasEscolhidas.remove(controller.categorias![index]);
+                                });
+                              } else {
+                                setState(() {
+                                  categoriasEscolhidas.add(controller.categorias![index]);
+                                });
+                              }
+                            });
+                          },
+                          icon: Icon(
+                            categoriasEscolhidas.contains(controller.categorias![index]) ? Icons.check_box_outlined : Icons.check_box_outline_blank,
+                          ),
+                        )
+                      : null,
+                ),
+              ),
+            );
+          });
         });
   }
 }
