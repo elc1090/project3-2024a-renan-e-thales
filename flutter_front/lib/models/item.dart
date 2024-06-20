@@ -4,13 +4,16 @@ class Item {
   Item({
     required this.id,
     required this.nome,
+    this.qtd,
+    this.description,
+    this.categList,
   });
 
   int id;
   String nome;
   int? qtd;
   String? description;
-  List<Category>? categList = [];
+  List<String>? categList = [];
   bool isOpen = false;
 
   factory Item.fromMap(Map<String, dynamic> map) {
@@ -24,5 +27,3 @@ class Item {
     isOpen = !isOpen;
   }
 }
-
-enum Category { COMIDA, HIGIENE, PERECIVEL, NAO_PERECIVEL }

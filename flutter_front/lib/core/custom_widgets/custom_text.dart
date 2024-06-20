@@ -13,6 +13,7 @@ class CustomText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
+      maxLines: 3,
       style: GoogleFonts.montserrat(
         fontWeight: weight ?? FontWeight.w600,
         fontSize: size ?? 20,

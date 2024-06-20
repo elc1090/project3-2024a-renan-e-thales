@@ -1,9 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter_front/core/custom_widgets/custom_text.dart';
 import 'package:flutter_front/core/helpers/input_formatter.dart';
+import 'package:flutter_front/models/item.dart';
 import 'package:flutter_front/modules/home/home_controller.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/globals.dart' as globals;
 import 'package:intl/intl.dart';
@@ -27,6 +32,16 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   bool _isSearchOpen = false;
 
+  double _defineBreakpoint(double x) {
+    if (x > 575) {
+      if (x > 1000) {
+        return (x * 0.3);
+      }
+      return (x * 0.5);
+    }
+    return (x * 0.9);
+  }
+
   @override
   void initState() {
     _tabsController = TabController(length: 2, vsync: this);
@@ -44,11 +59,21 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Itens"),
-        bottom: TabBar(controller: _tabsController, tabs: const [Text("Itens"), Text("Novo Item")]),
+        titleSpacing: 0,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        bottom: TabBar(controller: _tabsController, tabs: [
+          CustomText(
+            "Listagem",
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+          CustomText(
+            "Novo Item",
+            color: Theme.of(context).colorScheme.onPrimary,
+          )
+        ]),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 32.0),
+            padding: EdgeInsets.only(right: 32.0),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               width: _isSearchOpen ? 200 : 32,
@@ -58,13 +83,13 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         hintText: "Search",
                         icon: IconButton(
                           onPressed: () => setState(() => _isSearchOpen = !_isSearchOpen),
-                          icon: const Icon(Icons.search),
+                          icon: const Icon(CarbonIcons.search),
                         ),
                       ),
                     )
                   : IconButton(
                       onPressed: () => setState(() => _isSearchOpen = !_isSearchOpen),
-                      icon: const Icon(Icons.search),
+                      icon: const Icon(CarbonIcons.search),
                     ),
             ),
           ),
@@ -76,18 +101,23 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         children: [
           Center(
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.7,
+              width: MediaQuery.of(context).size.width > 1000 ? MediaQuery.of(context).size.width * 0.8 : MediaQuery.of(context).size.width,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.all(8),
-                    color: Theme.of(context).colorScheme.tertiaryContainer,
-                    child: const Row(
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Item"),
-                        Text("Qtd"),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: CustomText("Item", size: 14),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: CustomText("Qtd", size: 14),
+                        ),
                       ],
                     ),
                   ),
@@ -96,33 +126,68 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                           child: Text("Vazio"),
                         )
                       : Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            clipBehavior: Clip.hardEdge,
-                            itemCount: controller.itemList!.length,
-                            itemBuilder: (context, index) => ListTile(
-                              minTileHeight: 70,
-                              tileColor: Theme.of(context).colorScheme.tertiary,
-                              onTap: () {},
-                              title: Text(
-                                controller.itemList![index].nome,
-                                style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w400, color: Theme.of(context).colorScheme.onTertiary),
+                          child: Observer(builder: (_) {
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              clipBehavior: Clip.hardEdge,
+                              itemCount: controller.itemList!.length,
+                              itemBuilder: (context, index) => Column(
+                                children: [
+                                  ListTile(
+                                    minTileHeight: 70,
+                                    tileColor: Theme.of(context).colorScheme.secondary,
+                                    onTap: () {
+                                      _openItemModal(context, controller.itemList![index]);
+                                    },
+                                    title: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        CustomText(
+                                          controller.itemList![index].nome,
+                                          size: 16,
+                                          color: Theme.of(context).colorScheme.onTertiary,
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        MediaQuery.of(context).size.width > 1000
+                                            ? Column(
+                                                children: [
+                                                  CustomText(
+                                                    (controller.itemList![index].categList != null && controller.itemList![index].categList!.isNotEmpty)
+                                                        ? controller.itemList![index].categList!.join(', ')
+                                                        : "Sem categorias",
+                                                    size: 14,
+                                                    color: Colors.grey[500],
+                                                  ),
+                                                ],
+                                              )
+                                            : const SizedBox(),
+                                      ],
+                                    ),
+                                    trailing: CustomText(
+                                      "${controller.itemList![index].qtd ?? 0}",
+                                      size: 16,
+                                      color: Theme.of(context).colorScheme.onTertiary,
+                                    ),
+                                  ),
+                                  const Divider(
+                                    height: 1,
+                                  ),
+                                ],
                               ),
-                              trailing: Text(
-                                "${controller.itemList![index].qtd ?? 0}",
-                                style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w400, color: Theme.of(context).colorScheme.onTertiary),
-                              ),
-                            ),
-                          ),
+                            );
+                          }),
                         ),
                   Padding(
                     padding: const EdgeInsets.all(16),
-                    child: ElevatedButton(
+                    child: ElevatedButton.icon(
                       onPressed: () {
                         _tabsController.animateTo(1);
                       },
-                      child: CustomText(
-                        "+ Novo Item",
+                      icon: Icon(CarbonIcons.add),
+                      label: CustomText(
+                        "Novo Item",
                         size: 14,
                       ),
                     ),
@@ -132,230 +197,254 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             ),
           ),
           Center(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.25 - 100),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: CustomText("Adicionar Novo Item"),
-                  ),
-                  TextFormField(
-                    controller: _nomeTextController,
-                    decoration: InputDecoration(
-                      labelText: "nome",
-                      labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
-                      ),
+            child: LayoutBuilder(
+              builder: (context, constraints) => SizedBox(
+                width: _defineBreakpoint(constraints.maxWidth),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: CustomText("Adicionar Novo Item"),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _descTextController,
-                    minLines: 1,
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      labelText: "descrição",
-                      labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          onPressed: () => setState(
-                                () {
-                                  if (int.parse(_qtdTextController.text) - 10 > 0) {
-                                    _qtdTextController.text = "${int.parse(_qtdTextController.text) - 10}";
-                                  } else {
-                                    _qtdTextController.text = "0";
-                                  }
-                                },
-                              ),
-                          child: const Text("-10")),
-                      Expanded(
-                        flex: 1,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                          controller: _qtdTextController,
-                          decoration: InputDecoration(
-                            labelText: "quantidade inicial",
-                            labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
-                            ),
-                          ),
+                    TextFormField(
+                      controller: _nomeTextController,
+                      decoration: InputDecoration(
+                        labelText: "nome",
+                        labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
                         ),
                       ),
-                      TextButton(
-                          onPressed: () => setState(
-                                () => _qtdTextController.text = "${int.parse(_qtdTextController.text) + 10}",
-                              ),
-                          child: const Text("+10")),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9/]')),
-                            InputFormatter(
-                              sample: "XX/XX/XXXX",
-                              separator: "/",
-                            ),
-                          ],
-                          controller: _validadeTextController,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(onPressed: () => _openDatePicker(), icon: const Icon(Icons.date_range_outlined)),
-                            labelText: "data de validade",
-                            labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
-                            ),
-                          ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _descTextController,
+                      minLines: 1,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        labelText: "descrição",
+                        labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Theme.of(context).colorScheme.primary),
-                      borderRadius: BorderRadius.circular(5),
                     ),
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: CustomText(
-                                "categorias",
-                                size: 12,
-                                weight: FontWeight.w500,
+                        TextButton(
+                            onPressed: () => setState(
+                                  () {
+                                    if (int.parse(_qtdTextController.text) - 10 > 0) {
+                                      _qtdTextController.text = "${int.parse(_qtdTextController.text) - 10}";
+                                    } else {
+                                      _qtdTextController.text = "0";
+                                    }
+                                  },
+                                ),
+                            child: const Text("-10")),
+                        Expanded(
+                          flex: 1,
+                          child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                            controller: _qtdTextController,
+                            decoration: InputDecoration(
+                              labelText: "quantidade inicial",
+                              labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
                               ),
                             ),
-                            IconButton(
-                              onPressed: () => _openCategoriasBottomsheet(context),
-                              icon: const Icon(Icons.add),
-                              visualDensity: VisualDensity.compact,
-                            ),
-                          ],
+                          ),
                         ),
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.start,
-                          runAlignment: WrapAlignment.start,
-                          children: [
-                            if (categoriasEscolhidas.isEmpty)
-                              Row(
-                                children: [
-                                  CustomText(
-                                    "Adicione categorias clicando no botão ",
-                                    size: 14,
-                                    weight: FontWeight.w500,
-                                    color: Colors.grey[900],
-                                  ),
-                                  Icon(
-                                    Icons.add_circle_outline,
-                                    size: 16,
-                                    color: Colors.grey[900],
-                                  ),
-                                ],
-                              ),
-                            for (var categ in categoriasEscolhidas)
-                              Container(
-                                padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4),
-                                margin: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Theme.of(context).colorScheme.primary),
-                                  borderRadius: BorderRadius.circular(5),
+                        TextButton(
+                            onPressed: () => setState(
+                                  () => _qtdTextController.text = "${int.parse(_qtdTextController.text) + 10}",
                                 ),
-                                child: Wrap(
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  children: [
-                                    CustomText(
-                                      categ,
-                                      size: 14,
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          categoriasEscolhidas.remove(categ);
-                                        });
-                                      },
-                                      splashRadius: 2,
-                                      visualDensity: VisualDensity.compact,
-                                      icon: const Icon(Icons.close),
-                                    )
-                                  ],
-                                ),
+                            child: const Text("+10")),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp(r'[0-9/]')),
+                              InputFormatter(
+                                sample: "XX/XX/XXXX",
+                                separator: "/",
                               ),
-                          ],
+                            ],
+                            controller: _validadeTextController,
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(onPressed: () => _openDatePicker(), icon: const Icon(Icons.date_range_outlined)),
+                              labelText: "data de validade",
+                              labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: CustomText(
-                        "+ Adicionar",
-                        size: 16,
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    InkWell(
+                      splashFactory: categoriasEscolhidas.isEmpty ? InkRipple.splashFactory : NoSplash.splashFactory,
+                      splashColor: categoriasEscolhidas.isEmpty ? Theme.of(context).colorScheme.tertiary.withAlpha(50) : Colors.transparent,
+                      highlightColor: categoriasEscolhidas.isEmpty ? null : Colors.transparent,
+                      onTap: () => categoriasEscolhidas.isEmpty ? _openCategoriasBottomsheet(context) : null,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Theme.of(context).colorScheme.primary),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 8),
+                                  child: CustomText(
+                                    "categorias",
+                                    size: 12,
+                                    weight: FontWeight.w500,
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () => _openCategoriasBottomsheet(context),
+                                  icon: const Icon(Icons.add),
+                                  visualDensity: VisualDensity.compact,
+                                ),
+                              ],
+                            ),
+                            Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.start,
+                              runAlignment: WrapAlignment.start,
+                              children: [
+                                if (categoriasEscolhidas.isEmpty)
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: CustomText(
+                                          "Vazio",
+                                          size: 14,
+                                          weight: FontWeight.w500,
+                                          color: Colors.grey[900],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                for (var categ in categoriasEscolhidas)
+                                  Container(
+                                    padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4),
+                                    margin: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Theme.of(context).colorScheme.primary),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Wrap(
+                                      crossAxisAlignment: WrapCrossAlignment.center,
+                                      children: [
+                                        CustomText(
+                                          categ,
+                                          size: 14,
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              categoriasEscolhidas.remove(categ);
+                                            });
+                                          },
+                                          splashRadius: 2,
+                                          visualDensity: VisualDensity.compact,
+                                          icon: const Icon(Icons.close),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 16),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final newItem = Item(
+                            id: controller.itemList!.length + 1,
+                            nome: _nomeTextController.text.trim(),
+                            description: _descTextController.text.trim(),
+                            qtd: int.parse(_qtdTextController.text.trim()),
+                            categList: List<String>.from(categoriasEscolhidas),
+                          );
+                          controller.itemList!.add(newItem);
+                          _clearInputs();
+                          _tabsController.index = 0;
+                        },
+                        child: CustomText(
+                          "+ Adicionar",
+                          size: 16,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  _clearInputs() {
+    _nomeTextController.clear();
+    _descTextController.clear();
+    _qtdTextController.clear();
+    _validadeTextController.clear();
+    categoriasEscolhidas.clear();
   }
 
   _openDatePicker() async {
@@ -439,5 +528,42 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             );
           });
         });
+  }
+
+  _openItemModal(BuildContext context, Item item) {
+    showDialog(
+        context: context,
+        builder: (context) => StatefulBuilder(builder: (context, st) {
+              return AlertDialog(
+                title: CustomText(item.nome),
+                content: CustomText(
+                  item.description ?? '',
+                  size: 14,
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {},
+                    child: CustomText(
+                      "Editar",
+                      size: 16,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: CustomText(
+                      "Excluir",
+                      size: 16,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: CustomText(
+                      "Alterar quantidade",
+                      size: 16,
+                    ),
+                  ),
+                ],
+              );
+            }));
   }
 }
