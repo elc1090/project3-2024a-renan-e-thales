@@ -145,6 +145,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     controller: _nomeTextController,
                     decoration: InputDecoration(
                       labelText: "nome",
+                      labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
@@ -153,7 +154,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 2),
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
                       ),
                     ),
                   ),
@@ -164,6 +165,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     maxLines: 5,
                     decoration: InputDecoration(
                       labelText: "descrição",
+                      labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
@@ -172,7 +174,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 2),
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
                       ),
                     ),
                   ),
@@ -199,6 +201,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                           controller: _qtdTextController,
                           decoration: InputDecoration(
                             labelText: "quantidade inicial",
+                            labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
@@ -207,7 +210,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 2),
+                              borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
                             ),
                           ),
                         ),
@@ -237,6 +240,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                           decoration: InputDecoration(
                             suffixIcon: IconButton(onPressed: () => _openDatePicker(), icon: const Icon(Icons.date_range_outlined)),
                             labelText: "data de validade",
+                            labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
@@ -245,7 +249,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 2),
+                              borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
                             ),
                           ),
                         ),
@@ -272,6 +276,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                               child: CustomText(
                                 "categorias",
                                 size: 12,
+                                weight: FontWeight.w500,
                               ),
                             ),
                             IconButton(
@@ -291,6 +296,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                   CustomText(
                                     "Adicione categorias clicando no botão ",
                                     size: 14,
+                                    weight: FontWeight.w500,
                                     color: Colors.grey[900],
                                   ),
                                   Icon(
@@ -337,7 +343,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   Center(
                     child: ElevatedButton(
                       onPressed: () {},
-                      child: Text("+ Adicionar"),
+                      child: CustomText(
+                        "+ Adicionar",
+                        size: 16,
+                      ),
                     ),
                   ),
                 ],
@@ -367,39 +376,65 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           return StatefulBuilder(builder: (context, fn) {
             return Container(
               padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-              child: ListView.builder(
-                itemCount: controller.categorias!.isNotEmpty ? controller.categorias!.length : 1,
-                itemBuilder: (context, index) => ListTile(
-                  title: controller.categorias!.isNotEmpty
-                      ? CustomText(
-                          controller.categorias![index],
-                          size: 16,
-                        )
-                      : CustomText(
-                          "Nenhuma categoria cadastrada",
-                          size: 16,
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 8),
+                    child: TextFormField(
+                      controller: _nomeTextController,
+                      decoration: InputDecoration(
+                        labelText: "buscar categoria",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
                         ),
-                  leading: controller.categorias!.isNotEmpty
-                      ? IconButton(
-                          onPressed: () {
-                            fn(() {
-                              if (categoriasEscolhidas.contains(controller.categorias![index])) {
-                                setState(() {
-                                  categoriasEscolhidas.remove(controller.categorias![index]);
-                                });
-                              } else {
-                                setState(() {
-                                  categoriasEscolhidas.add(controller.categorias![index]);
-                                });
-                              }
-                            });
-                          },
-                          icon: Icon(
-                            categoriasEscolhidas.contains(controller.categorias![index]) ? Icons.check_box_outlined : Icons.check_box_outline_blank,
-                          ),
-                        )
-                      : null,
-                ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                        ),
+                        suffixIcon: const Icon(Icons.search),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: controller.categorias!.isNotEmpty ? controller.categorias!.length : 1,
+                      itemBuilder: (context, index) => ListTile(
+                        title: controller.categorias!.isNotEmpty
+                            ? CustomText(
+                                controller.categorias![index],
+                                size: 16,
+                              )
+                            : CustomText(
+                                "Nenhuma categoria cadastrada",
+                                size: 16,
+                              ),
+                        leading: controller.categorias!.isNotEmpty
+                            ? IconButton(
+                                onPressed: () {
+                                  fn(() {
+                                    if (categoriasEscolhidas.contains(controller.categorias![index])) {
+                                      setState(() {
+                                        categoriasEscolhidas.remove(controller.categorias![index]);
+                                      });
+                                    } else {
+                                      setState(() {
+                                        categoriasEscolhidas.add(controller.categorias![index]);
+                                      });
+                                    }
+                                  });
+                                },
+                                icon: Icon(
+                                  categoriasEscolhidas.contains(controller.categorias![index]) ? Icons.check_box_outlined : Icons.check_box_outline_blank,
+                                ),
+                              )
+                            : null,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           });
