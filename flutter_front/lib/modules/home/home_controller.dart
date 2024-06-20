@@ -9,6 +9,12 @@ abstract class HomeControllerBase with Store {
   @observable
   List<Item>? itemList;
 
+  @observable
+  List<String>? categorias;
+
   @action
   Future<void> getItems() async => itemList = [];
+
+  @action
+  Future<void> getCategorias() async => categorias = [];
 }

@@ -15,3 +15,10 @@ List<Item> items = [
   Item(id: 6, nome: "Pacote de Feijão"),
   Item(id: 7, nome: "Bandeja de Carne"),
 ];
+
+List<String> categorias = [
+  "Suprimento",
+  "Higiene Pessoal",
+  "Perecível",
+  "Não-Perecível",
+];

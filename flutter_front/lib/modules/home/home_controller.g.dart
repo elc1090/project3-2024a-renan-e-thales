@@ -25,6 +25,22 @@ mixin _$HomeController on HomeControllerBase, Store {
     });
   }
 
+  late final _$categoriasAtom =
+      Atom(name: 'HomeControllerBase.categorias', context: context);
+
+  @override
+  List<String>? get categorias {
+    _$categoriasAtom.reportRead();
+    return super.categorias;
+  }
+
+  @override
+  set categorias(List<String>? value) {
+    _$categoriasAtom.reportWrite(value, super.categorias, () {
+      super.categorias = value;
+    });
+  }
+
   late final _$getItemsAsyncAction =
       AsyncAction('HomeControllerBase.getItems', context: context);
 
@@ -33,10 +49,19 @@ mixin _$HomeController on HomeControllerBase, Store {
     return _$getItemsAsyncAction.run(() => super.getItems());
   }
 
+  late final _$getCategoriasAsyncAction =
+      AsyncAction('HomeControllerBase.getCategorias', context: context);
+
+  @override
+  Future<void> getCategorias() {
+    return _$getCategoriasAsyncAction.run(() => super.getCategorias());
+  }
+
   @override
   String toString() {
     return '''
-itemList: ${itemList}
+itemList: ${itemList},
+categorias: ${categorias}
     ''';
   }
 }

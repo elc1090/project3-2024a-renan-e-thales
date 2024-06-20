@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   void initState() {
     _tabsController = TabController(length: 2, vsync: this);
     controller.itemList = globals.items;
+    controller.categorias = globals.categorias;
     super.initState();
   }
 
@@ -250,13 +251,41 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       ),
                     ],
                   ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9/]')),
+                      InputFormatter(
+                        sample: "XX/XX/XXXX",
+                        separator: "/",
+                      ),
+                    ],
+                    controller: _validadeTextController,
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(onPressed: () => _openCategoriasBottomsheet(context), icon: const Icon(Icons.category_outlined)),
+                      labelText: "categoria",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 2),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 16),
                   Center(
                     child: ElevatedButton(
                       onPressed: () {},
                       child: Text("Adicionar"),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -275,5 +304,28 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     if (date != null) {
       _validadeTextController.text = "${date.day}/${date.month.toString().padLeft(2, '0')}/${date.year}";
     }
+  }
+
+  _openCategoriasBottomsheet(BuildContext context) {
+    showBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+            child: ListView.builder(
+              itemCount: controller.categorias!.isNotEmpty ? controller.categorias!.length : 1,
+              itemBuilder: (context, index) => ListTile(
+                  title: controller.categorias!.isNotEmpty
+                      ? CustomText(
+                          controller.categorias![index],
+                          size: 16,
+                        )
+                      : CustomText(
+                          "Nenhuma categoria cadastrada",
+                          size: 16,
+                        )),
+            ),
+          );
+        });
   }
 }
