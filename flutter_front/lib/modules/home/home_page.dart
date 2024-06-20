@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_front/core/custom_widgets/custom_text.dart';
+import 'package:flutter_front/core/helpers/input_formatter.dart';
 import 'package:flutter_front/modules/home/home_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/globals.dart' as globals;
@@ -223,9 +224,16 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         flex: 1,
                         child: TextFormField(
                           keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9/]')),
+                            InputFormatter(
+                              sample: "XX/XX/XXXX",
+                              separator: "/",
+                            ),
+                          ],
                           controller: _validadeTextController,
                           decoration: InputDecoration(
+                            suffixIcon: IconButton(onPressed: () => _openDatePicker(), icon: const Icon(Icons.date_range_outlined)),
                             labelText: "data de validade",
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5),
@@ -240,7 +248,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                           ),
                         ),
                       ),
-                      IconButton(onPressed: () => _openDatePicker(), icon: Icon(Icons.date_range_outlined))
                     ],
                   ),
                   const SizedBox(height: 16),
