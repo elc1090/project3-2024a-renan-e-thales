@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_front/core/custom_widgets/custom_text.dart';
 import 'package:flutter_front/modules/home/home_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/globals.dart' as globals;
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,10 +15,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+  DateFormat format = DateFormat("dd-MM-yyyy");
   HomeController controller = HomeController();
-  TextEditingController _nomeTextController = TextEditingController();
-  TextEditingController _descTextController = TextEditingController();
-  TextEditingController _qtdTextController = TextEditingController(text: "0");
+  final TextEditingController _nomeTextController = TextEditingController();
+  final TextEditingController _descTextController = TextEditingController();
+  final TextEditingController _qtdTextController = TextEditingController(text: "0");
+  final TextEditingController _validadeTextController = TextEditingController();
   late TabController _tabsController;
 
   bool _isSearchOpen = false;
@@ -108,98 +112,161 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                             ),
                           ),
                         ),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _tabsController.animateTo(1);
+                      },
+                      child: CustomText(
+                        "+ Novo Item",
+                        size: 14,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
           ),
           Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const Text("Adicionar Novo Item"),
-                TextFormField(
-                  controller: _nomeTextController,
-                  decoration: InputDecoration(
-                    labelText: "nome",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 2),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.25 - 100),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: CustomText("Adicionar Novo Item"),
+                  ),
+                  TextFormField(
+                    controller: _nomeTextController,
+                    decoration: InputDecoration(
+                      labelText: "nome",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 2),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _descTextController,
-                  minLines: 1,
-                  maxLines: 5,
-                  decoration: InputDecoration(
-                    labelText: "descrição",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 2),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _descTextController,
+                    minLines: 1,
+                    maxLines: 5,
+                    decoration: InputDecoration(
+                      labelText: "descrição",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 2),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                        onPressed: () => setState(
-                              () {
-                                if (int.parse(_qtdTextController.text) - 10 > 0) {
-                                  _qtdTextController.text = "${int.parse(_qtdTextController.text) - 10}";
-                                } else {
-                                  _qtdTextController.text = "0";
-                                }
-                              },
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                          onPressed: () => setState(
+                                () {
+                                  if (int.parse(_qtdTextController.text) - 10 > 0) {
+                                    _qtdTextController.text = "${int.parse(_qtdTextController.text) - 10}";
+                                  } else {
+                                    _qtdTextController.text = "0";
+                                  }
+                                },
+                              ),
+                          child: const Text("-10")),
+                      Expanded(
+                        flex: 1,
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                          controller: _qtdTextController,
+                          decoration: InputDecoration(
+                            labelText: "quantidade inicial",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                        child: const Text("-10")),
-                    Expanded(
-                      flex: 1,
-                      child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                        controller: _qtdTextController,
-                        decoration: InputDecoration(
-                          labelText: "quantidade inicial",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 2),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 2),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    TextButton(
-                        onPressed: () => setState(
-                              () => _qtdTextController.text = "${int.parse(_qtdTextController.text) + 10}",
+                      TextButton(
+                          onPressed: () => setState(
+                                () => _qtdTextController.text = "${int.parse(_qtdTextController.text) + 10}",
+                              ),
+                          child: const Text("+10")),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                          controller: _validadeTextController,
+                          decoration: InputDecoration(
+                            labelText: "data de validade",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                        child: const Text("+10")),
-                  ],
-                ),
-              ],
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 2),
+                            ),
+                          ),
+                        ),
+                      ),
+                      IconButton(onPressed: () => _openDatePicker(), icon: Icon(Icons.date_range_outlined))
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text("Adicionar"),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  _openDatePicker() async {
+    final date = await showDatePicker(
+      context: context,
+      firstDate: DateTime(1970),
+      lastDate: DateTime(3000),
+    );
+    if (date != null) {
+      _validadeTextController.text = "${date.day}/${date.month.toString().padLeft(2, '0')}/${date.year}";
+    }
   }
 }
