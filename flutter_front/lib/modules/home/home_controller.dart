@@ -10,7 +10,7 @@ abstract class HomeControllerBase with Store {
   List<Item>? itemList = ObservableList<Item>();
 
   @observable
-  List<String>? categorias;
+  List<String>? categorias = ObservableList<String>();
 
   @action
   Future<void> getItems() async => itemList = [];
@@ -21,5 +21,11 @@ abstract class HomeControllerBase with Store {
   @action
   Future<void> deletItem(int id) async {
     itemList?.removeWhere((element) => element.id == id);
+  }
+
+  @action
+  Future<void> addCategoria(String categoria) async {
+    categorias ??= <String>[];
+    categorias!.add(categoria);
   }
 }

@@ -65,6 +65,14 @@ mixin _$HomeController on HomeControllerBase, Store {
     return _$deletItemAsyncAction.run(() => super.deletItem(id));
   }
 
+  late final _$addCategoriaAsyncAction =
+      AsyncAction('HomeControllerBase.addCategoria', context: context);
+
+  @override
+  Future<void> addCategoria(String categoria) {
+    return _$addCategoriaAsyncAction.run(() => super.addCategoria(categoria));
+  }
+
   @override
   String toString() {
     return '''
