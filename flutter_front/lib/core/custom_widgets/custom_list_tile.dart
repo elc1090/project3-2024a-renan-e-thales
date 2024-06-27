@@ -28,8 +28,12 @@ class _CustomListTileState extends State<CustomListTile> {
       title: CustomText(
         widget.item.nome,
         size: 16,
+        color: Colors.black,
       ),
-      trailing: CustomText(widget.item.qtd != null ? widget.item.qtd.toString() : "0"),
+      trailing: CustomText(
+        widget.item.qtd != null ? widget.item.qtd.toString() : "0",
+        color: Colors.black,
+      ),
       tileColor: widget.tileColor ?? Colors.white,
       onTap: () => _openItemModal(context, widget.item),
     );

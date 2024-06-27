@@ -35,7 +35,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   late TabController _tabsController;
   List<String> categoriasEscolhidas = [];
   final _formKey = GlobalKey<FormState>();
-  int itemThreshold = 10;
+  int dangerItemThreshold = 10;
+  int warningItemThreshold = 20;
 
   bool _isSearchOpen = false;
 
@@ -72,10 +73,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           CustomText(
             "Listagem",
             color: Theme.of(context).colorScheme.onPrimary,
+            size: 16,
           ),
           CustomText(
             "Novo Item",
             color: Theme.of(context).colorScheme.onPrimary,
+            size: 16,
           )
         ]),
         actions: [
@@ -113,17 +116,25 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    decoration: BoxDecoration(color: Theme.of(context).colorScheme.surfaceContainer, border: Border(bottom: BorderSide(color: Colors.grey[500]!, width: 1))),
+                    decoration: BoxDecoration(color: Theme.of(context).colorScheme.surfaceContainer, border: Border(bottom: BorderSide(color: Colors.grey[600]!, width: 1))),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
-                          child: CustomText("Item", size: 14),
+                          child: CustomText(
+                            "Item",
+                            size: 14,
+                            color: Colors.grey[700],
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
-                          child: CustomText("Qtd", size: 14),
+                          child: CustomText(
+                            "Qtd",
+                            size: 14,
+                            color: Colors.grey[700],
+                          ),
                         ),
                       ],
                     ),
@@ -140,12 +151,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                               itemCount: controller.itemList!.length,
                               itemBuilder: (context, index) => Column(
                                 children: [
-                                  CustomListTile(controller.itemList![index],
-                                      tileColor: controller.itemList![index].qtd! < itemThreshold
-                                          ? Colors.red[400]
-                                          : index % 2 == 0
-                                              ? Colors.white
-                                              : Colors.grey[200]),
+                                  CustomListTile(controller.itemList![index], tileColor: _getTileColor(index, controller.itemList![index].qtd!)),
                                   const Divider(
                                     height: 1,
                                   ),
@@ -437,6 +443,16 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         ],
       ),
     );
+  }
+
+  _getTileColor(int index, int qtd) {
+    return qtd < dangerItemThreshold
+        ? Colors.red[400]
+        : qtd < warningItemThreshold
+            ? Colors.yellow[400]
+            : index % 2 == 0
+                ? Colors.white
+                : Colors.grey[400];
   }
 
   _clearInputs() {
