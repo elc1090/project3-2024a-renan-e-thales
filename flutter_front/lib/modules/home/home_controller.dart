@@ -28,4 +28,9 @@ abstract class HomeControllerBase with Store {
     categorias ??= <String>[];
     categorias!.add(categoria);
   }
+
+  @action
+  Future<void> updateQtd(Item item, int qtd) async {
+    itemList!.firstWhere((i) => i.id == item.id).qtd = qtd;
+  }
 }

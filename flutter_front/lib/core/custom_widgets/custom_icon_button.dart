@@ -12,12 +12,14 @@ class CustomIconButton extends StatelessWidget {
     return filled
         ? IconButton.filled(
             onPressed: onPressed,
-            hoverColor: Theme.of(context).colorScheme.primaryContainer.withAlpha(50),
+            style: IconButton.styleFrom(backgroundColor: Colors.lightBlue[400]!),
+            hoverColor: Colors.lightBlue[700]!,
             icon: icon,
           )
         : IconButton(
             onPressed: onPressed,
-            hoverColor: Theme.of(context).colorScheme.primaryContainer.withAlpha(50),
+            style: IconButton.styleFrom(backgroundColor: Colors.lightBlue[400]!),
+            hoverColor: Colors.lightBlue[700]!,
             icon: icon,
           );
   }

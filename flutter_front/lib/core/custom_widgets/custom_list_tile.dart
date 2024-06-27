@@ -1,11 +1,13 @@
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_front/core/custom_widgets/custom_delete_prompt.dart';
 import 'package:flutter_front/core/custom_widgets/custom_icon_button.dart';
 import 'package:flutter_front/core/custom_widgets/custom_text.dart';
 import 'package:flutter_front/models/item.dart';
 import 'package:flutter_front/modules/home/home_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import '../globals.dart' as globals;
 
 class CustomListTile extends StatefulWidget {
@@ -21,6 +23,7 @@ class CustomListTile extends StatefulWidget {
 class _CustomListTileState extends State<CustomListTile> {
   HomeController controller = globals.homeController;
   bool _isEditing = false;
+  DateFormat format = DateFormat("dd-MM-yyyy");
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +52,7 @@ class _CustomListTileState extends State<CustomListTile> {
         builder: (context) => StatefulBuilder(builder: (context, st) {
               return Dialog(
                 insetPadding: EdgeInsets.zero,
-                backgroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Colors.lightBlue[400],
                 child: Container(
                   width: MediaQuery.of(context).size.width > 450 ? 450 : MediaQuery.of(context).size.width,
                   child: Column(
@@ -57,7 +60,7 @@ class _CustomListTileState extends State<CustomListTile> {
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Theme.of(context).colorScheme.primary),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Colors.lightBlue[400]),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -79,6 +82,9 @@ class _CustomListTileState extends State<CustomListTile> {
                                   contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                 ),
                               ),
+                            ),
+                            const SizedBox(
+                              width: 8,
                             ),
                             CustomIconButton(item.icon),
                           ],
@@ -121,11 +127,11 @@ class _CustomListTileState extends State<CustomListTile> {
                                           borderRadius: BorderRadius.circular(5),
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                                          borderSide: BorderSide(color: _isEditing ? Theme.of(context).colorScheme.primary : Colors.transparent),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(5),
-                                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                                          borderSide: BorderSide(color: _isEditing ? Theme.of(context).colorScheme.primary : Colors.transparent, width: 2),
                                         ),
                                       ),
                                     ),
@@ -142,6 +148,20 @@ class _CustomListTileState extends State<CustomListTile> {
                                 ),
                                 CustomText(
                                   item.qtd != null ? item.qtd.toString() : '0',
+                                  size: 14,
+                                  color: item.description != null && item.description!.isNotEmpty ? Colors.grey[900] : Colors.grey[500],
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomText(
+                                  'Validade',
+                                  size: 14,
+                                ),
+                                CustomText(
+                                  item.dataVal != null ? "${format.parse(item.dataVal!)}" : "${format.parse(DateTime.now().toString())}",
                                   size: 14,
                                   color: item.description != null && item.description!.isNotEmpty ? Colors.grey[900] : Colors.grey[500],
                                 ),
@@ -184,7 +204,7 @@ class _CustomListTileState extends State<CustomListTile> {
                               bottomLeft: Radius.circular(16),
                               bottomRight: Radius.circular(16),
                             ),
-                            color: Theme.of(context).colorScheme.primary),
+                            color: Colors.lightBlue[400]),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -255,6 +275,8 @@ class _CustomListTileState extends State<CustomListTile> {
               Expanded(
                 child: TextFormField(
                   controller: qtdController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
@@ -289,7 +311,12 @@ class _CustomListTileState extends State<CustomListTile> {
                     color: Colors.grey[800],
                   )),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      controller.updateQtd(item, int.parse(qtdController.text));
+                    });
+                    Navigator.of(context).pop();
+                  },
                   child: CustomText(
                     "ok",
                     size: 12,

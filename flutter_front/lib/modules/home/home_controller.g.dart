@@ -73,6 +73,14 @@ mixin _$HomeController on HomeControllerBase, Store {
     return _$addCategoriaAsyncAction.run(() => super.addCategoria(categoria));
   }
 
+  late final _$updateQtdAsyncAction =
+      AsyncAction('HomeControllerBase.updateQtd', context: context);
+
+  @override
+  Future<void> updateQtd(Item item, int qtd) {
+    return _$updateQtdAsyncAction.run(() => super.updateQtd(item, qtd));
+  }
+
   @override
   String toString() {
     return '''

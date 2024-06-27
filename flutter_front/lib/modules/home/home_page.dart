@@ -68,8 +68,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        bottom: TabBar(controller: _tabsController, tabs: [
+        backgroundColor: Colors.lightBlue,
+        bottom: TabBar(controller: _tabsController, indicatorColor: Colors.white, tabs: [
           CustomText(
             "Listagem",
             color: Theme.of(context).colorScheme.onPrimary,
@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         ]),
         actions: [
           Padding(
-            padding: EdgeInsets.only(right: 32.0),
+            padding: const EdgeInsets.only(right: 32.0),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               width: _isSearchOpen ? 200 : 32,
@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         controller: _tabsController,
         children: [
           Center(
-            child: Container(
+            child: SizedBox(
               width: MediaQuery.of(context).size.width > 1000 ? MediaQuery.of(context).size.width * 0.8 : MediaQuery.of(context).size.width,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -145,34 +145,39 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         )
                       : Expanded(
                           child: Observer(builder: (_) {
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              clipBehavior: Clip.hardEdge,
-                              itemCount: controller.itemList!.length,
-                              itemBuilder: (context, index) => Column(
-                                children: [
-                                  CustomListTile(controller.itemList![index], tileColor: _getTileColor(index, controller.itemList![index].qtd!)),
-                                  const Divider(
-                                    height: 1,
+                            return Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  clipBehavior: Clip.hardEdge,
+                                  itemCount: controller.itemList!.length,
+                                  itemBuilder: (context, index) => Column(
+                                    children: [
+                                      CustomListTile(controller.itemList![index], tileColor: _getTileColor(index, controller.itemList![index].qtd!)),
+                                      const Divider(
+                                        height: 1,
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      _tabsController.animateTo(1);
+                                    },
+                                    icon: const Icon(CarbonIcons.add),
+                                    label: CustomText(
+                                      "Novo Item",
+                                      size: 14,
+                                    ),
+                                  ),
+                                )
+                              ],
                             );
                           }),
                         ),
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        _tabsController.animateTo(1);
-                      },
-                      icon: const Icon(CarbonIcons.add),
-                      label: CustomText(
-                        "Novo Item",
-                        size: 14,
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
@@ -423,7 +428,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                 categList: List<String>.from(categoriasEscolhidas),
                               );
                               controller.itemList!.add(newItem);
-                              _clearInputs();
+                              setState(() {
+                                _clearInputs();
+                              });
                               _tabsController.index = 0;
                             }
                           },
@@ -475,6 +482,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   }
 
   _openCategoriasBottomsheet(BuildContext context) async {
+    TextEditingController buscarCategController = TextEditingController();
     TextEditingController newCategController = TextEditingController();
     await showModalBottomSheet(
         context: context,
@@ -487,7 +495,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 8),
                     child: TextFormField(
-                      controller: _nomeTextController,
+                      controller: buscarCategController,
                       decoration: InputDecoration(
                         labelText: "buscar categoria",
                         border: OutlineInputBorder(
