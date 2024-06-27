@@ -7,7 +7,7 @@ class HomeController = HomeControllerBase with _$HomeController;
 
 abstract class HomeControllerBase with Store {
   @observable
-  List<Item>? itemList;
+  List<Item>? itemList = ObservableList<Item>();
 
   @observable
   List<String>? categorias;
@@ -17,4 +17,9 @@ abstract class HomeControllerBase with Store {
 
   @action
   Future<void> getCategorias() async => categorias = [];
+
+  @action
+  Future<void> deletItem(int id) async {
+    itemList?.removeWhere((element) => element.id == id);
+  }
 }

@@ -1,9 +1,13 @@
 import 'dart:math';
+import 'dart:developer' as dev;
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:carbon_icons/carbon_icons.dart';
+import 'package:flutter_front/core/custom_widgets/custom_delete_prompt.dart';
+import 'package:flutter_front/core/custom_widgets/custom_icon_button.dart';
 import 'package:flutter_front/core/custom_widgets/custom_text.dart';
 import 'package:flutter_front/core/helpers/input_formatter.dart';
 import 'package:flutter_front/models/item.dart';
@@ -135,7 +139,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                 children: [
                                   ListTile(
                                     minTileHeight: 70,
-                                    tileColor: Theme.of(context).colorScheme.secondary,
+                                    tileColor: Theme.of(context).colorScheme.primary,
                                     onTap: () {
                                       _openItemModal(context, controller.itemList![index]);
                                     },
@@ -185,7 +189,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       onPressed: () {
                         _tabsController.animateTo(1);
                       },
-                      icon: Icon(CarbonIcons.add),
+                      icon: const Icon(CarbonIcons.add),
                       label: CustomText(
                         "Novo Item",
                         size: 14,
@@ -364,13 +368,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                 if (categoriasEscolhidas.isEmpty)
                                   Row(
                                     children: [
-                                      Expanded(
-                                        child: CustomText(
-                                          "Vazio",
-                                          size: 14,
-                                          weight: FontWeight.w500,
-                                          color: Colors.grey[900],
-                                        ),
+                                      CustomText(
+                                        "Vazio",
+                                        size: 14,
+                                        weight: FontWeight.w500,
+                                        color: Colors.grey[900],
                                       ),
                                     ],
                                   ),
@@ -410,7 +412,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     ),
                     const SizedBox(height: 16),
                     Center(
-                      child: ElevatedButton(
+                      child: ElevatedButton.icon(
                         onPressed: () {
                           final newItem = Item(
                             id: controller.itemList!.length + 1,
@@ -423,8 +425,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                           _clearInputs();
                           _tabsController.index = 0;
                         },
-                        child: CustomText(
-                          "+ Adicionar",
+                        icon: const Icon(CarbonIcons.add),
+                        label: CustomText(
+                          "Adicionar",
                           size: 16,
                         ),
                       ),
@@ -531,39 +534,132 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   }
 
   _openItemModal(BuildContext context, Item item) {
+    TextEditingController descriptionController = TextEditingController();
+    descriptionController.text = item.description ?? "";
     showDialog(
         context: context,
         builder: (context) => StatefulBuilder(builder: (context, st) {
-              return AlertDialog(
-                title: CustomText(item.nome),
-                content: CustomText(
-                  item.description ?? '',
-                  size: 14,
+              return Container(
+                width: MediaQuery.of(context).size.width > 1000 ? MediaQuery.of(context).size.width * 0.8 : MediaQuery.of(context).size.width,
+                padding: EdgeInsets.zero,
+                child: AlertDialog(
+                  title: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Theme.of(context).colorScheme.primary),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: CustomText(
+                            item.nome,
+                            color: Colors.white,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        CustomIconButton(item.icon),
+                      ],
+                    ),
+                  ),
+                  titlePadding: EdgeInsets.zero,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  contentPadding: EdgeInsets.zero,
+                  content: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(16),
+                          bottomRight: Radius.circular(16),
+                        ),
+                        color: Colors.white),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              'Descrição',
+                              size: 14,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                child: TextFormField(
+                                  controller: descriptionController,
+                                  minLines: 1,
+                                  maxLines: 5,
+                                  decoration: InputDecoration(
+                                    hintText: "Sem descrição",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                              'Quantidade',
+                              size: 14,
+                            ),
+                            CustomText(
+                              item.qtd != null ? item.qtd.toString() : '0',
+                              size: 14,
+                              color: item.description != null && item.description!.isNotEmpty ? Colors.grey[900] : Colors.grey[500],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  actionsPadding: EdgeInsets.zero,
+                  actions: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(16),
+                            bottomRight: Radius.circular(16),
+                          ),
+                          color: Theme.of(context).colorScheme.primary),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          CustomIconButton(const Icon(CarbonIcons.settings_adjust)),
+                          CustomIconButton(
+                            const Icon(CarbonIcons.delete),
+                            onPressed: () => showDialog(context: context, builder: (context) => _getDeleteModal(context, item)),
+                          ),
+                          CustomIconButton(const Icon(CarbonIcons.edit)),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                actions: [
-                  TextButton(
-                    onPressed: () {},
-                    child: CustomText(
-                      "Editar",
-                      size: 16,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: CustomText(
-                      "Excluir",
-                      size: 16,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: CustomText(
-                      "Alterar quantidade",
-                      size: 16,
-                    ),
-                  ),
-                ],
               );
             }));
+  }
+
+  Widget _getDeleteModal(BuildContext context, Item item) {
+    return CustomDeletePrompt(
+      "Delete item?",
+      onPressed: () => controller.deletItem(item.id),
+    );
   }
 }
