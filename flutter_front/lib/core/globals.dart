@@ -2,8 +2,13 @@ library flutter_front.globals;
 
 import 'package:flutter_front/models/item.dart';
 import 'package:flutter_front/modules/home/home_controller.dart';
+import 'package:flutter_front/modules/item_list_page/item_list_controller.dart';
+
+import '../modules/new_item/new_item_controller.dart';
 
 HomeController homeController = HomeController();
+NewItemController newItemController = NewItemController();
+ItemListController itemListController = ItemListController();
 
 bool isLoggedIn = false;
 

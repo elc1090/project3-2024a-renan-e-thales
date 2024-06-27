@@ -15,46 +15,43 @@ class CustomDeletePrompt extends StatefulWidget {
 class _CustomDeletePromptState extends State<CustomDeletePrompt> {
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      insetPadding: EdgeInsets.zero,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        width: MediaQuery.of(context).size.width > 450 ? 450 : MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                  widget.title != null ? widget.title! : "Deletar?",
-                  size: 18,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: CustomText(
-                        "cancelar",
-                        size: 14,
-                        color: Colors.grey[600],
-                      ),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      width: MediaQuery.of(context).size.width > 450 ? 450 : MediaQuery.of(context).size.width,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomText(
+                widget.title != null ? widget.title! : "Deletar?",
+                size: 18,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: CustomText(
+                      "cancelar",
+                      size: 14,
+                      color: Colors.grey[600],
                     ),
-                    TextButton(
-                      onPressed: widget.onPressed,
-                      child: CustomText(
-                        "deletar",
-                        size: 14,
-                        color: Colors.red[700],
-                      ),
+                  ),
+                  TextButton(
+                    onPressed: widget.onPressed,
+                    child: CustomText(
+                      "deletar",
+                      size: 14,
+                      color: Colors.red[700],
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

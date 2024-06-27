@@ -41,6 +41,26 @@ mixin _$HomeController on HomeControllerBase, Store {
     });
   }
 
+  late final _$tabsControllerAtom =
+      Atom(name: 'HomeControllerBase.tabsController', context: context);
+
+  @override
+  TabController get tabsController {
+    _$tabsControllerAtom.reportRead();
+    return super.tabsController;
+  }
+
+  bool _tabsControllerIsInitialized = false;
+
+  @override
+  set tabsController(TabController value) {
+    _$tabsControllerAtom.reportWrite(
+        value, _tabsControllerIsInitialized ? super.tabsController : null, () {
+      super.tabsController = value;
+      _tabsControllerIsInitialized = true;
+    });
+  }
+
   late final _$getItemsAsyncAction =
       AsyncAction('HomeControllerBase.getItems', context: context);
 
@@ -85,7 +105,8 @@ mixin _$HomeController on HomeControllerBase, Store {
   String toString() {
     return '''
 itemList: ${itemList},
-categorias: ${categorias}
+categorias: ${categorias},
+tabsController: ${tabsController}
     ''';
   }
 }

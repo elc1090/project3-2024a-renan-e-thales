@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_front/models/item.dart';
 import 'package:mobx/mobx.dart';
 
@@ -11,6 +12,9 @@ abstract class HomeControllerBase with Store {
 
   @observable
   List<String>? categorias = ObservableList<String>();
+
+  @observable
+  late TabController tabsController;
 
   @action
   Future<void> getItems() async => itemList = [];

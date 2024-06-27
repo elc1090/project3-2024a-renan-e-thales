@@ -52,7 +52,7 @@ class _CustomListTileState extends State<CustomListTile> {
         builder: (context) => StatefulBuilder(builder: (context, st) {
               return Dialog(
                 insetPadding: EdgeInsets.zero,
-                backgroundColor: Colors.lightBlue[400],
+                backgroundColor: Color.fromARGB(255, 39, 155, 209),
                 child: Container(
                   width: MediaQuery.of(context).size.width > 450 ? 450 : MediaQuery.of(context).size.width,
                   child: Column(
@@ -199,12 +199,12 @@ class _CustomListTileState extends State<CustomListTile> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                        decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(16),
                               bottomRight: Radius.circular(16),
                             ),
-                            color: Colors.lightBlue[400]),
+                            color: Color.fromARGB(255, 39, 155, 209)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -219,7 +219,12 @@ class _CustomListTileState extends State<CustomListTile> {
                             ),
                             CustomIconButton(
                               const Icon(CarbonIcons.delete),
-                              onPressed: () => showDialog(context: context, builder: (context) => _getDeleteModal(context, item)),
+                              onPressed: () => showModalBottomSheet(
+                                context: context,
+                                showDragHandle: true,
+                                enableDrag: true,
+                                builder: (context) => _getDeleteModal(context, item),
+                              ),
                             ),
                             CustomIconButton(
                               _isEditing ? const Icon(CarbonIcons.close) : const Icon(CarbonIcons.edit),
