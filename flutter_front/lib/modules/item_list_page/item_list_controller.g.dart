@@ -95,6 +95,17 @@ mixin _$ItemListController on ItemListControllerBase, Store {
   }
 
   @override
+  dynamic switchTab(int index) {
+    final _$actionInfo = _$ItemListControllerBaseActionController.startAction(
+        name: 'ItemListControllerBase.switchTab');
+    try {
+      return super.switchTab(index);
+    } finally {
+      _$ItemListControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 itemList: ${itemList},

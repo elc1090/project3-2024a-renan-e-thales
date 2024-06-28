@@ -33,6 +33,7 @@ class _CustomListTileState extends State<CustomListTile> {
         size: 16,
         color: Colors.black,
       ),
+      dense: true,
       trailing: CustomText(
         widget.item.qtd != null ? widget.item.qtd.toString() : "0",
         color: Colors.black,
