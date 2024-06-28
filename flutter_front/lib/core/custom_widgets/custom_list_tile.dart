@@ -1,6 +1,7 @@
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_front/core/custom_widgets/custom_delete_prompt.dart';
 import 'package:flutter_front/core/custom_widgets/custom_icon_button.dart';
 import 'package:flutter_front/core/custom_widgets/custom_text.dart';
@@ -53,15 +54,15 @@ class _CustomListTileState extends State<CustomListTile> {
         builder: (context) => StatefulBuilder(builder: (context, st) {
               return Dialog(
                 insetPadding: EdgeInsets.zero,
-                backgroundColor: Color.fromARGB(255, 39, 155, 209),
-                child: Container(
+                backgroundColor: const Color.fromARGB(255, 39, 155, 209),
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width > 450 ? 450 : MediaQuery.of(context).size.width,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Colors.lightBlue[400]),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: const Color.fromARGB(255, 39, 155, 209)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -103,11 +104,48 @@ class _CustomListTileState extends State<CustomListTile> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomText(
+                                  'Quantidade',
+                                  size: 14,
+                                  color: Colors.grey,
+                                ),
+                                CustomText(
+                                  item.qtd != null ? item.qtd.toString() : '0',
+                                  size: 14,
+                                  color: item.description != null && item.description!.isNotEmpty ? Colors.grey[900] : Colors.grey,
+                                ),
+                              ],
+                            ),
+                            const Divider(
+                              thickness: 0.3,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomText(
+                                  'Validade',
+                                  size: 14,
+                                  color: Colors.grey,
+                                ),
+                                CustomText(
+                                  item.perecivel ? "${format.parse(item.dataVal!)}" : "Item não perecível",
+                                  size: 14,
+                                  color: item.perecivel && item.dataVal != null && item.dataVal!.isNotEmpty ? Colors.grey[900] : Colors.grey,
+                                ),
+                              ],
+                            ),
+                            const Divider(
+                              thickness: 0.3,
+                            ),
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 CustomText(
                                   'Descrição',
-                                  size: 14,
+                                  size: 12,
+                                  color: Colors.grey,
                                 ),
                               ],
                             ),
@@ -122,49 +160,26 @@ class _CustomListTileState extends State<CustomListTile> {
                                       minLines: 1,
                                       maxLines: 5,
                                       readOnly: !_isEditing,
+                                      enabled: _isEditing,
+                                      style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, color: Colors.grey[900]),
                                       decoration: InputDecoration(
                                         hintText: "Sem descrição",
                                         border: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(5),
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: _isEditing ? Theme.of(context).colorScheme.primary : Colors.transparent),
+                                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1),
+                                        ),
+                                        disabledBorder: const OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.grey, width: 0.3),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(5),
-                                          borderSide: BorderSide(color: _isEditing ? Theme.of(context).colorScheme.primary : Colors.transparent, width: 2),
+                                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomText(
-                                  'Quantidade',
-                                  size: 14,
-                                ),
-                                CustomText(
-                                  item.qtd != null ? item.qtd.toString() : '0',
-                                  size: 14,
-                                  color: item.description != null && item.description!.isNotEmpty ? Colors.grey[900] : Colors.grey[500],
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomText(
-                                  'Validade',
-                                  size: 14,
-                                ),
-                                CustomText(
-                                  item.dataVal != null ? "${format.parse(item.dataVal!)}" : "${format.parse(DateTime.now().toString())}",
-                                  size: 14,
-                                  color: item.description != null && item.description!.isNotEmpty ? Colors.grey[900] : Colors.grey[500],
                                 ),
                               ],
                             ),
@@ -175,6 +190,7 @@ class _CustomListTileState extends State<CustomListTile> {
                                 CustomText(
                                   'Categorias',
                                   size: 14,
+                                  color: Colors.grey,
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -218,6 +234,7 @@ class _CustomListTileState extends State<CustomListTile> {
                                 builder: (context) => _getAdjustQuantitiesBottomSheet(item),
                               ),
                             ),
+                            const SizedBox(width: 8),
                             CustomIconButton(
                               const Icon(CarbonIcons.delete),
                               onPressed: () => showModalBottomSheet(
@@ -227,6 +244,7 @@ class _CustomListTileState extends State<CustomListTile> {
                                 builder: (context) => _getDeleteModal(context, item),
                               ),
                             ),
+                            const SizedBox(width: 8),
                             CustomIconButton(
                               _isEditing ? const Icon(CarbonIcons.close) : const Icon(CarbonIcons.edit),
                               onPressed: () => st(() {
@@ -255,7 +273,7 @@ class _CustomListTileState extends State<CustomListTile> {
     item.qtd ??= 0;
     qtdController.text = item.qtd.toString();
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       width: MediaQuery.of(context).size.width > 450 ? 450 : MediaQuery.of(context).size.width,
       child: Column(
         mainAxisSize: MainAxisSize.min,

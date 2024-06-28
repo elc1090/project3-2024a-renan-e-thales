@@ -20,18 +20,22 @@ bool isLoggedIn = false;
 String version = "v0.0.1";
 
 List<Item> items = [
-  Item(id: 1, nome: "Pacote de Arroz", qtd: 20),
-  Item(id: 2, nome: "Lata de Café", qtd: 30),
-  Item(id: 3, nome: "Pacote de Farinha de Milho", qtd: 45),
-  Item(id: 4, nome: "Pacote de Farinha de Mandioca", qtd: 10),
-  Item(id: 5, nome: "Lata de Pêssego", qtd: 9),
-  Item(id: 6, nome: "Pacote de Feijão", qtd: 5),
-  Item(id: 7, nome: "Bandeja de Carne", qtd: 15),
+  Item(id: 1, nome: "Pacote de Arroz", qtd: 20, description: "Um pacote de arroz de 1Kg", categList: ["Suprimento", "Carboidrato", "Amido"]),
+  Item(id: 2, nome: "Lata de Café", qtd: 30, description: "Uma lata de café de 250g", categList: ["Suprimento"]),
+  Item(id: 3, nome: "Pacote de Farinha de Milho", qtd: 45, description: "Um pacote de farinha de milho de 1Kg", categList: ["Suprimento", "Amido"]),
+  Item(id: 4, nome: "Pacote de Farinha de Mandioca", qtd: 10, description: "Um pacote de farinha de mandioca de 1Kg", categList: ["Suprimento", "Amido"]),
+  Item(id: 5, nome: "Lata de Pêssego", qtd: 9, description: "Uma lata de pêssego de 500g", categList: ["Suprimento", "Proteína"]),
+  Item(id: 6, nome: "Pacote de Feijão", qtd: 5, description: "Um pacote de feijão de 1Kg", categList: ["Suprimento", "Proteína", "Ferro"]),
+  Item(id: 7, nome: "Bandeja de Carne", qtd: 15, description: "Uma bandeja de carne bovina de 1Kg", categList: ["Suprimento", "Proteína", "Ferro"]),
 ];
 
 List<String> categorias = [
   "Suprimento",
   "Higiene Pessoal",
-  "Perecível",
-  "Não-Perecível",
+  "Vestimenta",
+  "Limpeza",
+  "Carboidrato",
+  "Ferro",
+  "Proteína",
+  "Amido",
 ];

@@ -96,7 +96,11 @@ class _ItemListPageState extends State<ItemListPage> {
                             itemBuilder: (context, index) => Column(
                               children: [
                                 Observer(
-                                    builder: (_) => CustomListTile(controller.itemList[index], tileColor: controller.getTileColor(index, controller.itemList[index].qtd!))),
+                                  builder: (_) => CustomListTile(
+                                    controller.itemList[index],
+                                    tileColor: controller.getTileColor(index, controller.itemList[index].qtd!),
+                                  ),
+                                ),
                                 const Divider(
                                   height: 1,
                                 ),

@@ -183,7 +183,7 @@ class _NewItemPageState extends State<NewItemPage> {
                               enabled: controller.isPerecivel,
                               controller: controller.validadeTextController,
                               validator: (value) {
-                                if (controller.isPerecivel && value == null || value == '') {
+                                if (controller.isPerecivel && (value == null || value == '')) {
                                   return '*Campo obrigatório';
                                 }
                                 return null;
