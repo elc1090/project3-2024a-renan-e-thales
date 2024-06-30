@@ -61,44 +61,12 @@ mixin _$HomeController on HomeControllerBase, Store {
     });
   }
 
-  late final _$getItemsAsyncAction =
-      AsyncAction('HomeControllerBase.getItems', context: context);
-
-  @override
-  Future<void> getItems() {
-    return _$getItemsAsyncAction.run(() => super.getItems());
-  }
-
-  late final _$getCategoriasAsyncAction =
-      AsyncAction('HomeControllerBase.getCategorias', context: context);
-
-  @override
-  Future<void> getCategorias() {
-    return _$getCategoriasAsyncAction.run(() => super.getCategorias());
-  }
-
-  late final _$deletItemAsyncAction =
-      AsyncAction('HomeControllerBase.deletItem', context: context);
-
-  @override
-  Future<void> deletItem(int id) {
-    return _$deletItemAsyncAction.run(() => super.deletItem(id));
-  }
-
   late final _$addCategoriaAsyncAction =
       AsyncAction('HomeControllerBase.addCategoria', context: context);
 
   @override
   Future<void> addCategoria(String categoria) {
     return _$addCategoriaAsyncAction.run(() => super.addCategoria(categoria));
-  }
-
-  late final _$updateQtdAsyncAction =
-      AsyncAction('HomeControllerBase.updateQtd', context: context);
-
-  @override
-  Future<void> updateQtd(Item item, int qtd) {
-    return _$updateQtdAsyncAction.run(() => super.updateQtd(item, qtd));
   }
 
   @override

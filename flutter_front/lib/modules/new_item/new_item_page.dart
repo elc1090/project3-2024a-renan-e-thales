@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_front/core/helpers/input_formatter.dart';
 import 'package:flutter_front/models/item.dart';
+import 'package:flutter_front/modules/new_item/categorias_list/categorias_list.dart';
 import 'package:flutter_front/modules/new_item/new_item_controller.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -326,7 +327,7 @@ class _NewItemPageState extends State<NewItemPage> {
                               "Item criado com sucesso!",
                               Colors.green,
                               CarbonIcons.checkmark_filled,
-                              const Duration(seconds: 5),
+                              const Duration(seconds: 3),
                             );
                             controller.clearInputs();
                             controller.switchTab(0);
@@ -361,109 +362,13 @@ class _NewItemPageState extends State<NewItemPage> {
   }
 
   _openCategoriasBottomsheet(BuildContext context) async {
-    TextEditingController buscarCategController = TextEditingController();
-    TextEditingController newCategController = TextEditingController();
-
     await showModalBottomSheet(
       context: context,
+      showDragHandle: true,
       builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setInnerState) {
-            return Container(
-              padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 8),
-                    child: TextFormField(
-                      controller: buscarCategController,
-                      decoration: InputDecoration(
-                        labelText: "buscar categoria",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey[400]!),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(color: Colors.grey[400]!, width: 2),
-                        ),
-                        suffixIcon: const Icon(Icons.search),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: (controller.getCategoriasListLength() > 0) ? controller.getCategoriasListLength() : 1,
-                      itemBuilder: (context, index) => Observer(
-                        builder: (_) => ListTile(
-                          title: controller.getCategoriasListLength() > 0
-                              ? CustomText(
-                                  controller.getCategoriasList()![index],
-                                  size: 16,
-                                )
-                              : CustomText(
-                                  "Nenhuma categoria cadastrada",
-                                  size: 16,
-                                ),
-                          leading: controller.getCategoriasList()!.isNotEmpty
-                              ? IconButton(
-                                  onPressed: () {
-                                    setInnerState(() {
-                                      if (controller.categoriasEscolhidas.contains(controller.getCategoriasList()![index])) {
-                                        controller.deselecionarCategoria(controller.getCategoriasList()![index]);
-                                      } else {
-                                        controller.selecionarCategoria(controller.getCategoriasList()![index]);
-                                      }
-                                    });
-                                  },
-                                  icon: Icon(
-                                    controller.categoriasEscolhidas.contains(controller.getCategoriasList()![index])
-                                        ? Icons.check_box_outlined
-                                        : Icons.check_box_outline_blank,
-                                  ),
-                                )
-                              : null,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    child: TextFormField(
-                      controller: newCategController,
-                      decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            CarbonIcons.add,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          onPressed: () => setInnerState(() {
-                            controller.addCategoria(newCategController.text);
-                            newCategController.clear();
-                          }),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                        labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
-                        hintText: "Adicionar uma nova categoria",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            );
-          },
+        return CategoriasList(
+          controller.categoriasEscolhidas,
+          access: AccessFrom.NEW_ITEM_FORM,
         );
       },
     );

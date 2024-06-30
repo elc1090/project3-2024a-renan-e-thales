@@ -18,9 +18,12 @@ class CustomIconButton extends StatelessWidget {
           )
         : IconButton(
             onPressed: onPressed,
-            style: IconButton.styleFrom(backgroundColor: Colors.lightBlue[400]!),
-            hoverColor: Colors.lightBlue[700]!,
+            style: IconButton.styleFrom(
+              iconSize: 20,
+            ),
+            visualDensity: VisualDensity.compact,
             icon: icon,
+            color: Colors.grey[900],
           );
   }
 }

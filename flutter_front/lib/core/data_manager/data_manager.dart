@@ -20,4 +20,17 @@ class DataManager {
       return null;
     }
   }
+
+  Future<Item?> getItemById(String id) async {
+    try {
+      final res = await http.get(Uri.parse('https://api-dw3.vercel.app/api/item/$id'));
+      log(res.body);
+      final aux = jsonDecode(res.body);
+      Item itemAux = Item.fromMap(aux['data']['value']);
+      return itemAux;
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
+  }
 }

@@ -25,19 +25,21 @@ mixin _$ItemListController on ItemListControllerBase, Store {
     });
   }
 
-  late final _$dangerItemThresholdAtom = Atom(
-      name: 'ItemListControllerBase.dangerItemThreshold', context: context);
+  late final _$warningItemTextControllerAtom = Atom(
+      name: 'ItemListControllerBase.warningItemTextController',
+      context: context);
 
   @override
-  int get dangerItemThreshold {
-    _$dangerItemThresholdAtom.reportRead();
-    return super.dangerItemThreshold;
+  TextEditingController get warningItemTextController {
+    _$warningItemTextControllerAtom.reportRead();
+    return super.warningItemTextController;
   }
 
   @override
-  set dangerItemThreshold(int value) {
-    _$dangerItemThresholdAtom.reportWrite(value, super.dangerItemThreshold, () {
-      super.dangerItemThreshold = value;
+  set warningItemTextController(TextEditingController value) {
+    _$warningItemTextControllerAtom
+        .reportWrite(value, super.warningItemTextController, () {
+      super.warningItemTextController = value;
     });
   }
 
@@ -58,6 +60,40 @@ mixin _$ItemListController on ItemListControllerBase, Store {
     });
   }
 
+  late final _$dangerItemTextControllerAtom = Atom(
+      name: 'ItemListControllerBase.dangerItemTextController',
+      context: context);
+
+  @override
+  TextEditingController get dangerItemTextController {
+    _$dangerItemTextControllerAtom.reportRead();
+    return super.dangerItemTextController;
+  }
+
+  @override
+  set dangerItemTextController(TextEditingController value) {
+    _$dangerItemTextControllerAtom
+        .reportWrite(value, super.dangerItemTextController, () {
+      super.dangerItemTextController = value;
+    });
+  }
+
+  late final _$dangerItemThresholdAtom = Atom(
+      name: 'ItemListControllerBase.dangerItemThreshold', context: context);
+
+  @override
+  int get dangerItemThreshold {
+    _$dangerItemThresholdAtom.reportRead();
+    return super.dangerItemThreshold;
+  }
+
+  @override
+  set dangerItemThreshold(int value) {
+    _$dangerItemThresholdAtom.reportWrite(value, super.dangerItemThreshold, () {
+      super.dangerItemThreshold = value;
+    });
+  }
+
   late final _$ItemListControllerBaseActionController =
       ActionController(name: 'ItemListControllerBase', context: context);
 
@@ -67,6 +103,17 @@ mixin _$ItemListController on ItemListControllerBase, Store {
         name: 'ItemListControllerBase.addItem');
     try {
       return super.addItem(value);
+    } finally {
+      _$ItemListControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic removeItem(Item value) {
+    final _$actionInfo = _$ItemListControllerBaseActionController.startAction(
+        name: 'ItemListControllerBase.removeItem');
+    try {
+      return super.removeItem(value);
     } finally {
       _$ItemListControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -109,8 +156,10 @@ mixin _$ItemListController on ItemListControllerBase, Store {
   String toString() {
     return '''
 itemList: ${itemList},
-dangerItemThreshold: ${dangerItemThreshold},
-warningItemThreshold: ${warningItemThreshold}
+warningItemTextController: ${warningItemTextController},
+warningItemThreshold: ${warningItemThreshold},
+dangerItemTextController: ${dangerItemTextController},
+dangerItemThreshold: ${dangerItemThreshold}
     ''';
   }
 }

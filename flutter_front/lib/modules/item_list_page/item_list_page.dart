@@ -19,7 +19,8 @@ class _ItemListPageState extends State<ItemListPage> {
 
   @override
   void initState() {
-    globals.dataManager.getItemList();
+    // globals.dataManager.getItemList();
+    globals.dataManager.getItemById("arroz");
 
     super.initState();
   }
@@ -89,22 +90,22 @@ class _ItemListPageState extends State<ItemListPage> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          ListView.builder(
-                            shrinkWrap: true,
-                            clipBehavior: Clip.hardEdge,
-                            itemCount: controller.itemList.length,
-                            itemBuilder: (context, index) => Column(
-                              children: [
-                                Observer(
-                                  builder: (_) => CustomListTile(
+                          Observer(
+                            builder: (_) => ListView.builder(
+                              shrinkWrap: true,
+                              clipBehavior: Clip.hardEdge,
+                              itemCount: controller.itemList.length,
+                              itemBuilder: (context, index) => Column(
+                                children: [
+                                  CustomListTile(
                                     controller.itemList[index],
-                                    tileColor: controller.getTileColor(index, controller.itemList[index].qtd!),
+                                    tileColor: _getTileColor(index),
                                   ),
-                                ),
-                                const Divider(
-                                  height: 1,
-                                ),
-                              ],
+                                  const Divider(
+                                    height: 1,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           Padding(
@@ -228,8 +229,8 @@ class _ItemListPageState extends State<ItemListPage> {
               children: [
                 TextButton(
                   onPressed: () {
-                    controller.warningItemThreshold = int.parse(controller.warningItemTextController.text);
-                    controller.dangerItemThreshold = int.parse(controller.dangerItemTextController.text);
+                    controller.setWarningItemThreshold(int.parse(controller.warningItemTextController.text));
+                    controller.setDangerItemThreshold(int.parse(controller.dangerItemTextController.text));
                     Navigator.of(context).pop();
                   },
                   child: CustomText(
@@ -243,5 +244,16 @@ class _ItemListPageState extends State<ItemListPage> {
         ],
       ),
     );
+  }
+
+  _getTileColor(int index) {
+    Color aux = controller.itemList[index].qtd! < controller.dangerItemThreshold
+        ? Colors.red[600]!
+        : controller.itemList[index].qtd! < controller.warningItemThreshold
+            ? Colors.yellow[700]!
+            : Colors.white;
+    return index % 2 == 0
+        ? aux
+        : aux = aux.withBlue(aux.blue < 15 ? 0 : aux.blue - 15).withGreen(aux.green < 15 ? 0 : aux.green - 15).withRed(aux.red < 15 ? 0 : aux.red - 15);
   }
 }

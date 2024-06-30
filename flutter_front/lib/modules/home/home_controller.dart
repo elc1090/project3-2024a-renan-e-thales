@@ -17,24 +17,8 @@ abstract class HomeControllerBase with Store {
   late TabController tabsController;
 
   @action
-  Future<void> getItems() async => itemList = [];
-
-  @action
-  Future<void> getCategorias() async => categorias = [];
-
-  @action
-  Future<void> deletItem(int id) async {
-    itemList?.removeWhere((element) => element.id == id);
-  }
-
-  @action
   Future<void> addCategoria(String categoria) async {
     categorias ??= <String>[];
     categorias!.add(categoria);
-  }
-
-  @action
-  Future<void> updateQtd(Item item, int qtd) async {
-    itemList!.firstWhere((i) => i.id == item.id).qtd = qtd;
   }
 }
