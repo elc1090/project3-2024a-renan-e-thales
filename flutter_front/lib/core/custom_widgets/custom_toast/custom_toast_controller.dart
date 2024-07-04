@@ -26,7 +26,7 @@ abstract class CustomToastControllerBase with Store {
   bool isRunning = false;
 
   @action
-  activateTimer(Duration duration, void Function()? callback) async {
+  Future<void> activateTimer(Duration duration, void Function()? callback) async {
     tick = 0;
     isRunning = true;
     tickLength = (duration.inMilliseconds / 100).round();

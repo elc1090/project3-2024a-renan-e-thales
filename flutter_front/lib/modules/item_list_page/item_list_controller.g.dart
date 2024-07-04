@@ -94,6 +94,22 @@ mixin _$ItemListController on ItemListControllerBase, Store {
     });
   }
 
+  late final _$loadingAtom =
+      Atom(name: 'ItemListControllerBase.loading', context: context);
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
   late final _$ItemListControllerBaseActionController =
       ActionController(name: 'ItemListControllerBase', context: context);
 
@@ -159,7 +175,8 @@ itemList: ${itemList},
 warningItemTextController: ${warningItemTextController},
 warningItemThreshold: ${warningItemThreshold},
 dangerItemTextController: ${dangerItemTextController},
-dangerItemThreshold: ${dangerItemThreshold}
+dangerItemThreshold: ${dangerItemThreshold},
+loading: ${loading}
     ''';
   }
 }

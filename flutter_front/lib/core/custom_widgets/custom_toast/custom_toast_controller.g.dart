@@ -96,7 +96,7 @@ mixin _$CustomToastController on CustomToastControllerBase, Store {
   late final _$activateTimerAsyncAction = AsyncAction('CustomToastControllerBase.activateTimer', context: context);
 
   @override
-  Future activateTimer(Duration duration, void Function()? callback) {
+  Future<void> activateTimer(Duration duration, void Function()? callback) {
     return _$activateTimerAsyncAction.run(() => super.activateTimer(duration, callback));
   }
 

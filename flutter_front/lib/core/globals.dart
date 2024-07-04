@@ -3,8 +3,10 @@ library flutter_front.globals;
 import 'package:flutter_front/core/custom_widgets/custom_toast/custom_toast_controller.dart';
 import 'package:flutter_front/core/data_manager/data_manager.dart';
 import 'package:flutter_front/models/item.dart';
+import 'package:flutter_front/models/user.dart';
 import 'package:flutter_front/modules/home/home_controller.dart';
 import 'package:flutter_front/modules/item_list_page/item_list_controller.dart';
+import 'package:flutter_front/modules/login/login_controller.dart';
 import 'package:uuid/uuid.dart';
 
 import '../modules/new_item/categorias_list/categorias_list_controller.dart';
@@ -12,6 +14,7 @@ import '../modules/new_item/new_item_controller.dart';
 
 DataManager dataManager = DataManager();
 
+LoginController loginController = LoginController();
 HomeController homeController = HomeController();
 NewItemController newItemController = NewItemController();
 ItemListController itemListController = ItemListController();
@@ -20,9 +23,13 @@ CategoriasListController categoriasListController = CategoriasListController(cat
 
 bool isLoggedIn = false;
 
+User? user;
+
 String version = "v0.0.1";
 
-List<Item> items = [
+List<Item> items = [];
+
+List<Item> itemsMocado = [
   Item(id: const Uuid().v4(), estoqueId: '1', nome: "Pacote de Arroz", qtd: 20, description: "Um pacote de arroz de 1Kg", categList: ["Suprimento", "Carboidrato", "Amido"]),
   Item(id: const Uuid().v4(), estoqueId: '2', nome: "Lata de Café", qtd: 30, description: "Uma lata de café de 250g", categList: ["Suprimento"]),
   Item(

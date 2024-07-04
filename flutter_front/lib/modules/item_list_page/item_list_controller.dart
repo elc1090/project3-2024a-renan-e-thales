@@ -23,6 +23,9 @@ abstract class ItemListControllerBase with Store {
   @observable
   int dangerItemThreshold = 10;
 
+  @observable
+  bool loading = false;
+
   @action
   addItem(Item value) {
     if (!itemList.contains(value)) {

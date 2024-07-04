@@ -17,10 +17,17 @@ class ItemListPage extends StatefulWidget {
 class _ItemListPageState extends State<ItemListPage> {
   ItemListController controller = globals.itemListController;
 
+  Future<void> getItems() async {
+    controller.loading = true;
+    globals.items = await globals.dataManager.getItemList();
+    controller.itemList = globals.items;
+    controller.loading = false;
+  }
+
   @override
   void initState() {
-    globals.dataManager.getItemList();
-    // globals.dataManager.postItem(globals.items.first);
+    globals.dataManager.postItem(globals.itemsMocado.first);
+    getItems();
 
     super.initState();
   }
@@ -31,100 +38,118 @@ class _ItemListPageState extends State<ItemListPage> {
       body: Center(
         child: SizedBox(
           width: MediaQuery.of(context).size.width > 1000 ? MediaQuery.of(context).size.width * 0.8 : MediaQuery.of(context).size.width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+          child: Observer(
+            builder: (_) => Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Column(
                   children: [
-                    TextButton.icon(
-                      onPressed: () => showModalBottomSheet(
-                        context: context,
-                        showDragHandle: true,
-                        isScrollControlled: true,
-                        builder: (context) => _getAdjustmentsBottomsheet(),
-                      ),
-                      label: CustomText(
-                        'Editar limites',
-                        size: 12,
-                      ),
-                      icon: const Icon(
-                        CarbonIcons.settings_adjust,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(color: Theme.of(context).colorScheme.surfaceContainer, border: Border(bottom: BorderSide(color: Colors.grey[600]!, width: 1))),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
-                      child: CustomText(
-                        "Item",
-                        size: 14,
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
-                      child: CustomText(
-                        "Qtd",
-                        size: 14,
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              controller.itemList.isEmpty
-                  ? const Center(
-                      child: Text("Vazio"),
-                    )
-                  : Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Observer(
-                            builder: (_) => ListView.builder(
-                              shrinkWrap: true,
-                              clipBehavior: Clip.hardEdge,
-                              itemCount: controller.itemList.length,
-                              itemBuilder: (context, index) => Column(
-                                children: [
-                                  CustomListTile(
-                                    controller.itemList[index],
-                                    tileColor: _getTileColor(index),
-                                  ),
-                                  const Divider(
-                                    height: 1,
-                                  ),
-                                ],
+                    Container(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton.icon(
+                              onPressed: () => showModalBottomSheet(
+                                context: context,
+                                showDragHandle: true,
+                                isScrollControlled: true,
+                                builder: (context) => _getAdjustmentsBottomsheet(),
                               ),
+                              label: CustomText(
+                                'Editar limites',
+                                size: 12,
+                              ),
+                              icon: const Icon(
+                                CarbonIcons.settings_adjust,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(color: Theme.of(context).colorScheme.surfaceContainer, border: Border(bottom: BorderSide(color: Colors.grey[600]!, width: 1))),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                            child: CustomText(
+                              "Item",
+                              size: 14,
+                              color: Colors.grey[700],
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: ElevatedButton.icon(
-                              onPressed: () {
-                                controller.switchTab(1);
-                              },
-                              icon: const Icon(CarbonIcons.add),
-                              label: CustomText(
-                                "Novo Item",
-                                size: 14,
-                              ),
+                            padding: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
+                            child: CustomText(
+                              "Qtd",
+                              size: 14,
+                              color: Colors.grey[700],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
-            ],
+                    controller.loading
+                        ? const Padding(
+                            padding: EdgeInsets.only(top: 16.0),
+                            child: CircularProgressIndicator(),
+                          )
+                        : controller.itemList.isEmpty
+                            ? const Center(
+                                child: Text("Vazio"),
+                              )
+                            : Expanded(
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Observer(
+                                        builder: (_) => ListView.builder(
+                                          shrinkWrap: true,
+                                          clipBehavior: Clip.hardEdge,
+                                          itemCount: controller.itemList.length,
+                                          itemBuilder: (context, index) => Column(
+                                            children: [
+                                              CustomListTile(
+                                                controller.itemList[index],
+                                                tileColor: _getTileColor(index),
+                                              ),
+                                              const Divider(
+                                                height: 1,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                  ],
+                ),
+                Positioned(
+                    bottom: 10,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          controller.switchTab(1);
+                        },
+                        icon: const Icon(CarbonIcons.add),
+                        label: CustomText(
+                          "Novo Item",
+                          size: 14,
+                        ),
+                      ),
+                    ))
+              ],
+            ),
           ),
         ),
       ),

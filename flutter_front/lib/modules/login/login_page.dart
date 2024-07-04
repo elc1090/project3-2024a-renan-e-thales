@@ -1,6 +1,10 @@
+import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_front/modules/home/home_page.dart';
+import 'package:flutter_front/modules/login/login_controller.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../core/globals.dart' as globals;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,6 +14,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  LoginController controller = globals.loginController;
+
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -57,12 +63,19 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () => _login(
-                  usernameController.text.trim(),
-                  passwordController.text.trim(),
+              Observer(
+                builder: (_) => ElevatedButton(
+                  onPressed: () async => await _login(
+                    usernameController.text.trim(),
+                    passwordController.text.trim(),
+                  ),
+                  child: controller.loading
+                      ? const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: CircularProgressIndicator(),
+                        )
+                      : const Text("login"),
                 ),
-                child: const Text("login"),
               )
             ],
           ),
@@ -71,7 +84,18 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _login(String username, String password) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
+  Future<void> _login(String username, String password) async {
+    controller.loading = true;
+    final user = await globals.dataManager.getUser(username);
+    if (user != null) {
+      controller.user = user;
+    }
+    controller.loading = false;
+    if (controller.logado) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
+      globals.toastController.show(context, "Bem-vindo, ${controller.user!.nome}!", Colors.blue, CarbonIcons.user, const Duration(seconds: 3));
+    } else {
+      globals.toastController.show(context, "Login falhou", Colors.red, CarbonIcons.error, const Duration(seconds: 3));
+    }
   }
 }

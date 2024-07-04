@@ -1,5 +1,5 @@
 // ignore_for_file: constant_identifier_names
-
+import 'dart:math';
 import 'dart:convert';
 
 import 'package:carbon_icons/carbon_icons.dart';
@@ -38,7 +38,7 @@ class Item {
       nome: map['name'],
       estoqueId: map['estoqueId'],
       kgl: map['kgl'],
-      qtd: map['qtd'],
+      qtd: map['qtd'] == 0 ? Random().nextInt(100) : map['qtd'],
       description: map['description'],
       categList: [map['category']],
       perecivel: map['perecivel'] ?? false,
