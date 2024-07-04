@@ -19,8 +19,8 @@ class _ItemListPageState extends State<ItemListPage> {
 
   @override
   void initState() {
-    // globals.dataManager.getItemList();
-    globals.dataManager.getItemById("arroz");
+    globals.dataManager.getItemList();
+    // globals.dataManager.postItem(globals.items.first);
 
     super.initState();
   }

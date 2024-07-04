@@ -9,6 +9,8 @@ class Item {
   Item({
     required this.id,
     required this.nome,
+    this.estoqueId,
+    this.kgl,
     this.qtd,
     this.description,
     this.categList,
@@ -19,23 +21,42 @@ class Item {
         perecivel = perecivel ?? dataVal != null ? true : false,
         dataVal = dataVal != null ? dataVal.toString() : DateTime.now().toString();
 
-  int id;
+  String id;
   String nome;
   Icon icon;
+  int? kgl;
   int? qtd;
   String? description;
   bool perecivel;
   String? dataVal;
   List<String>? categList = [];
+  String? estoqueId;
 
-  factory Item.fromMap(Map<String, dynamic> map) {
+  factory Item.fromMap(Map<String, dynamic> map, String id) {
     return Item(
-      id: map['id'],
+      id: id,
       nome: map['name'],
+      estoqueId: map['estoqueId'],
+      kgl: map['kgl'],
+      qtd: map['qtd'],
       description: map['description'],
-      categList: List.from(jsonDecode(map['category'])),
+      categList: [map['category']],
       perecivel: map['perecivel'] ?? false,
-      dataVal: map['dataVal'],
+      dataVal: DateTime.parse(map['dataVal']),
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id.toString(),
+      'nome': nome,
+      'estoqueId': estoqueId,
+      'qtd': qtd.toString(),
+      'kgl': kgl.toString(),
+      'description': description,
+      'perecivel': perecivel.toString(),
+      'dataVal': dataVal,
+      'categList': jsonEncode(categList),
+    };
   }
 }

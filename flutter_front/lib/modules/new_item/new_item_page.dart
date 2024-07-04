@@ -7,6 +7,7 @@ import 'package:flutter_front/modules/new_item/categorias_list/categorias_list.d
 import 'package:flutter_front/modules/new_item/new_item_controller.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:uuid/uuid.dart';
 import '../../core/globals.dart' as globals;
 
 import '../../core/custom_widgets/custom_text.dart';
@@ -313,7 +314,8 @@ class _NewItemPageState extends State<NewItemPage> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             final newItem = Item(
-                              id: controller.getItemListLength() + 1,
+                              id: const Uuid().v4(),
+                              estoqueId: '1',
                               nome: controller.nomeTextController.text.trim(),
                               description: controller.descTextController.text.trim(),
                               qtd: int.parse(controller.qtdTextController.text.trim()),
