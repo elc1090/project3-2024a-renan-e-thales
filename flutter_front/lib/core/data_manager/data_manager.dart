@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:html';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_front/models/item.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,7 +9,8 @@ import '../../models/user.dart';
 
 class DataManager {
   DataManager();
-  String domain = dotenv.env['DOMAIN']!;
+
+  final String domain = 'https://api-dw3.vercel.app/api/';
 
   final Storage _localStorage = window.localStorage;
 
