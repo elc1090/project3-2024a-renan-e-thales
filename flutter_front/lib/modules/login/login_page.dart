@@ -16,7 +16,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   LoginController controller = globals.loginController;
 
-  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   @override
@@ -49,33 +49,61 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
+                margin: const EdgeInsets.symmetric(vertical: 8),
                 child: TextFormField(
-                  controller: usernameController,
-                  decoration: const InputDecoration(hintText: "username"),
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    labelText: "Email",
+                    labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                    ),
+                  ),
                 ),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
+                margin: const EdgeInsets.symmetric(vertical: 8),
                 child: TextFormField(
                   controller: passwordController,
-                  decoration: const InputDecoration(hintText: "password"),
+                  decoration: InputDecoration(
+                    labelText: "Senha",
+                    labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                    ),
+                  ),
                   obscureText: true,
                 ),
               ),
               const SizedBox(height: 16),
               Observer(
-                builder: (_) => ElevatedButton(
-                  onPressed: () async => await _login(
-                    usernameController.text.trim(),
-                    passwordController.text.trim(),
-                  ),
-                  child: controller.loading
-                      ? const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: CircularProgressIndicator(),
-                        )
-                      : const Text("login"),
-                ),
+                builder: (_) => controller.loading
+                    ? const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(),
+                      )
+                    : ElevatedButton(
+                        onPressed: () async => await _login(
+                          emailController.text.trim(),
+                          passwordController.text.trim(),
+                        ),
+                        child: const Text("Entrar"),
+                      ),
               )
             ],
           ),
@@ -84,18 +112,18 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<void> _login(String username, String password) async {
+  Future<void> _login(String email, String password) async {
     controller.loading = true;
-    final user = await globals.dataManager.getUser(username);
+    final user = await globals.dataManager.getUser(email, password);
     if (user != null) {
       controller.user = user;
     }
     controller.loading = false;
     if (controller.logado) {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
-      globals.toastController.show(context, "Bem-vindo, ${controller.user!.nome}!", Colors.blue, CarbonIcons.user, const Duration(seconds: 3));
+      globals.toastController.show(context, "Bem-vindo, ${controller.user!.nome}!", Colors.green, CarbonIcons.checkmark_outline, const Duration(seconds: 3));
     } else {
-      globals.toastController.show(context, "Login falhou", Colors.red, CarbonIcons.error, const Duration(seconds: 3));
+      globals.toastController.show(context, "Login falhou", Colors.red, CarbonIcons.warning, const Duration(seconds: 3));
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_front/core/custom_widgets/custom_text.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
@@ -36,8 +37,8 @@ abstract class CustomToastControllerBase with Store {
         if (tick < 100) {
           tick++;
         } else {
-          timer.cancel();
           isRunning = false;
+          timer.cancel();
           if (callback != null) {
             callback.call();
           }
@@ -50,56 +51,55 @@ abstract class CustomToastControllerBase with Store {
   createOverlay(String message, Color color, IconData icon, Duration duration) {
     return overlayEntry = OverlayEntry(builder: (BuildContext context) {
       return AnimatedOpacity(
-        duration: const Duration(milliseconds: 300),
+        duration: Duration(milliseconds: duration.inMilliseconds - 300),
         opacity: isRunning ? 1.0 : 0.0,
         child: Stack(
+          alignment: Alignment.topRight,
           children: [
-            Positioned(
-              top: 16,
-              right: 16,
-              width: 300,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(8),
-                          topRight: Radius.circular(8),
-                          bottomLeft: Radius.circular(8),
-                          bottomRight: Radius.circular(8),
-                        ),
-                        color: Colors.white),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: CustomText(
-                                  message,
-                                  size: 14,
-                                ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 300,
+                  padding: const EdgeInsets.only(bottom: 8),
+                  margin: const EdgeInsets.all(16),
+                  decoration: const BoxDecoration(
+                      boxShadow: [BoxShadow(color: Color.fromARGB(50, 0, 0, 0), offset: Offset(2, 2), blurRadius: 2.0, spreadRadius: 2.0)],
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8),
+                        bottomLeft: Radius.circular(8),
+                        bottomRight: Radius.circular(8),
+                      ),
+                      color: Colors.white),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: CustomText(
+                                message,
+                                size: 14,
                               ),
-                              Icon(icon, color: color),
-                            ],
-                          ),
+                            ),
+                            Icon(icon, color: color),
+                          ],
                         ),
-                        Observer(
-                          builder: (_) => LinearProgressIndicator(
-                            minHeight: 4,
-                            color: color,
-                            backgroundColor: color.withAlpha(100),
-                            value: tick / 100,
-                          ),
-                        )
-                      ],
-                    ),
+                      ),
+                      Observer(
+                        builder: (_) => LinearProgressIndicator(
+                          minHeight: 4,
+                          color: color,
+                          backgroundColor: color.withAlpha(100),
+                          value: tick / 100,
+                        ),
+                      )
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),

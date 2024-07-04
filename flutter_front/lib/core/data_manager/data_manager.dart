@@ -11,13 +11,11 @@ class DataManager {
 
   String domain = 'https://api-dw3.vercel.app/api/';
 
-  getUser(String email) async {
+  Future<User?> getUser(String email, String password) async {
     try {
       final res = await http.get(Uri.parse('${domain}user'));
-      log(res.body);
       final map = jsonDecode(res.body);
       for (var element in map['data']) {
-        print(element.toString());
         if (element == null) {
           continue;
         }
@@ -25,19 +23,19 @@ class DataManager {
           return User.fromMap(element['attributes'], element['id']);
         }
       }
+      return null;
     } catch (e) {
       log(e.toString());
+      return null;
     }
   }
 
   getItemList() async {
     try {
       final res = await http.get(Uri.parse('${domain}item'));
-      log(res.body);
       List<Item> aux = [];
       final map = jsonDecode(res.body);
       for (var element in map['data']) {
-        print(element.toString());
         if (element == null) {
           continue;
         }
@@ -53,7 +51,6 @@ class DataManager {
   Future<Item?> getItemById(String id) async {
     try {
       final res = await http.get(Uri.parse('${domain}item/$id'));
-      log(res.body);
       final aux = jsonDecode(res.body);
       Item itemAux = Item.fromMap(aux['data']['value']['attributes'], aux['data']['value']['id']);
       return itemAux;

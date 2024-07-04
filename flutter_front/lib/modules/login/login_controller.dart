@@ -17,8 +17,12 @@ abstract class LoginControllerBase with Store {
   bool loading = false;
 
   @action
-  Future<User> attemptLogin(String username, String password) async {
-    final User user = await globals.dataManager.getUser(username);
-    return user;
+  Future<User?> attemptLogin(String email, String password) async {
+    final User? user = await globals.dataManager.getUser(email, password);
+    if (user != null) {
+      return user;
+    } else {
+      return null;
+    }
   }
 }

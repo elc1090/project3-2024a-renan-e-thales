@@ -52,9 +52,9 @@ mixin _$LoginController on LoginControllerBase, Store {
       AsyncAction('LoginControllerBase.attemptLogin', context: context);
 
   @override
-  Future<User> attemptLogin(String username, String password) {
+  Future<User?> attemptLogin(String email, String password) {
     return _$attemptLoginAsyncAction
-        .run(() => super.attemptLogin(username, password));
+        .run(() => super.attemptLogin(email, password));
   }
 
   @override
