@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_front/core/custom_widgets/custom_item_modal/custom_item_modal.dart';
-import 'package:flutter_front/core/custom_widgets/custom_text.dart';
+import 'package:flutter_front/core/widgets/custom_item_modal/custom_item_modal.dart';
+import 'package:flutter_front/core/widgets/custom_text.dart';
 import 'package:flutter_front/models/item.dart';
 import 'package:flutter_front/modules/home/home_controller.dart';
 import '../globals.dart' as globals;

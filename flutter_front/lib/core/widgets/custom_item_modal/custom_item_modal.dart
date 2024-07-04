@@ -1,10 +1,10 @@
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_front/core/custom_widgets/custom_delete_prompt.dart';
-import 'package:flutter_front/core/custom_widgets/custom_icon_button.dart';
-import 'package:flutter_front/core/custom_widgets/custom_item_modal/custom_item_controller.dart';
-import 'package:flutter_front/core/custom_widgets/custom_text.dart';
+import 'package:flutter_front/core/widgets/custom_delete_prompt.dart';
+import 'package:flutter_front/core/widgets/custom_icon_button.dart';
+import 'package:flutter_front/core/widgets/custom_item_modal/custom_item_controller.dart';
+import 'package:flutter_front/core/widgets/custom_text.dart';
 import 'package:flutter_front/models/item.dart';
 import 'package:flutter_front/modules/new_item/categorias_list/categorias_list.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';

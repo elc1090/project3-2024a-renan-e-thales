@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_front/models/item.dart';
 import 'package:mobx/mobx.dart';
-import '../../../core/globals.dart' as globals;
+import '../../globals.dart' as globals;
 
 part 'custom_item_controller.g.dart';
 

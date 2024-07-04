@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_front/core/custom_widgets/custom_text.dart';
+import 'package:flutter_front/core/widgets/custom_text.dart';
 
 class CustomDeletePrompt extends StatefulWidget {
   CustomDeletePrompt(this.title, {this.subtitle, this.onPressed, super.key});

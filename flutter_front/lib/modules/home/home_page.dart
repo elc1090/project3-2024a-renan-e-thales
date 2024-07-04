@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_front/core/custom_widgets/custom_text.dart';
+import 'package:flutter_front/core/widgets/custom_text.dart';
 import 'package:flutter_front/modules/home/home_controller.dart';
 import 'package:flutter_front/modules/item_list_page/item_list_page.dart';
 import 'package:flutter_front/modules/new_item/new_item_page.dart';

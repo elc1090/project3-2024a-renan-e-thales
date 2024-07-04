@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_front/core/custom_widgets/custom_text.dart';
+import 'package:flutter_front/core/widgets/custom_text.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 

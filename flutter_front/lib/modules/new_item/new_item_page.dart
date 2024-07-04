@@ -10,7 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/globals.dart' as globals;
 
-import '../../core/custom_widgets/custom_text.dart';
+import '../../core/widgets/custom_text.dart';
 
 class NewItemPage extends StatefulWidget {
   const NewItemPage({super.key});

@@ -1,6 +1,6 @@
 library flutter_front.globals;
 
-import 'package:flutter_front/core/custom_widgets/custom_toast/custom_toast_controller.dart';
+import 'package:flutter_front/core/widgets/custom_toast/custom_toast_controller.dart';
 import 'package:flutter_front/core/data_manager/data_manager.dart';
 import 'package:flutter_front/models/item.dart';
 import 'package:flutter_front/models/user.dart';

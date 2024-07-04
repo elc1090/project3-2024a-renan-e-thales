@@ -4,7 +4,7 @@ import 'package:flutter_front/models/item.dart';
 import 'package:flutter_front/modules/new_item/categorias_list/categorias_list_controller.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../core/custom_widgets/custom_text.dart';
+import '../../../core/widgets/custom_text.dart';
 import '../../../core/globals.dart' as globals;
 
 enum AccessFrom { ITEM_MODAL, NEW_ITEM_FORM }

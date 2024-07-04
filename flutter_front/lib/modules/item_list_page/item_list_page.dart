@@ -1,7 +1,7 @@
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_front/core/custom_widgets/custom_list_tile.dart';
-import 'package:flutter_front/core/custom_widgets/custom_text.dart';
+import 'package:flutter_front/core/widgets/custom_list_tile.dart';
+import 'package:flutter_front/core/widgets/custom_text.dart';
 import 'package:flutter_front/modules/item_list_page/item_list_controller.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';

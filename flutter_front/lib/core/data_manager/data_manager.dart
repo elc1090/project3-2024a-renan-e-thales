@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:html';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_front/models/item.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,8 +10,19 @@ import '../../models/user.dart';
 
 class DataManager {
   DataManager();
+  String domain = dotenv.env['DOMAIN']!;
 
-  String domain = 'https://api-dw3.vercel.app/api/';
+  final Storage _localStorage = window.localStorage;
+
+  Future save(String token) async {
+    _localStorage['token'] = token;
+  }
+
+  Future<String> getToken() async => _localStorage['token'] ?? 'null';
+
+  Future purgeToken() async {
+    _localStorage.remove('token');
+  }
 
   Future<User?> getUser(String email, String password) async {
     try {
