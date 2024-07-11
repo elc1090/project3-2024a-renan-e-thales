@@ -16,6 +16,9 @@ abstract class LoginControllerBase with Store {
   @observable
   bool loading = false;
 
+  @observable
+  bool hidePassword = false;
+
   @action
   Future<User?> attemptLogin(String email, String password) async {
     final User? user = await globals.dataManager.getUser(email, password);

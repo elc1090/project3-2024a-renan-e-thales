@@ -9,7 +9,7 @@ class ItemListController = ItemListControllerBase with _$ItemListController;
 
 abstract class ItemListControllerBase with Store {
   @observable
-  List<Item> itemList = globals.items.asObservable();
+  List<Item> itemList = globals.itemsMocado.asObservable();
 
   @observable
   TextEditingController warningItemTextController = TextEditingController();

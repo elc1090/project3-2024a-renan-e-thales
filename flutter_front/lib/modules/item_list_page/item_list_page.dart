@@ -19,8 +19,8 @@ class _ItemListPageState extends State<ItemListPage> {
 
   Future<void> getItems() async {
     controller.loading = true;
-    globals.items = await globals.dataManager.getItemList();
-    controller.itemList = globals.items;
+    // globals.items = await globals.dataManager.getItemList();
+    controller.itemList = globals.itemsMocado;
     controller.loading = false;
   }
 
@@ -114,16 +114,9 @@ class _ItemListPageState extends State<ItemListPage> {
                                           shrinkWrap: true,
                                           clipBehavior: Clip.hardEdge,
                                           itemCount: controller.itemList.length,
-                                          itemBuilder: (context, index) => Column(
-                                            children: [
-                                              CustomListTile(
-                                                controller.itemList[index],
-                                                tileColor: _getTileColor(index),
-                                              ),
-                                              const Divider(
-                                                height: 1,
-                                              ),
-                                            ],
+                                          itemBuilder: (context, index) => CustomListTile(
+                                            controller.itemList[index],
+                                            tileColor: _getTileColor(index),
                                           ),
                                         ),
                                       ),

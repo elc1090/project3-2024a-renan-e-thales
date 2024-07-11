@@ -1,7 +1,9 @@
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_front/core/widgets/custom_text.dart';
 import 'package:flutter_front/modules/home/home_page.dart';
 import 'package:flutter_front/modules/login/login_controller.dart';
+import 'package:flutter_front/modules/register/register_page.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/globals.dart' as globals;
@@ -24,8 +26,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Center(
         child: Container(
-          width: 300,
-          height: 300,
+          width: 512,
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(8),
@@ -39,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -71,23 +74,30 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 margin: const EdgeInsets.symmetric(vertical: 8),
-                child: TextFormField(
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    labelText: "Senha",
-                    labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
+                child: Observer(
+                  builder: (_) => TextFormField(
+                    controller: passwordController,
+                    decoration: InputDecoration(
+                      labelText: "Senha",
+                      labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(controller.hidePassword ? CarbonIcons.view_off : CarbonIcons.view),
+                        onPressed: () => controller.hidePassword = !controller.hidePassword,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
-                    ),
+                    obscureText: !controller.hidePassword,
                   ),
-                  obscureText: true,
                 ),
               ),
               const SizedBox(height: 16),
@@ -102,9 +112,29 @@ class _LoginPageState extends State<LoginPage> {
                           emailController.text.trim(),
                           passwordController.text.trim(),
                         ),
-                        child: const Text("Entrar"),
+                        child: CustomText(
+                          "Entrar",
+                          size: 14,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
-              )
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomText(
+                    'Não possui uma conta? ',
+                    size: 12,
+                  ),
+                  TextButton(
+                      onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegisterPage())),
+                      child: CustomText(
+                        'registrar',
+                        color: Colors.blue,
+                        size: 12,
+                      ))
+                ],
+              ),
             ],
           ),
         ),
@@ -119,11 +149,13 @@ class _LoginPageState extends State<LoginPage> {
       controller.user = user;
     }
     controller.loading = false;
-    if (controller.logado) {
+    if (controller.logado && mounted) {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
       globals.toastController.show(context, "Bem-vindo, ${controller.user!.nome}!", Colors.green, CarbonIcons.checkmark_outline, const Duration(seconds: 3));
     } else {
-      globals.toastController.show(context, "Login falhou", Colors.red, CarbonIcons.warning, const Duration(seconds: 3));
+      if (mounted) {
+        globals.toastController.show(context, "Login falhou", Colors.red, CarbonIcons.warning, const Duration(seconds: 3));
+      }
     }
   }
 }

@@ -48,6 +48,22 @@ mixin _$LoginController on LoginControllerBase, Store {
     });
   }
 
+  late final _$hidePasswordAtom =
+      Atom(name: 'LoginControllerBase.hidePassword', context: context);
+
+  @override
+  bool get hidePassword {
+    _$hidePasswordAtom.reportRead();
+    return super.hidePassword;
+  }
+
+  @override
+  set hidePassword(bool value) {
+    _$hidePasswordAtom.reportWrite(value, super.hidePassword, () {
+      super.hidePassword = value;
+    });
+  }
+
   late final _$attemptLoginAsyncAction =
       AsyncAction('LoginControllerBase.attemptLogin', context: context);
 
@@ -62,6 +78,7 @@ mixin _$LoginController on LoginControllerBase, Store {
     return '''
 user: ${user},
 loading: ${loading},
+hidePassword: ${hidePassword},
 logado: ${logado}
     ''';
   }

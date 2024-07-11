@@ -7,6 +7,7 @@ import 'package:flutter_front/models/user.dart';
 import 'package:flutter_front/modules/home/home_controller.dart';
 import 'package:flutter_front/modules/item_list_page/item_list_controller.dart';
 import 'package:flutter_front/modules/login/login_controller.dart';
+import 'package:flutter_front/modules/register/register_controller.dart';
 import 'package:uuid/uuid.dart';
 
 import '../modules/new_item/categorias_list/categorias_list_controller.dart';
@@ -14,6 +15,7 @@ import '../modules/new_item/new_item_controller.dart';
 
 DataManager dataManager = DataManager();
 
+RegisterController registerController = RegisterController();
 LoginController loginController = LoginController();
 HomeController homeController = HomeController();
 NewItemController newItemController = NewItemController();
