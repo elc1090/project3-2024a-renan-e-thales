@@ -52,18 +52,21 @@ class DataManager {
 
   Future<http.Response?> postUser(String name, String email, String password) async {
     try {
-      final res = await http.post(
-        Uri.parse('$domain/user'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode({
-          'name': name,
-          'email': email,
-          'password': password,
-        }),
-      );
-      if (res.statusCode == 200) {
+      final res = await http.post(Uri.parse('$domain/user'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode({
+            'data': {
+              'type': 'string',
+              'attributes': {
+                'name': name,
+                'email': email,
+                'password': password,
+              }
+            }
+          }));
+      if (res.statusCode == 200 || res.statusCode == 201) {
         return Future.value(res);
       }
     } catch (e) {
