@@ -18,7 +18,7 @@ abstract class RegisterControllerBase with Store {
     try {
       final res = await globals.dataManager.postUser(name, email, password);
       return res != null
-          ? res.statusCode == 200
+          ? (res.statusCode == 200 || res.statusCode == 201)
               ? true
               : false
           : false;
