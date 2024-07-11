@@ -26,8 +26,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Center(
         child: Container(
-          width: 512,
-          padding: const EdgeInsets.all(16),
+          width: MediaQuery.of(context).size.width < 400 ? MediaQuery.of(context).size.width : 400,
+          padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(8),
@@ -119,6 +119,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
               ),
+              const SizedBox(
+                height: 16,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -127,13 +130,18 @@ class _LoginPageState extends State<LoginPage> {
                     size: 12,
                   ),
                   TextButton(
-                      onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegisterPage())),
-                      child: CustomText(
-                        'registrar',
-                        color: Colors.blue,
-                        size: 12,
-                      ))
+                    onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegisterPage())),
+                    style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
+                    child: CustomText(
+                      'registrar',
+                      color: Colors.blue,
+                      size: 12,
+                    ),
+                  ),
                 ],
+              ),
+              const SizedBox(
+                height: 16,
               ),
             ],
           ),
@@ -150,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
     }
     controller.loading = false;
     if (controller.logado && mounted) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
       globals.toastController.show(context, "Bem-vindo, ${controller.user!.nome}!", Colors.green, CarbonIcons.checkmark_outline, const Duration(seconds: 3));
     } else {
       if (mounted) {

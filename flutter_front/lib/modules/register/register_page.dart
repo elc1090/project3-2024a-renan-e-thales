@@ -5,6 +5,7 @@ import 'package:flutter_front/modules/register/register_controller.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/globals.dart' as globals;
+import '../home/home_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -25,8 +26,8 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: Center(
         child: Container(
-          width: 300,
-          padding: const EdgeInsets.all(16),
+          width: MediaQuery.of(context).size.width < 400 ? MediaQuery.of(context).size.width : 400,
+          padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(8),
@@ -158,37 +159,41 @@ class _RegisterPageState extends State<RegisterPage> {
                 height: 16,
               ),
               ElevatedButton(
-                  onPressed: () async {
-                    final registered = await controller.register(
-                      nameController.text.trim(),
-                      emailController.text.trim(),
-                      passwordController.text.trim(),
-                    );
-                    if (context.mounted) {
-                      if (registered) {
-                        globals.toastController.show(
-                          context,
-                          "Sucesso!",
-                          Colors.green,
-                          CarbonIcons.checkmark_outline,
-                          const Duration(seconds: 2),
-                        );
-                      } else {
-                        globals.toastController.show(
-                          context,
-                          "Falha!",
-                          Colors.red,
-                          CarbonIcons.checkmark_outline,
-                          const Duration(seconds: 2),
-                        );
-                      }
+                onPressed: () async {
+                  final registered = await register(
+                    nameController.text.trim(),
+                    emailController.text.trim(),
+                    passwordController.text.trim(),
+                  );
+                  if (context.mounted) {
+                    if (registered) {
+                      globals.toastController.show(
+                        context,
+                        "Sucesso!",
+                        Colors.green,
+                        CarbonIcons.checkmark_outline,
+                        const Duration(seconds: 2),
+                      );
+                    } else {
+                      globals.toastController.show(
+                        context,
+                        "Falha!",
+                        Colors.red,
+                        CarbonIcons.checkmark_outline,
+                        const Duration(seconds: 2),
+                      );
                     }
-                  },
-                  child: CustomText(
-                    'Enviar',
-                    size: 14,
-                    color: Theme.of(context).colorScheme.primary,
-                  ))
+                  }
+                },
+                child: CustomText(
+                  'Enviar',
+                  size: 14,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              const SizedBox(
+                height: 16,
+              )
             ],
           ),
         ),
@@ -196,7 +201,13 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  register() {
-    null;
+  Future<bool> register(String name, String email, String password) async {
+    final bool registerSuccess = await controller.register(name, email, password);
+    if (mounted) {
+      if (registerSuccess) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
+      }
+    }
+    return registerSuccess;
   }
 }

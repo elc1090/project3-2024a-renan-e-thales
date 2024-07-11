@@ -57,7 +57,7 @@ class DataManager {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode({
           'name': name,
           'email': email,
           'password': password,
@@ -105,7 +105,13 @@ class DataManager {
 
   Future<dynamic> postItem(Item item) async {
     try {
-      final res = await http.post(Uri.parse('$domain/item'), body: item.toMap());
+      final res = await http.post(
+        Uri.parse('$domain/item'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(item.toMap()),
+      );
       log(res.body);
     } catch (e) {
       log(e.toString());

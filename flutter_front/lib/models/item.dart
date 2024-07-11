@@ -48,15 +48,13 @@ class Item {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id.toString(),
-      'nome': nome,
-      'estoqueId': estoqueId,
-      'qtd': qtd.toString(),
-      'kgl': kgl.toString(),
+      'name': nome,
       'description': description,
-      'perecivel': perecivel.toString(),
+      'qtd': qtd,
+      'kgl': kgl ?? 0,
       'dataVal': dataVal,
-      'categList': jsonEncode(categList),
+      'perecivel': perecivel,
+      'category': categList.toString(),
     };
   }
 }
