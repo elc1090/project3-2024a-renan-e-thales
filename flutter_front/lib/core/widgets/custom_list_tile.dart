@@ -21,13 +21,16 @@ class _CustomListTileState extends State<CustomListTile> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 1.0),
+      padding: const EdgeInsets.only(bottom: 1.0),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 0),
           height: _tileOpen ? 125 : 50,
-          padding: EdgeInsets.all(_tileOpen ? 16 : 8),
+          padding: EdgeInsets.symmetric(
+            vertical: _tileOpen ? 16 : 8,
+            horizontal: MediaQuery.of(context).size.width > 400 ? 24 : 8,
+          ),
           decoration: BoxDecoration(color: widget.tileColor ?? Colors.white, borderRadius: BorderRadius.circular(8)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
