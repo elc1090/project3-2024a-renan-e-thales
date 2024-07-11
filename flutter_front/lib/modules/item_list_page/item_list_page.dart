@@ -57,9 +57,12 @@ class _ItemListPageState extends State<ItemListPage> {
                                 showDragHandle: true,
                                 isScrollControlled: true,
                                 builder: (context) => _getAdjustmentsBottomsheet(),
-                              ),
+                              ).then((v) => setState(() {
+                                    controller.setWarningItemThreshold(int.parse(controller.warningItemTextController.text));
+                                    controller.setDangerItemThreshold(int.parse(controller.dangerItemTextController.text));
+                                  })),
                               label: CustomText(
-                                'Editar limites',
+                                'Ajustar avisos de quantidades',
                                 size: 12,
                               ),
                               icon: const Icon(
@@ -158,7 +161,7 @@ class _ItemListPageState extends State<ItemListPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           CustomText(
-            'Editar limites',
+            'Ajustar avisos de quantidades',
             size: 16,
           ),
           const SizedBox(height: 16),
@@ -240,34 +243,15 @@ class _ItemListPageState extends State<ItemListPage> {
           const SizedBox(
             height: 8,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    controller.setWarningItemThreshold(int.parse(controller.warningItemTextController.text));
-                    controller.setDangerItemThreshold(int.parse(controller.dangerItemTextController.text));
-                    Navigator.of(context).pop();
-                  },
-                  child: CustomText(
-                    'ok',
-                    size: 12,
-                  ),
-                ),
-              ],
-            ),
-          )
         ],
       ),
     );
   }
 
   _getTileColor(int index) {
-    Color aux = controller.itemList[index].qtd! < controller.dangerItemThreshold
+    Color aux = controller.itemList[index].qtd! <= controller.dangerItemThreshold
         ? Colors.red[600]!
-        : controller.itemList[index].qtd! < controller.warningItemThreshold
+        : controller.itemList[index].qtd! <= controller.warningItemThreshold
             ? Colors.yellow[700]!
             : Colors.white;
     return index % 2 == 0

@@ -90,14 +90,25 @@ class _CategoriasListState extends State<CategoriasList> {
                   itemCount: controller.categorias.isNotEmpty ? controller.categorias.length : 1,
                   itemBuilder: (context, index) => Observer(
                     builder: (_) => ListTile(
-                      title: controller.categorias.isNotEmpty
+                      title: controller.categorias.isEmpty
                           ? CustomText(
-                              controller.categorias[index],
-                              size: 16,
-                            )
-                          : CustomText(
                               "Nenhuma categoria cadastrada",
                               size: 16,
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                setInnerState(() {
+                                  if (controller.categoriasEscolhidas.contains(controller.categorias[index])) {
+                                    controller.deselecionarCategoria(controller.categorias[index]);
+                                  } else {
+                                    controller.selecionarCategoria(controller.categorias[index]);
+                                  }
+                                });
+                              },
+                              child: CustomText(
+                                controller.categorias[index],
+                                size: 16,
+                              ),
                             ),
                       leading: controller.categorias.isNotEmpty
                           ? IconButton(
@@ -131,8 +142,10 @@ class _CategoriasListState extends State<CategoriasList> {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                       onPressed: () => setInnerState(() {
-                        controller.addCategoria(newCategController.text);
-                        newCategController.clear();
+                        if (newCategController.text.trim() != '') {
+                          controller.addCategoria(newCategController.text);
+                          newCategController.clear();
+                        }
                       }),
                     ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),

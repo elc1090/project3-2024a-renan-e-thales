@@ -76,6 +76,7 @@ class _CustomListTileState extends State<CustomListTile> {
                     ),
                     CustomIconButton(
                       const Icon(CarbonIcons.open_panel_bottom),
+                      color: Colors.black.withOpacity(0.5),
                       filled: true,
                       onPressed: () => _openItemModal(context, widget.item),
                     )
@@ -89,11 +90,12 @@ class _CustomListTileState extends State<CustomListTile> {
             _tileOpen = !_tileOpen;
           });
         },
+        onDoubleTap: () => _openItemModal(context, widget.item),
       ),
     );
   }
 
   _openItemModal(BuildContext context, Item item) {
-    showDialog(context: context, builder: (context) => CustomItemModal(item));
+    showDialog(context: context, builder: (context) => CustomItemModal(item)).then((v) => setState(() {}));
   }
 }

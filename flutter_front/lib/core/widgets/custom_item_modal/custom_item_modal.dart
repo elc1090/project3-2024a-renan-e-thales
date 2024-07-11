@@ -22,6 +22,9 @@ class CustomItemModal extends StatefulWidget {
 
 class _CustomItemModalState extends State<CustomItemModal> {
   late CustomItemController controller;
+
+  TextEditingController qtdController = TextEditingController();
+
   bool _isEditing = false;
   DateFormat format = DateFormat("dd-MM-yyyy");
 
@@ -172,6 +175,9 @@ class _CustomItemModalState extends State<CustomItemModal> {
                         ),
                       ],
                     ),
+                    const Divider(
+                      thickness: 0.3,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,52 +191,65 @@ class _CustomItemModalState extends State<CustomItemModal> {
                               size: 14,
                               color: Colors.grey,
                             ),
-                            if (_isEditing)
-                              TextButton.icon(
-                                label: CustomText(
-                                  "Editar",
-                                  size: 14,
+                            const SizedBox(height: 8),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Observer(
+                                builder: (_) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (controller.item.categList == null || controller.item.categList!.isEmpty)
+                                      CustomText(
+                                        "Sem categorias",
+                                        size: 14,
+                                        color: Colors.grey[400],
+                                      ),
+                                    if (controller.item.categList != null && controller.item.categList!.isNotEmpty)
+                                      for (var categ in controller.item.categList!)
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              CarbonIcons.caret_right,
+                                              color: Colors.grey[400],
+                                            ),
+                                            CustomText(
+                                              categ,
+                                              size: 14,
+                                            ),
+                                          ],
+                                        ),
+                                  ],
                                 ),
-                                icon: Icon(
-                                  CarbonIcons.tag_edit,
-                                  size: 22,
-                                  color: Colors.grey[900]!,
-                                ),
-                                onPressed: () async {
-                                  await showModalBottomSheet(
-                                    context: context,
-                                    showDragHandle: true,
-                                    builder: (context) {
-                                      return CategoriasList(
-                                        controller.categorias,
-                                        item: controller.item,
-                                        access: AccessFrom.ITEM_MODAL,
-                                      );
-                                    },
-                                  ).then((value) => st(() {}));
-                                },
                               ),
+                            )
                           ],
                         ),
-                        Observer(
-                          builder: (_) => Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              if (controller.item.categList == null || controller.item.categList!.isEmpty)
-                                CustomText(
-                                  "Sem categorias",
-                                  size: 14,
-                                  color: Colors.grey[400],
-                                ),
-                              if (controller.item.categList != null && controller.item.categList!.isNotEmpty)
-                                for (var categ in controller.item.categList!)
-                                  CustomText(
-                                    categ,
-                                    size: 14,
-                                  ),
-                            ],
+                        if (_isEditing)
+                          TextButton.icon(
+                            label: CustomText(
+                              "Editar",
+                              size: 14,
+                            ),
+                            icon: Icon(
+                              CarbonIcons.tag_edit,
+                              size: 22,
+                              color: Colors.grey[900]!,
+                            ),
+                            onPressed: () async {
+                              await showModalBottomSheet(
+                                context: context,
+                                showDragHandle: true,
+                                builder: (context) {
+                                  return CategoriasList(
+                                    controller.categorias,
+                                    item: controller.item,
+                                    access: AccessFrom.ITEM_MODAL,
+                                  );
+                                },
+                              ).then((value) => st(() {}));
+                            },
                           ),
-                        )
                       ],
                     )
                   ],
@@ -254,6 +273,12 @@ class _CustomItemModalState extends State<CustomItemModal> {
                         showDragHandle: true,
                         enableDrag: true,
                         builder: (context) => _getAdjustQuantitiesBottomSheet(controller.item),
+                      ).then(
+                        (value) {
+                          setState(() {
+                            controller.updateQtd(int.parse(qtdController.text));
+                          });
+                        },
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -295,7 +320,6 @@ class _CustomItemModalState extends State<CustomItemModal> {
   }
 
   _getAdjustQuantitiesBottomSheet(Item item) {
-    TextEditingController qtdController = TextEditingController();
     item.qtd ??= 0;
     qtdController.text = item.qtd.toString();
     return Container(
@@ -348,32 +372,6 @@ class _CustomItemModalState extends State<CustomItemModal> {
           const SizedBox(
             height: 16,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: CustomText(
-                    "cancelar",
-                    size: 12,
-                    color: Colors.grey[800],
-                  )),
-              TextButton(
-                  onPressed: () {
-                    setState(() {
-                      controller.updateQtd(int.parse(qtdController.text));
-                    });
-                    Navigator.of(context).pop();
-                  },
-                  child: CustomText(
-                    "ok",
-                    size: 12,
-                    color: Theme.of(context).colorScheme.primary,
-                  )),
-            ],
-          )
         ],
       ),
     );
