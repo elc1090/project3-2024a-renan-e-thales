@@ -171,7 +171,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         context,
                         "Sucesso!",
                         Colors.green,
-                        CarbonIcons.checkmark_outline,
+                        CarbonIcons.checkmark_filled,
                         const Duration(seconds: 2),
                       );
                     } else {
@@ -179,7 +179,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         context,
                         "Falha!",
                         Colors.red,
-                        CarbonIcons.checkmark_outline,
+                        CarbonIcons.warning_filled,
                         const Duration(seconds: 2),
                       );
                     }

@@ -61,7 +61,7 @@ abstract class CustomToastControllerBase with Store {
               children: [
                 Container(
                   width: 300,
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.only(bottom: 4),
                   margin: const EdgeInsets.all(16),
                   decoration: const BoxDecoration(
                       boxShadow: [BoxShadow(color: Color.fromARGB(50, 0, 0, 0), offset: Offset(2, 2), blurRadius: 2.0, spreadRadius: 2.0)],
