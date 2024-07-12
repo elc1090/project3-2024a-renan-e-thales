@@ -182,23 +182,67 @@ class _ItemListPageState extends State<ItemListPage> {
                 ),
               ),
               const SizedBox(width: 16),
-              SizedBox(
-                width: 100,
-                child: TextFormField(
-                  controller: controller.warningItemTextController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 100,
+                    child: TextFormField(
+                      controller: controller.warningItemTextController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(border: Border.all(color: Theme.of(context).colorScheme.primary), borderRadius: BorderRadius.circular(4)),
+                          child: InkWell(
+                            splashFactory: InkRipple.splashFactory,
+                            splashColor: Colors.black.withOpacity(0.25),
+                            onTap: () {
+                              controller.warningItemTextController.text = (int.parse(controller.warningItemTextController.text) + 1).toString();
+                            },
+                            child: Icon(
+                              CarbonIcons.caret_up,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 16,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                          decoration: BoxDecoration(border: Border.all(color: Theme.of(context).colorScheme.primary), borderRadius: BorderRadius.circular(4)),
+                          child: InkWell(
+                            splashFactory: InkRipple.splashFactory,
+                            splashColor: Colors.black.withOpacity(0.25),
+                            onTap: () {
+                              controller.warningItemTextController.text = (int.parse(controller.warningItemTextController.text) - 1).toString();
+                            },
+                            child: Icon(
+                              CarbonIcons.caret_down,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ],
           ),
@@ -220,23 +264,66 @@ class _ItemListPageState extends State<ItemListPage> {
                 ),
               ),
               const SizedBox(width: 16),
-              SizedBox(
-                width: 100,
-                child: TextFormField(
-                  controller: controller.dangerItemTextController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 100,
+                    child: TextFormField(
+                      controller: controller.dangerItemTextController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(border: Border.all(color: Theme.of(context).colorScheme.primary), borderRadius: BorderRadius.circular(4)),
+                          child: InkWell(
+                            splashFactory: InkRipple.splashFactory,
+                            splashColor: Colors.black.withOpacity(0.25),
+                            onTap: () {
+                              controller.dangerItemTextController.text = (int.parse(controller.dangerItemTextController.text) + 1).toString();
+                            },
+                            child: Icon(
+                              CarbonIcons.caret_up,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 16,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                          decoration: BoxDecoration(border: Border.all(color: Theme.of(context).colorScheme.primary), borderRadius: BorderRadius.circular(4)),
+                          child: InkWell(
+                            splashFactory: InkRipple.splashFactory,
+                            splashColor: Colors.black.withOpacity(0.25),
+                            onTap: () {
+                              controller.dangerItemTextController.text = (int.parse(controller.dangerItemTextController.text) - 1).toString();
+                            },
+                            child: Icon(
+                              CarbonIcons.caret_down,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ],
           ),

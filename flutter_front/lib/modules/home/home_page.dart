@@ -1,3 +1,4 @@
+import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_front/core/widgets/custom_text.dart';
 import 'package:flutter_front/modules/home/home_controller.dart';
@@ -27,6 +28,17 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              CarbonIcons.box,
+              color: Colors.white,
+            ),
+            const SizedBox(width: 8),
+            CustomText('Estoque', color: Colors.white),
+          ],
+        ),
         titleSpacing: 0,
         backgroundColor: const Color.fromARGB(255, 39, 155, 209),
         bottom: TabBar(controller: controller.tabsController, indicatorColor: Colors.white, tabs: [
