@@ -54,6 +54,7 @@ class DataManager {
     try {
       final res = await http.post(Uri.parse('$domain/user'),
           headers: <String, String>{
+            'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode({
