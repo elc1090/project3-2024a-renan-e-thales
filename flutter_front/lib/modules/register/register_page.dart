@@ -16,6 +16,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   RegisterController controller = globals.registerController;
+  final _registerFormKey = GlobalKey<FormState>();
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -40,161 +41,201 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ],
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  BackButton(
+          child: Form(
+            key: _registerFormKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    BackButton(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    CustomText('Registrar'),
+                    const SizedBox(
+                      width: 32,
+                    ),
+                  ],
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  child: TextFormField(
+                    controller: nameController,
+                    validator: (value) {
+                      if (value != null && value.isNotEmpty) {
+                        return null;
+                      } else {
+                        return '*Campo Obrigatório';
+                      }
+                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: InputDecoration(
+                      labelText: "Nome",
+                      labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  child: TextFormField(
+                    controller: emailController,
+                    validator: (value) {
+                      if (value != null && value.isNotEmpty) {
+                        if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+                          return '*Email inválido';
+                        }
+                        return null;
+                      } else {
+                        return '*Campo Obrigatório';
+                      }
+                    },
+                    decoration: InputDecoration(
+                      labelText: "Email",
+                      labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  child: Observer(
+                    builder: (_) => TextFormField(
+                      controller: passwordController,
+                      validator: (value) {
+                        if (value != null && value.isNotEmpty) {
+                          return null;
+                        } else {
+                          return '*Campo obrigatório';
+                        }
+                      },
+                      decoration: InputDecoration(
+                        labelText: "Senha",
+                        labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(controller.hidePassword ? CarbonIcons.view_off : CarbonIcons.view),
+                          onPressed: () => controller.hidePassword = !controller.hidePassword,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      obscureText: !controller.hidePassword,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  child: Observer(
+                    builder: (_) => TextFormField(
+                      controller: confirmPasswordController,
+                      validator: (value) {
+                        if (value != null && value.isNotEmpty) {
+                          if (value != passwordController.text) {
+                            return '*As senhas não são iguais';
+                          }
+                          return null;
+                        } else {
+                          return '*Campo obrigatório';
+                        }
+                      },
+                      decoration: InputDecoration(
+                        labelText: "Confirmar Senha",
+                        labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(controller.hideConfirmPassword ? CarbonIcons.view_off : CarbonIcons.view),
+                          onPressed: () => controller.hideConfirmPassword = !controller.hideConfirmPassword,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      obscureText: !controller.hideConfirmPassword,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_registerFormKey.currentState!.validate()) {
+                      final registered = await register(
+                        nameController.text.trim(),
+                        emailController.text.trim(),
+                        passwordController.text.trim(),
+                      );
+                      if (context.mounted) {
+                        if (registered) {
+                          globals.toastController.show(
+                            context,
+                            "Sucesso!",
+                            Colors.green,
+                            CarbonIcons.checkmark_filled,
+                            const Duration(seconds: 2),
+                          );
+                        } else {
+                          globals.toastController.show(
+                            context,
+                            "Falha!",
+                            Colors.red,
+                            CarbonIcons.warning_filled,
+                            const Duration(seconds: 2),
+                          );
+                        }
+                      }
+                    }
+                  },
+                  child: CustomText(
+                    'Enviar',
+                    size: 14,
                     color: Theme.of(context).colorScheme.primary,
                   ),
-                  CustomText('Registrar'),
-                  const SizedBox(
-                    width: 32,
-                  ),
-                ],
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                child: TextFormField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    labelText: "Nome",
-                    labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
-                    ),
-                  ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                child: TextFormField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    labelText: "Email",
-                    labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                child: Observer(
-                  builder: (_) => TextFormField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      labelText: "Senha",
-                      labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(controller.hidePassword ? CarbonIcons.view_off : CarbonIcons.view),
-                        onPressed: () => controller.hidePassword = !controller.hidePassword,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    obscureText: !controller.hidePassword,
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                child: Observer(
-                  builder: (_) => TextFormField(
-                    controller: confirmPasswordController,
-                    decoration: InputDecoration(
-                      labelText: "Confirmar Senha",
-                      labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(controller.hideConfirmPassword ? CarbonIcons.view_off : CarbonIcons.view),
-                        onPressed: () => controller.hideConfirmPassword = !controller.hideConfirmPassword,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    obscureText: !controller.hideConfirmPassword,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  final registered = await register(
-                    nameController.text.trim(),
-                    emailController.text.trim(),
-                    passwordController.text.trim(),
-                  );
-                  if (context.mounted) {
-                    if (registered) {
-                      globals.toastController.show(
-                        context,
-                        "Sucesso!",
-                        Colors.green,
-                        CarbonIcons.checkmark_filled,
-                        const Duration(seconds: 2),
-                      );
-                    } else {
-                      globals.toastController.show(
-                        context,
-                        "Falha!",
-                        Colors.red,
-                        CarbonIcons.warning_filled,
-                        const Duration(seconds: 2),
-                      );
-                    }
-                  }
-                },
-                child: CustomText(
-                  'Enviar',
-                  size: 14,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              const SizedBox(
-                height: 16,
-              )
-            ],
+                const SizedBox(
+                  height: 16,
+                )
+              ],
+            ),
           ),
         ),
       ),
