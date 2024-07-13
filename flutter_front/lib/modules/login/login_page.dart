@@ -97,6 +97,10 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     obscureText: !controller.hidePassword,
+                    onEditingComplete: () async => await _login(
+                      emailController.text.trim(),
+                      passwordController.text.trim(),
+                    ),
                   ),
                 ),
               ),

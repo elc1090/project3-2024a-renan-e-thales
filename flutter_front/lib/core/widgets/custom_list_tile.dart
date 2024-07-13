@@ -25,8 +25,8 @@ class _CustomListTileState extends State<CustomListTile> {
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 50),
-          height: _tileOpen ? 125 : 50,
+          duration: const Duration(milliseconds: 40),
+          height: _tileOpen ? 115 : 45,
           padding: EdgeInsets.symmetric(
             vertical: _tileOpen ? 16 : 8,
             horizontal: MediaQuery.of(context).size.width > 400 ? 24 : 8,
@@ -51,42 +51,43 @@ class _CustomListTileState extends State<CustomListTile> {
                     ),
                   ],
                 ),
-                if (_tileOpen)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                _tileOpen
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CustomText(
-                            widget.item.description ?? '',
-                            size: 16,
-                            color: Colors.grey[900],
-                          ),
-                          Row(
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CustomText(
-                                'Perecível: ',
+                                widget.item.description ?? '',
                                 size: 16,
                                 color: Colors.grey[900],
                               ),
-                              CustomText(
-                                widget.item.perecivel ? 'sim' : 'não',
-                                size: 16,
-                                color: Colors.black,
-                              )
+                              Row(
+                                children: [
+                                  CustomText(
+                                    'Perecível: ',
+                                    size: 16,
+                                    color: Colors.grey[900],
+                                  ),
+                                  CustomText(
+                                    widget.item.perecivel ? 'sim' : 'não',
+                                    size: 16,
+                                    color: Colors.black,
+                                  )
+                                ],
+                              ),
                             ],
                           ),
+                          CustomIconButton(
+                            const Icon(CarbonIcons.open_panel_bottom),
+                            color: Colors.black.withOpacity(0.25),
+                            filled: true,
+                            onPressed: () => _openItemModal(context, widget.item),
+                          )
                         ],
-                      ),
-                      CustomIconButton(
-                        const Icon(CarbonIcons.open_panel_bottom),
-                        color: Colors.black.withOpacity(0.5),
-                        filled: true,
-                        onPressed: () => _openItemModal(context, widget.item),
                       )
-                    ],
-                  ),
+                    : const SizedBox(),
               ],
             ),
           ),

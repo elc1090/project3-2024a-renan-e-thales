@@ -75,12 +75,12 @@ class _ItemListPageState extends State<ItemListPage> {
                       ),
                     ),
                     Container(
-                      decoration: BoxDecoration(color: Theme.of(context).colorScheme.surfaceContainer, border: Border(bottom: BorderSide(color: Colors.grey[600]!, width: 1))),
+                      decoration: BoxDecoration(color: Theme.of(context).colorScheme.surfaceContainer),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width > 400 ? 24 : 8, vertical: 8),
                             child: CustomText(
                               "Item",
                               size: 14,
@@ -88,7 +88,7 @@ class _ItemListPageState extends State<ItemListPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
+                            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width > 400 ? 24 : 8, vertical: 8),
                             child: CustomText(
                               "Qtd",
                               size: 14,
@@ -328,7 +328,7 @@ class _ItemListPageState extends State<ItemListPage> {
             ],
           ),
           const SizedBox(
-            height: 8,
+            height: 32,
           ),
         ],
       ),

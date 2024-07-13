@@ -55,7 +55,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         ]),
         actions: const [],
       ),
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       body: TabBarView(
         controller: controller.tabsController,
         children: const [

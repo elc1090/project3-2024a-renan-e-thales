@@ -117,6 +117,24 @@ class _CustomItemModalState extends State<CustomItemModal> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomText(
+                          'Peso por unidade',
+                          size: 14,
+                          color: Colors.grey,
+                        ),
+                        CustomText(
+                          controller.item.kgl != null ? controller.item.kgl.toString() : '0',
+                          size: 14,
+                          color: controller.item.description != null && controller.item.description!.isNotEmpty ? Colors.grey[900] : Colors.grey,
+                        ),
+                      ],
+                    ),
+                    const Divider(
+                      thickness: 0.3,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(
                           'Validade',
                           size: 14,
                           color: Colors.grey,
@@ -294,6 +312,7 @@ class _CustomItemModalState extends State<CustomItemModal> {
                     const SizedBox(width: 8),
                     CustomIconButton(
                       _isEditing ? const Icon(CarbonIcons.edit_off) : const Icon(CarbonIcons.edit),
+                      color: _isEditing ? Colors.red[600] : null,
                       onPressed: () => st(() {
                         _isEditing = !_isEditing;
                       }),
@@ -310,7 +329,7 @@ class _CustomItemModalState extends State<CustomItemModal> {
 
   Widget _getDeleteModal(BuildContext context, Item item) {
     return CustomDeletePrompt(
-      "Delete item?",
+      "Excluír item?",
       onPressed: () {
         controller.removeGlobalItem(item);
         Navigator.of(context).pop();
@@ -370,7 +389,7 @@ class _CustomItemModalState extends State<CustomItemModal> {
             ],
           ),
           const SizedBox(
-            height: 16,
+            height: 28,
           ),
         ],
       ),

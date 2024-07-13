@@ -16,7 +16,7 @@ class _CustomDeletePromptState extends State<CustomDeletePrompt> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(28),
       width: MediaQuery.of(context).size.width > 450 ? 450 : MediaQuery.of(context).size.width,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -42,7 +42,7 @@ class _CustomDeletePromptState extends State<CustomDeletePrompt> {
                   TextButton(
                     onPressed: widget.onPressed,
                     child: CustomText(
-                      "deletar",
+                      "excluir",
                       size: 14,
                       color: Colors.red[700],
                     ),

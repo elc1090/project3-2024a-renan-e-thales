@@ -141,34 +141,47 @@ class _NewItemPageState extends State<NewItemPage> {
                     const SizedBox(height: 16),
                     Row(
                       children: [
-                        Row(
-                          children: [
-                            Observer(
-                              builder: (_) => IconButton(
-                                icon: Icon(
-                                  !controller.isPerecivel ? CarbonIcons.checkbox : CarbonIcons.checkbox_checked_filled,
-                                  color: Theme.of(context).colorScheme.primary,
+                        GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            controller.isPerecivel = !controller.isPerecivel;
+                            if (controller.isPerecivel) {
+                              controller.validadeTextController.text = controller.dateAux!;
+                              controller.dateAux = '';
+                            } else {
+                              controller.dateAux = controller.validadeTextController.text;
+                              controller.validadeTextController.text = '';
+                            }
+                          },
+                          child: Row(
+                            children: [
+                              Observer(
+                                builder: (_) => IconButton(
+                                  icon: Icon(
+                                    !controller.isPerecivel ? CarbonIcons.checkbox : CarbonIcons.checkbox_checked_filled,
+                                    color: Theme.of(context).colorScheme.primary,
+                                  ),
+                                  onPressed: () {
+                                    controller.isPerecivel = !controller.isPerecivel;
+                                    if (controller.isPerecivel) {
+                                      controller.validadeTextController.text = controller.dateAux!;
+                                      controller.dateAux = '';
+                                    } else {
+                                      controller.dateAux = controller.validadeTextController.text;
+                                      controller.validadeTextController.text = '';
+                                    }
+                                  },
                                 ),
-                                onPressed: () {
-                                  controller.isPerecivel = !controller.isPerecivel;
-                                  if (controller.isPerecivel) {
-                                    controller.validadeTextController.text = controller.dateAux!;
-                                    controller.dateAux = '';
-                                  } else {
-                                    controller.dateAux = controller.validadeTextController.text;
-                                    controller.validadeTextController.text = '';
-                                  }
-                                },
                               ),
-                            ),
-                            CustomText(
-                              "Perecível?",
-                              size: 14,
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            )
-                          ],
+                              CustomText(
+                                "Perecível?",
+                                size: 14,
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              )
+                            ],
+                          ),
                         ),
                         Expanded(
                           flex: 1,
