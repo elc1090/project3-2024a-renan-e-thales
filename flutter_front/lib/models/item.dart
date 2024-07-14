@@ -52,7 +52,7 @@ class Item {
       'description': description,
       'qtd': qtd,
       'kgl': kgl ?? 0,
-      'dataVal': dataVal,
+      'dataVal': dataVal != null ? DateTime.parse(dataVal!).toIso8601String() : null,
       'perecivel': perecivel,
       'category': categList.toString(),
     };

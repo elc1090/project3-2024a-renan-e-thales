@@ -8,6 +8,9 @@ class RegisterController = RegisterControllerBase with _$RegisterController;
 
 abstract class RegisterControllerBase with Store {
   @observable
+  bool loading = false;
+
+  @observable
   bool hidePassword = false;
 
   @observable

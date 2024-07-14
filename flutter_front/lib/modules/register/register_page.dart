@@ -196,40 +196,25 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(
                   height: 16,
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (_registerFormKey.currentState!.validate()) {
-                      final registered = await register(
-                        nameController.text.trim(),
-                        emailController.text.trim(),
-                        passwordController.text.trim(),
-                      );
-                      if (context.mounted) {
-                        if (registered) {
-                          globals.toastController.show(
-                            context,
-                            "Sucesso!",
-                            Colors.green,
-                            CarbonIcons.checkmark_filled,
-                            const Duration(seconds: 2),
-                          );
-                        } else {
-                          globals.toastController.show(
-                            context,
-                            "Falha!",
-                            Colors.red,
-                            CarbonIcons.warning_filled,
-                            const Duration(seconds: 2),
-                          );
-                        }
-                      }
-                    }
-                  },
-                  child: CustomText(
-                    'Enviar',
-                    size: 14,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+                Observer(
+                  builder: (_) => controller.loading
+                      ? CircularProgressIndicator(color: Theme.of(context).colorScheme.primary)
+                      : ElevatedButton(
+                          onPressed: () async {
+                            if (_registerFormKey.currentState!.validate()) {
+                              await register(
+                                nameController.text.trim(),
+                                emailController.text.trim(),
+                                passwordController.text.trim(),
+                              );
+                            }
+                          },
+                          child: CustomText(
+                            'Enviar',
+                            size: 14,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
                 ),
                 const SizedBox(
                   height: 16,
@@ -243,10 +228,28 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<bool> register(String name, String email, String password) async {
+    controller.loading = true;
     final bool registerSuccess = await controller.register(name, email, password);
     if (mounted) {
       if (registerSuccess) {
+        globals.toastController.show(
+          context,
+          "Bem vindo, $name!",
+          Colors.green,
+          CarbonIcons.checkmark_filled,
+          const Duration(seconds: 2),
+        );
+        controller.loading = false;
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
+      } else {
+        globals.toastController.show(
+          context,
+          "Falha!",
+          Colors.red,
+          CarbonIcons.warning_filled,
+          const Duration(seconds: 2),
+        );
+        controller.loading = false;
       }
     }
     return registerSuccess;
