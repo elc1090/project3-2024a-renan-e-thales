@@ -127,6 +127,7 @@ class _ItemListPageState extends State<ItemListPage> {
                                   ),
                                 ),
                               ),
+                    const SizedBox(height: 40),
                   ],
                 ),
                 Positioned(

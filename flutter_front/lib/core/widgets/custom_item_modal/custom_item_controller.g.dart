@@ -62,13 +62,13 @@ mixin _$CustomItemController on CustomItemControllerBase, Store {
       Atom(name: 'CustomItemControllerBase.categorias', context: context);
 
   @override
-  List<String> get categorias {
+  List<int> get categorias {
     _$categoriasAtom.reportRead();
     return super.categorias;
   }
 
   @override
-  set categorias(List<String> value) {
+  set categorias(List<int> value) {
     _$categoriasAtom.reportWrite(value, super.categorias, () {
       super.categorias = value;
     });
@@ -86,7 +86,7 @@ mixin _$CustomItemController on CustomItemControllerBase, Store {
       AsyncAction('CustomItemControllerBase.deleteItem', context: context);
 
   @override
-  Future<void> deleteItem(int id) {
+  Future<void> deleteItem(String id) {
     return _$deleteItemAsyncAction.run(() => super.deleteItem(id));
   }
 
@@ -94,22 +94,11 @@ mixin _$CustomItemController on CustomItemControllerBase, Store {
       ActionController(name: 'CustomItemControllerBase', context: context);
 
   @override
-  dynamic addItemCategoria(String value) {
+  dynamic updateCategorias(List<int> categs) {
     final _$actionInfo = _$CustomItemControllerBaseActionController.startAction(
-        name: 'CustomItemControllerBase.addItemCategoria');
+        name: 'CustomItemControllerBase.updateCategorias');
     try {
-      return super.addItemCategoria(value);
-    } finally {
-      _$CustomItemControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic removeItemCategoria(String value) {
-    final _$actionInfo = _$CustomItemControllerBaseActionController.startAction(
-        name: 'CustomItemControllerBase.removeItemCategoria');
-    try {
-      return super.removeItemCategoria(value);
+      return super.updateCategorias(categs);
     } finally {
       _$CustomItemControllerBaseActionController.endAction(_$actionInfo);
     }

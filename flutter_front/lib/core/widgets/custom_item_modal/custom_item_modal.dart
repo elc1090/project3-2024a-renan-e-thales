@@ -10,6 +10,7 @@ import 'package:flutter_front/modules/new_item/categorias_list/categorias_list.d
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import '../../globals.dart' as globals;
 
 class CustomItemModal extends StatefulWidget {
   CustomItemModal(this.item, {super.key});
@@ -31,7 +32,7 @@ class _CustomItemModalState extends State<CustomItemModal> {
   @override
   void initState() {
     controller = CustomItemController(widget.item);
-    controller.categorias = widget.item.categList ?? [];
+    controller.categorias = widget.item.categList;
     controller.nameController.text = widget.item.nome;
     controller.descriptionController.text = widget.item.description ?? "";
     super.initState();
@@ -122,7 +123,7 @@ class _CustomItemModalState extends State<CustomItemModal> {
                           color: Colors.grey,
                         ),
                         CustomText(
-                          controller.item.kgl != null ? controller.item.kgl.toString() : '0',
+                          '${controller.item.peso} ${controller.item.medida}',
                           size: 14,
                           color: controller.item.description != null && controller.item.description!.isNotEmpty ? Colors.grey[900] : Colors.grey,
                         ),
@@ -216,14 +217,14 @@ class _CustomItemModalState extends State<CustomItemModal> {
                                 builder: (_) => Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    if (controller.item.categList == null || controller.item.categList!.isEmpty)
+                                    if (controller.item.categList.isEmpty)
                                       CustomText(
                                         "Sem categorias",
                                         size: 14,
                                         color: Colors.grey[400],
                                       ),
-                                    if (controller.item.categList != null && controller.item.categList!.isNotEmpty)
-                                      for (var categ in controller.item.categList!)
+                                    if (controller.item.categList.isNotEmpty)
+                                      for (var categ in controller.item.categList)
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
@@ -232,7 +233,7 @@ class _CustomItemModalState extends State<CustomItemModal> {
                                               color: Colors.grey[400],
                                             ),
                                             CustomText(
-                                              categ,
+                                              globals.categorias.firstWhere((c) => c.id == categ).nome,
                                               size: 14,
                                             ),
                                           ],
@@ -260,7 +261,6 @@ class _CustomItemModalState extends State<CustomItemModal> {
                                 showDragHandle: true,
                                 builder: (context) {
                                   return CategoriasList(
-                                    controller.categorias,
                                     item: controller.item,
                                     access: AccessFrom.ITEM_MODAL,
                                   );
@@ -307,7 +307,7 @@ class _CustomItemModalState extends State<CustomItemModal> {
                         showDragHandle: true,
                         enableDrag: true,
                         builder: (context) => _getDeleteModal(context, controller.item),
-                      ),
+                      ).then((value) => setState(() {})),
                     ),
                     const SizedBox(width: 8),
                     CustomIconButton(
@@ -331,6 +331,7 @@ class _CustomItemModalState extends State<CustomItemModal> {
     return CustomDeletePrompt(
       "Excluír item?",
       onPressed: () {
+        controller.deleteItem(item.id);
         controller.removeGlobalItem(item);
         Navigator.of(context).pop();
         Navigator.of(context).pop();

@@ -5,6 +5,7 @@ import 'package:bcrypt/bcrypt.dart';
 
 import 'package:flutter_front/models/item.dart';
 import 'package:http/http.dart' as http;
+import '../../core/globals.dart' as globals;
 
 import '../../models/user.dart';
 
@@ -108,10 +109,12 @@ class DataManager {
 
   Future<dynamic> postItem(Item item) async {
     try {
+      final itemMap = item.toMap();
+      itemMap.addAll({'userId': globals.user?.id});
       final bodyObj = jsonEncode({
         'data': {
           'type': 'string',
-          'attributes': item.toMap(),
+          'attributes': itemMap,
         }
       });
       final res = await http.post(Uri.parse('$domain/item'),

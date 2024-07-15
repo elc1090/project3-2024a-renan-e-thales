@@ -20,20 +20,11 @@ abstract class CustomItemControllerBase with Store {
   Item item;
 
   @observable
-  List<String> categorias = ObservableList<String>();
+  List<int> categorias = ObservableList<int>();
 
   @action
-  addItemCategoria(String value) {
-    if (!categorias.contains(value)) {
-      categorias.add(value);
-    }
-  }
-
-  @action
-  removeItemCategoria(String value) {
-    if (categorias.contains(value)) {
-      categorias.remove(value);
-    }
+  updateCategorias(List<int> categs) {
+    item.categList = categs;
   }
 
   @action
@@ -42,7 +33,7 @@ abstract class CustomItemControllerBase with Store {
   }
 
   @action
-  Future<void> deleteItem(int id) async {
+  Future<void> deleteItem(String id) async {
     globals.items.removeWhere((element) => element.id == id);
   }
 
@@ -53,7 +44,6 @@ abstract class CustomItemControllerBase with Store {
 
   @action
   removeGlobalItem(Item item) {
-    globals.itemListController.itemList.removeAt(globals.items.indexWhere((e) => e.id == item.id));
-    globals.items.removeAt(globals.items.indexWhere((e) => e.id == item.id));
+    globals.items.removeWhere((e) => e.id == item.id);
   }
 }

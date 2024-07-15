@@ -13,18 +13,15 @@ mixin _$CategoriasListController on CategoriasListControllerBase, Store {
       Atom(name: 'CategoriasListControllerBase.item', context: context);
 
   @override
-  Item get item {
+  Item? get item {
     _$itemAtom.reportRead();
     return super.item;
   }
 
-  bool _itemIsInitialized = false;
-
   @override
-  set item(Item value) {
-    _$itemAtom.reportWrite(value, _itemIsInitialized ? super.item : null, () {
+  set item(Item? value) {
+    _$itemAtom.reportWrite(value, super.item, () {
       super.item = value;
-      _itemIsInitialized = true;
     });
   }
 
@@ -32,13 +29,13 @@ mixin _$CategoriasListController on CategoriasListControllerBase, Store {
       Atom(name: 'CategoriasListControllerBase.categorias', context: context);
 
   @override
-  List<String> get categorias {
+  List<Categoria> get categorias {
     _$categoriasAtom.reportRead();
     return super.categorias;
   }
 
   @override
-  set categorias(List<String> value) {
+  set categorias(List<Categoria> value) {
     _$categoriasAtom.reportWrite(value, super.categorias, () {
       super.categorias = value;
     });
@@ -49,13 +46,13 @@ mixin _$CategoriasListController on CategoriasListControllerBase, Store {
       context: context);
 
   @override
-  List<String> get categoriasEscolhidas {
+  List<Categoria> get categoriasEscolhidas {
     _$categoriasEscolhidasAtom.reportRead();
     return super.categoriasEscolhidas;
   }
 
   @override
-  set categoriasEscolhidas(List<String> value) {
+  set categoriasEscolhidas(List<Categoria> value) {
     _$categoriasEscolhidasAtom.reportWrite(value, super.categoriasEscolhidas,
         () {
       super.categoriasEscolhidas = value;
@@ -82,7 +79,7 @@ mixin _$CategoriasListController on CategoriasListControllerBase, Store {
       ActionController(name: 'CategoriasListControllerBase', context: context);
 
   @override
-  dynamic addCategoria(String value) {
+  bool addCategoria(String value) {
     final _$actionInfo = _$CategoriasListControllerBaseActionController
         .startAction(name: 'CategoriasListControllerBase.addCategoria');
     try {
@@ -93,7 +90,7 @@ mixin _$CategoriasListController on CategoriasListControllerBase, Store {
   }
 
   @override
-  dynamic selecionarCategoria(String value) {
+  dynamic selecionarCategoria(int value) {
     final _$actionInfo = _$CategoriasListControllerBaseActionController
         .startAction(name: 'CategoriasListControllerBase.selecionarCategoria');
     try {
@@ -104,7 +101,7 @@ mixin _$CategoriasListController on CategoriasListControllerBase, Store {
   }
 
   @override
-  dynamic deselecionarCategoria(String value) {
+  dynamic deselecionarCategoria(int value) {
     final _$actionInfo =
         _$CategoriasListControllerBaseActionController.startAction(
             name: 'CategoriasListControllerBase.deselecionarCategoria');

@@ -1,3 +1,4 @@
+import 'package:flutter_front/models/categoria.dart';
 import 'package:flutter_front/models/item.dart';
 import 'package:flutter_front/modules/new_item/categorias_list/categorias_list.dart';
 import 'package:mobx/mobx.dart';
@@ -11,35 +12,51 @@ abstract class CategoriasListControllerBase with Store {
   CategoriasListControllerBase({categorias}) : categorias = categorias ?? [];
 
   @observable
-  late Item item;
+  Item? item;
 
   @observable
-  List<String> categorias = ObservableList<String>();
+  List<Categoria> categorias = ObservableList<Categoria>();
 
   @observable
-  List<String> categoriasEscolhidas = ObservableList<String>();
+  List<Categoria> categoriasEscolhidas = ObservableList<Categoria>();
 
   @observable
   AccessFrom? access;
 
   @action
-  addCategoria(String value) {
-    if (!categorias.contains(value)) {
-      categorias.add(value);
+  bool addCategoria(String value) {
+    for (var cat in categorias) {
+      if (cat.nome == value) {
+        return false;
+      }
     }
+    categorias.add(Categoria(id: categorias.length + 1, nome: value));
+    return true;
   }
 
   @action
-  selecionarCategoria(String value) {
-    if (!categoriasEscolhidas.contains(value)) {
-      categoriasEscolhidas.add(value);
+  selecionarCategoria(int value) {
+    for (var cat in categoriasEscolhidas) {
+      if (cat.id == value) {
+        return false;
+      }
+    }
+    for (var cat in categorias) {
+      if (cat.id == value) {
+        categoriasEscolhidas.add(cat);
+      }
+    }
+    if (item != null) {
+      item!.categList = categoriasEscolhidas.map((c) => c.id).toList();
     }
     switch (access) {
       case AccessFrom.ITEM_MODAL:
-        globals.itemListController.itemList[globals.itemListController.itemList.indexWhere((e) => e.id == item.id)].categList = item.categList;
+        if (item != null) {
+          globals.itemListController.itemList[globals.itemListController.itemList.indexWhere((e) => e.id == item!.id)].categList = item!.categList;
+        }
         break;
       case AccessFrom.NEW_ITEM_FORM:
-        globals.newItemController.categoriasEscolhidas = categoriasEscolhidas;
+        globals.newItemController.categoriasEscolhidas = categoriasEscolhidas.map((c) => c.id).toList();
         break;
       default:
         break;
@@ -47,9 +64,14 @@ abstract class CategoriasListControllerBase with Store {
   }
 
   @action
-  deselecionarCategoria(String value) {
-    if (categoriasEscolhidas.contains(value)) {
-      categoriasEscolhidas.remove(value);
+  deselecionarCategoria(int value) {
+    for (var cat in categorias) {
+      if (cat.id == value) {
+        categoriasEscolhidas.removeWhere((c) => c.id == value);
+      }
+    }
+    if (item != null) {
+      item!.categList = categoriasEscolhidas.map((c) => c.id).toList();
     }
   }
 }

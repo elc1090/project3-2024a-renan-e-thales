@@ -126,13 +126,13 @@ mixin _$NewItemController on NewItemControllerBase, Store {
       name: 'NewItemControllerBase.categoriasEscolhidas', context: context);
 
   @override
-  List<String> get categoriasEscolhidas {
+  List<int> get categoriasEscolhidas {
     _$categoriasEscolhidasAtom.reportRead();
     return super.categoriasEscolhidas;
   }
 
   @override
-  set categoriasEscolhidas(List<String> value) {
+  set categoriasEscolhidas(List<int> value) {
     _$categoriasEscolhidasAtom.reportWrite(value, super.categoriasEscolhidas,
         () {
       super.categoriasEscolhidas = value;
@@ -187,7 +187,7 @@ mixin _$NewItemController on NewItemControllerBase, Store {
   }
 
   @override
-  dynamic addCategoria(String value) {
+  bool addCategoria(String value) {
     final _$actionInfo = _$NewItemControllerBaseActionController.startAction(
         name: 'NewItemControllerBase.addCategoria');
     try {
@@ -198,22 +198,22 @@ mixin _$NewItemController on NewItemControllerBase, Store {
   }
 
   @override
-  dynamic selecionarCategoria(String value) {
+  dynamic selecionarCategoria(int id) {
     final _$actionInfo = _$NewItemControllerBaseActionController.startAction(
         name: 'NewItemControllerBase.selecionarCategoria');
     try {
-      return super.selecionarCategoria(value);
+      return super.selecionarCategoria(id);
     } finally {
       _$NewItemControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  dynamic deselecionarCategoria(String value) {
+  dynamic deselecionarCategoria(int id) {
     final _$actionInfo = _$NewItemControllerBaseActionController.startAction(
         name: 'NewItemControllerBase.deselecionarCategoria');
     try {
-      return super.deselecionarCategoria(value);
+      return super.deselecionarCategoria(id);
     } finally {
       _$NewItemControllerBaseActionController.endAction(_$actionInfo);
     }

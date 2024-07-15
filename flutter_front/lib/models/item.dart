@@ -1,6 +1,5 @@
 // ignore_for_file: constant_identifier_names
 import 'dart:math';
-import 'dart:convert';
 
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
@@ -10,26 +9,31 @@ class Item {
     required this.id,
     required this.nome,
     this.estoqueId,
-    this.kgl,
+    int? peso,
+    String? medida,
     this.qtd,
     this.description,
-    this.categList,
+    List<int>? categList,
     bool? perecivel,
     DateTime? dataVal,
     Icon? icon,
   })  : icon = icon ?? const Icon(CarbonIcons.image_reference),
         perecivel = perecivel ?? dataVal != null ? true : false,
-        dataVal = dataVal != null ? dataVal.toString() : DateTime.now().toString();
+        dataVal = dataVal != null ? dataVal.toString() : DateTime.now().toString(),
+        peso = peso ?? 0,
+        medida = medida ?? 'g',
+        categList = categList ?? [];
 
   String id;
   String nome;
   Icon icon;
-  int? kgl;
+  int peso;
+  String medida;
   int? qtd;
   String? description;
   bool perecivel;
   String? dataVal;
-  List<String>? categList = [];
+  List<int> categList = [];
   String? estoqueId;
 
   factory Item.fromMap(Map<String, dynamic> map, String id) {
@@ -37,7 +41,8 @@ class Item {
       id: id,
       nome: map['name'],
       estoqueId: map['estoqueId'],
-      kgl: map['kgl'],
+      peso: map['peso'] ?? 0,
+      medida: map['medida'] ?? 'g',
       qtd: map['qtd'] == 0 ? Random().nextInt(100) : map['qtd'],
       description: map['description'],
       categList: [map['category']],
@@ -50,11 +55,11 @@ class Item {
     return {
       'name': nome,
       'description': description,
-      'qtd': qtd,
-      'kgl': kgl ?? 0,
+      'qtd': qtd ?? 0,
+      'peso': '$peso$medida',
       'dataVal': dataVal != null ? DateTime.parse(dataVal!).toIso8601String() : null,
       'perecivel': perecivel,
-      'category': categList.toString(),
+      'category': categList,
     };
   }
 }

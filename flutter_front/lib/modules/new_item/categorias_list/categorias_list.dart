@@ -10,9 +10,8 @@ import '../../../core/globals.dart' as globals;
 enum AccessFrom { ITEM_MODAL, NEW_ITEM_FORM }
 
 class CategoriasList extends StatefulWidget {
-  CategoriasList(this.categorias, {this.item, required this.access, super.key});
+  CategoriasList({this.item, required this.access, super.key});
 
-  List<String> categorias;
   Item? item;
   AccessFrom access;
 
@@ -30,9 +29,9 @@ class _CategoriasListState extends State<CategoriasList> {
   void initState() {
     if (widget.item != null) {
       controller.item = widget.item!;
-      controller.categoriasEscolhidas = widget.item!.categList ?? [];
+      controller.categoriasEscolhidas = widget.item != null ? globals.categorias.where((c) => widget.item!.categList.contains(c.id)).toList() : [];
     } else {
-      controller.categoriasEscolhidas = widget.categorias;
+      controller.categoriasEscolhidas = [];
     }
     controller.access = widget.access;
     super.initState();
@@ -99,14 +98,14 @@ class _CategoriasListState extends State<CategoriasList> {
                               onTap: () {
                                 setInnerState(() {
                                   if (controller.categoriasEscolhidas.contains(controller.categorias[index])) {
-                                    controller.deselecionarCategoria(controller.categorias[index]);
+                                    controller.deselecionarCategoria(controller.categorias[index].id);
                                   } else {
-                                    controller.selecionarCategoria(controller.categorias[index]);
+                                    controller.selecionarCategoria(controller.categorias[index].id);
                                   }
                                 });
                               },
                               child: CustomText(
-                                controller.categorias[index],
+                                controller.categorias[index].nome,
                                 size: 16,
                               ),
                             ),
@@ -115,9 +114,9 @@ class _CategoriasListState extends State<CategoriasList> {
                               onPressed: () {
                                 setInnerState(() {
                                   if (controller.categoriasEscolhidas.contains(controller.categorias[index])) {
-                                    controller.deselecionarCategoria(controller.categorias[index]);
+                                    controller.deselecionarCategoria(controller.categorias[index].id);
                                   } else {
-                                    controller.selecionarCategoria(controller.categorias[index]);
+                                    controller.selecionarCategoria(controller.categorias[index].id);
                                   }
                                 });
                               },

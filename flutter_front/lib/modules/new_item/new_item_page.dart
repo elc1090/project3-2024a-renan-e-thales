@@ -273,12 +273,8 @@ class _NewItemPageState extends State<NewItemPage> {
                               ],
                             ),
                             Observer(
-                              builder: (_) => Wrap(
-                                crossAxisAlignment: WrapCrossAlignment.start,
-                                runAlignment: WrapAlignment.start,
-                                children: [
-                                  if (controller.categoriasEscolhidas.isEmpty)
-                                    Row(
+                              builder: (_) => controller.categoriasEscolhidas.isEmpty
+                                  ? Row(
                                       children: [
                                         CustomText(
                                           "Vazio",
@@ -287,35 +283,41 @@ class _NewItemPageState extends State<NewItemPage> {
                                           color: Colors.grey[900],
                                         ),
                                       ],
-                                    ),
-                                  for (var categ in controller.categoriasEscolhidas)
-                                    Container(
-                                      padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4),
-                                      margin: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: Theme.of(context).colorScheme.primary),
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: Wrap(
-                                        crossAxisAlignment: WrapCrossAlignment.center,
-                                        children: [
-                                          CustomText(
-                                            categ,
-                                            size: 14,
+                                    )
+                                  : Wrap(
+                                      crossAxisAlignment: WrapCrossAlignment.start,
+                                      runAlignment: WrapAlignment.start,
+                                      children: [
+                                        for (var categ in controller.categoriasEscolhidas)
+                                          Container(
+                                            padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4),
+                                            margin: const EdgeInsets.all(4),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color: Theme.of(context).colorScheme.primary),
+                                              borderRadius: BorderRadius.circular(5),
+                                            ),
+                                            child: Wrap(
+                                              crossAxisAlignment: WrapCrossAlignment.center,
+                                              children: [
+                                                CustomText(
+                                                  globals.categorias.firstWhere((c) => c.id == categ).nome,
+                                                  size: 14,
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      controller.deselecionarCategoria(categ);
+                                                    });
+                                                  },
+                                                  splashRadius: 2,
+                                                  visualDensity: VisualDensity.compact,
+                                                  icon: const Icon(Icons.close),
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                          IconButton(
-                                            onPressed: () {
-                                              controller.deselecionarCategoria(categ);
-                                            },
-                                            splashRadius: 2,
-                                            visualDensity: VisualDensity.compact,
-                                            icon: const Icon(Icons.close),
-                                          )
-                                        ],
-                                      ),
+                                      ],
                                     ),
-                                ],
-                              ),
                             ),
                           ],
                         ),
@@ -332,7 +334,7 @@ class _NewItemPageState extends State<NewItemPage> {
                               nome: controller.nomeTextController.text.trim(),
                               description: controller.descTextController.text.trim(),
                               qtd: int.parse(controller.qtdTextController.text.trim()),
-                              categList: List<String>.from(controller.categoriasEscolhidas),
+                              categList: List<int>.from(controller.categoriasEscolhidas),
                             );
                             controller.newItem = newItem;
                             globals.itemListController.addItem(controller.newItem!);
@@ -382,7 +384,6 @@ class _NewItemPageState extends State<NewItemPage> {
       showDragHandle: true,
       builder: (context) {
         return CategoriasList(
-          controller.categoriasEscolhidas,
           access: AccessFrom.NEW_ITEM_FORM,
         );
       },

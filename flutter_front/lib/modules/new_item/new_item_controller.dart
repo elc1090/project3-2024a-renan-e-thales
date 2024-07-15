@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_front/models/categoria.dart';
 import 'package:flutter_front/models/item.dart';
 import 'package:mobx/mobx.dart';
 import '../../core/globals.dart' as globals;
@@ -30,7 +31,7 @@ abstract class NewItemControllerBase with Store {
   bool isPerecivel = true;
 
   @observable
-  List<String> categoriasEscolhidas = ObservableList<String>();
+  List<int> categoriasEscolhidas = ObservableList<int>.of([]);
 
   @action
   getItemListLength() {
@@ -53,23 +54,35 @@ abstract class NewItemControllerBase with Store {
   }
 
   @action
-  addCategoria(String value) {
-    if (!globals.categorias.contains(value)) {
-      globals.categorias.add(value);
+  bool addCategoria(String value) {
+    for (var cat in globals.categorias) {
+      if (cat.nome == value) {
+        return false;
+      }
+    }
+    globals.categorias.add(Categoria(id: globals.categorias.length + 1, nome: value));
+    return true;
+  }
+
+  @action
+  selecionarCategoria(int id) {
+    for (var cat in globals.categorias) {
+      if (globals.categorias.map((c) => c.nome).contains(cat.nome)) {
+        if (!categoriasEscolhidas.contains(id)) {
+          categoriasEscolhidas.add(id);
+        }
+      }
     }
   }
 
   @action
-  selecionarCategoria(String value) {
-    if (!categoriasEscolhidas.contains(value)) {
-      categoriasEscolhidas.add(value);
-    }
-  }
-
-  @action
-  deselecionarCategoria(String value) {
-    if (categoriasEscolhidas.contains(value)) {
-      categoriasEscolhidas.remove(value);
+  deselecionarCategoria(int id) {
+    for (var cat in globals.categorias) {
+      if (globals.categorias.map((c) => c.nome).contains(cat.nome)) {
+        if (categoriasEscolhidas.contains(id)) {
+          categoriasEscolhidas.removeAt(categoriasEscolhidas.indexOf(id));
+        }
+      }
     }
   }
 

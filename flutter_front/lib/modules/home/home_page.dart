@@ -19,8 +19,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   @override
   void initState() {
     controller.tabsController = TabController(length: 2, vsync: this);
-    controller.itemList = globals.items;
-    controller.categorias = globals.categorias;
     super.initState();
   }
 
