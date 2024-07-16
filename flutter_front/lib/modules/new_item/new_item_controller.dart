@@ -16,6 +16,12 @@ abstract class NewItemControllerBase with Store {
   TextEditingController descTextController = TextEditingController();
 
   @observable
+  TextEditingController pesoTextController = TextEditingController();
+
+  @observable
+  TextEditingController medidaTextController = TextEditingController();
+
+  @observable
   TextEditingController qtdTextController = TextEditingController(text: "0");
 
   @observable

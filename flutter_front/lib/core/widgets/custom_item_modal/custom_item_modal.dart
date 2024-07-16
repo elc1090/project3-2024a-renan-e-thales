@@ -132,7 +132,7 @@ class _CustomItemModalState extends State<CustomItemModal> {
                           color: Colors.grey,
                         ),
                         CustomText(
-                          '${controller.item.peso} ${controller.item.medida}',
+                          '${controller.item.peso.toString().replaceAll('.', ',')} ${controller.item.medida}',
                           size: 14,
                           color: controller.item.description != null && controller.item.description!.isNotEmpty ? Colors.grey[900] : Colors.grey,
                         ),

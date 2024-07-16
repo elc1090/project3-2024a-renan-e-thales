@@ -141,6 +141,68 @@ class _NewItemPageState extends State<NewItemPage> {
                     const SizedBox(height: 16),
                     Row(
                       children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: controller.pesoTextController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\,?\d*')),
+                            ],
+                            validator: (value) {
+                              if (value == null || value == '') {
+                                return '*Campo obrigatório';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              labelText: "peso por unidade",
+                              labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        SizedBox(
+                          width: 150,
+                          child: TextFormField(
+                            controller: controller.medidaTextController,
+                            inputFormatters: <TextInputFormatter>[LengthLimitingTextInputFormatter(3)],
+                            validator: (value) {
+                              if (value == null || value == '') {
+                                return '*Campo obrigatório';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              labelText: "medida",
+                              labelStyle: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
                         GestureDetector(
                           behavior: HitTestBehavior.translucent,
                           onTap: () {
@@ -334,6 +396,8 @@ class _NewItemPageState extends State<NewItemPage> {
                               nome: controller.nomeTextController.text.trim(),
                               description: controller.descTextController.text.trim(),
                               qtd: int.parse(controller.qtdTextController.text.trim()),
+                              peso: double.parse(controller.pesoTextController.text.trim().replaceAll(',', '.')),
+                              medida: controller.medidaTextController.text.trim(),
                               categList: List<int>.from(controller.categoriasEscolhidas),
                             );
                             controller.newItem = newItem;

@@ -9,7 +9,7 @@ class Item {
     required this.id,
     required this.nome,
     this.estoqueId,
-    int? peso,
+    double? peso,
     String? medida,
     this.qtd,
     this.description,
@@ -20,14 +20,14 @@ class Item {
   })  : icon = icon ?? const Icon(CarbonIcons.image_reference),
         perecivel = perecivel ?? dataVal != null ? true : false,
         dataVal = dataVal != null ? dataVal.toString() : DateTime.now().toString(),
-        peso = peso ?? 0,
+        peso = peso ?? 0.0,
         medida = medida ?? 'g',
         categList = categList ?? [];
 
   String id;
   String nome;
   Icon icon;
-  int peso;
+  double peso;
   String medida;
   int? qtd;
   String? description;
@@ -41,7 +41,7 @@ class Item {
       id: id,
       nome: map['name'],
       estoqueId: map['estoqueId'],
-      peso: map['peso'] ?? 0,
+      peso: double.parse(map['peso']) ?? 0,
       medida: map['medida'] ?? 'g',
       qtd: map['qtd'] == 0 ? Random().nextInt(100) : map['qtd'],
       description: map['description'],
