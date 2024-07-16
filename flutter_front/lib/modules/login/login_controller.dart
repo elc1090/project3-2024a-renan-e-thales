@@ -21,8 +21,9 @@ abstract class LoginControllerBase with Store {
 
   @action
   Future<bool> getLocalUser() async {
-    globals.user = await globals.dataManager.fetchUser();
-    if (globals.user != null) {
+    final user = await globals.dataManager.fetchUser();
+    if (user != null) {
+      globals.user = user;
       return true;
     } else {
       return false;

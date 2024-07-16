@@ -52,8 +52,13 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           )
         ]),
         actions: [
-          Row(
-            children: [CustomText(globals.user?.nome ?? 'null')],
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: Row(
+              children: [
+                TextButton(onPressed: () {}, child: CustomText(globals.user?.nome ?? 'null')),
+              ],
+            ),
           ),
         ],
       ),

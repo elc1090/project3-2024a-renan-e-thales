@@ -181,6 +181,7 @@ class _LoginPageState extends State<LoginPage> {
     final user = await globals.dataManager.getUser(email, password);
     if (user != null) {
       controller.user = user;
+      globals.user = user;
     }
     controller.loading = false;
     if (controller.logado && mounted) {
