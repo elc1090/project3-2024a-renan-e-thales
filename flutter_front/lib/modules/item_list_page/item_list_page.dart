@@ -117,6 +117,7 @@ class _ItemListPageState extends State<ItemListPage> {
                                             for (var item in controller.itemList)
                                               CustomListTile(
                                                 item,
+                                                voidCallback: () => setState(() {}),
                                                 tileColor: _getTileColor(item.qtd!),
                                               )
                                           ],
@@ -179,18 +180,15 @@ class _ItemListPageState extends State<ItemListPage> {
             children: [
               Flexible(
                 child: RichText(
-                  text: TextSpan(
-                      text: 'Limite para aviso de estoque ',
-                      style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'baixo',
-                          style: GoogleFonts.montserrat(fontWeight: FontWeight.w800, color: Colors.yellow[800]),
-                        ),
-                        const TextSpan(
-                          text: ':',
-                        )
-                      ]),
+                  text: TextSpan(text: 'Limite para aviso de estoque ', style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600), children: <TextSpan>[
+                    TextSpan(
+                      text: 'baixo',
+                      style: GoogleFonts.montserrat(fontWeight: FontWeight.w800, color: Colors.yellow[800]),
+                    ),
+                    const TextSpan(
+                      text: ':',
+                    )
+                  ]),
                 ),
               ),
               const SizedBox(width: 16),
@@ -264,18 +262,15 @@ class _ItemListPageState extends State<ItemListPage> {
             children: [
               Flexible(
                 child: RichText(
-                  text: TextSpan(
-                      text: 'Limite para aviso de estoque ',
-                      style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'muito baixo',
-                          style: GoogleFonts.montserrat(fontWeight: FontWeight.w800, color: Colors.red[700]),
-                        ),
-                        const TextSpan(
-                          text: ':',
-                        )
-                      ]),
+                  text: TextSpan(text: 'Limite para aviso de estoque ', style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600), children: <TextSpan>[
+                    TextSpan(
+                      text: 'muito baixo',
+                      style: GoogleFonts.montserrat(fontWeight: FontWeight.w800, color: Colors.red[700]),
+                    ),
+                    const TextSpan(
+                      text: ':',
+                    )
+                  ]),
                 ),
               ),
               const SizedBox(width: 16),

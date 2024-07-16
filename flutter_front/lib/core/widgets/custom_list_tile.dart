@@ -6,10 +6,11 @@ import 'package:flutter_front/core/widgets/custom_text.dart';
 import 'package:flutter_front/models/item.dart';
 
 class CustomListTile extends StatefulWidget {
-  CustomListTile(this.item, {this.tileColor, super.key});
+  CustomListTile(this.item, {this.voidCallback, this.tileColor, super.key});
 
   Item item;
   Color? tileColor;
+  VoidCallback? voidCallback;
 
   @override
   State<CustomListTile> createState() => _CustomListTileState();
@@ -103,6 +104,6 @@ class _CustomListTileState extends State<CustomListTile> {
   }
 
   _openItemModal(BuildContext context, Item item) {
-    showDialog(context: context, builder: (context) => CustomItemModal(item)).then((v) => setState(() {}));
+    showDialog(context: context, builder: (context) => CustomItemModal(item)).then((v) => widget.voidCallback?.call());
   }
 }

@@ -34,7 +34,7 @@ abstract class CustomItemControllerBase with Store {
 
   @action
   Future<void> deleteItem(String id) async {
-    globals.items.removeWhere((element) => element.id == id);
+    globals.itemsMocado.removeWhere((element) => element.id == id);
   }
 
   @action
