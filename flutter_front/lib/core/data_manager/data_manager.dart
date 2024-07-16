@@ -22,22 +22,26 @@ class DataManager {
 
   Future<String> getToken() async => _localStorage['token'] ?? 'null';
 
-  Future purgeToken() async {
+  purgeToken() {
     _localStorage.remove('token');
   }
 
-  Future saveUser(User user) async {
+  saveUser(User user) {
     final userString = jsonEncode(user.toMap());
     _localStorage['user'] = userString;
   }
 
-  Future fetchUser() async {
+  fetchUser() {
     if (_localStorage['user'] != null && _localStorage['user']!.isNotEmpty) {
       final user = User.fromMap(jsonDecode(_localStorage['user']!));
       return user;
     } else {
       return null;
     }
+  }
+
+  purgeUser() {
+    _localStorage['user'] = '';
   }
 
   Future getUser(String email, String password) async {

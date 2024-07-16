@@ -5,6 +5,7 @@ import 'package:flutter_front/modules/home/home_controller.dart';
 import 'package:flutter_front/modules/item_list_page/item_list_page.dart';
 import 'package:flutter_front/modules/new_item/new_item_page.dart';
 import '../../core/globals.dart' as globals;
+import '../login/login_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -56,7 +57,36 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             padding: const EdgeInsets.only(right: 16),
             child: Row(
               children: [
-                TextButton(onPressed: () {}, child: CustomText(globals.user?.nome ?? 'null')),
+                MenuAnchor(
+                    builder: (BuildContext context, MenuController controller, Widget? child) {
+                      return TextButton(
+                          onPressed: () {
+                            if (controller.isOpen) {
+                              controller.close();
+                            } else {
+                              controller.open();
+                            }
+                          },
+                          child: CustomText(
+                            globals.user?.nome ?? 'null',
+                            size: 16,
+                            color: Colors.white,
+                          ));
+                    },
+                    menuChildren: [
+                      MenuItemButton(
+                        style: MenuItemButton.styleFrom(backgroundColor: Colors.red[700]),
+                        child: CustomText(
+                          "Logout",
+                          size: 12,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          controller.logout();
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const LoginPage()));
+                        },
+                      ),
+                    ]),
               ],
             ),
           ),
