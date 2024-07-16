@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       MenuItemButton(
                         style: MenuItemButton.styleFrom(backgroundColor: Colors.red[700]),
                         child: CustomText(
-                          "Logout",
+                          "Sair",
                           size: 12,
                           color: Colors.white,
                         ),
