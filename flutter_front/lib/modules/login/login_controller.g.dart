@@ -64,6 +64,14 @@ mixin _$LoginController on LoginControllerBase, Store {
     });
   }
 
+  late final _$getLocalUserAsyncAction =
+      AsyncAction('LoginControllerBase.getLocalUser', context: context);
+
+  @override
+  Future<bool> getLocalUser() {
+    return _$getLocalUserAsyncAction.run(() => super.getLocalUser());
+  }
+
   late final _$attemptLoginAsyncAction =
       AsyncAction('LoginControllerBase.attemptLogin', context: context);
 

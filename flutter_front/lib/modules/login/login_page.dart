@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_front/core/widgets/custom_text.dart';
@@ -20,6 +22,26 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  bool isLogado = false;
+
+  redirect() {
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
+    globals.toastController.show(context, "Bem-vindo, ${controller.user!.nome}!", Colors.green, CarbonIcons.checkmark_outline, const Duration(seconds: 3));
+  }
+
+  getLocalUser() async {
+    isLogado = await controller.getLocalUser();
+    if (isLogado) {
+      redirect();
+    }
+  }
+
+  @override
+  void initState() {
+    getLocalUser();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -51,7 +51,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             size: 16,
           )
         ]),
-        actions: const [],
+        actions: [
+          Row(
+            children: [CustomText(globals.user?.nome ?? 'null')],
+          ),
+        ],
       ),
       body: TabBarView(
         controller: controller.tabsController,

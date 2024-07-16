@@ -26,6 +26,20 @@ class DataManager {
     _localStorage.remove('token');
   }
 
+  Future saveUser(User user) async {
+    final userString = jsonEncode(user.toMap());
+    _localStorage['user'] = userString;
+  }
+
+  Future fetchUser() async {
+    if (_localStorage['user'] != null && _localStorage['user']!.isNotEmpty) {
+      final user = User.fromMap(jsonDecode(_localStorage['user']!));
+      return user;
+    } else {
+      return null;
+    }
+  }
+
   Future getUser(String email, String password) async {
     try {
       final res1 = await http.get(Uri.parse('$domain/user'));
@@ -38,7 +52,11 @@ class DataManager {
           var pwdMatch = BCrypt.checkpw(password, element['attributes']['password']);
 
           if (pwdMatch) {
-            final user = User.fromMap(element['attributes'], element['id']);
+            final Map<String, dynamic> userMap = element['attributes'];
+            userMap.putIfAbsent('id', () => element['id']);
+            final user = User.fromMap(userMap);
+
+            saveUser(user);
 
             return user;
           }

@@ -5,9 +5,9 @@ class User {
   String? email;
   String? nome;
 
-  factory User.fromMap(Map<String, dynamic> map, String id) {
+  factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: id,
+      id: map['id'],
       email: map['email'],
       nome: map['name'],
     );
@@ -17,7 +17,7 @@ class User {
     return {
       'id': id,
       'email': email,
-      'nome': nome,
+      'name': nome,
     };
   }
 }

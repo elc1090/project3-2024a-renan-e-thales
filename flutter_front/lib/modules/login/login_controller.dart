@@ -20,9 +20,20 @@ abstract class LoginControllerBase with Store {
   bool hidePassword = false;
 
   @action
+  Future<bool> getLocalUser() async {
+    globals.user = await globals.dataManager.fetchUser();
+    if (globals.user != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @action
   Future<User?> attemptLogin(String email, String password) async {
     final User? user = await globals.dataManager.getUser(email, password);
     if (user != null) {
+      globals.dataManager.saveUser(user);
       return user;
     } else {
       return null;
