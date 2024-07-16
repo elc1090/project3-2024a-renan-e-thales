@@ -13,9 +13,10 @@ import 'package:intl/intl.dart';
 import '../../globals.dart' as globals;
 
 class CustomItemModal extends StatefulWidget {
-  CustomItemModal(this.item, {super.key});
+  CustomItemModal(this.item, {this.voidCallback, super.key});
 
   Item item;
+  VoidCallback? voidCallback;
 
   @override
   State<CustomItemModal> createState() => _CustomItemModalState();
@@ -36,6 +37,14 @@ class _CustomItemModalState extends State<CustomItemModal> {
     controller.nameController.text = widget.item.nome;
     controller.descriptionController.text = widget.item.description ?? "";
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (widget.voidCallback != null) {
+      widget.voidCallback!.call();
+    }
+    super.dispose();
   }
 
   @override

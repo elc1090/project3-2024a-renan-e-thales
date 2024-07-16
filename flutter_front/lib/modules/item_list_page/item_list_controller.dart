@@ -9,7 +9,7 @@ class ItemListController = ItemListControllerBase with _$ItemListController;
 
 abstract class ItemListControllerBase with Store {
   @observable
-  List<Item> itemList = globals.itemsMocado.asObservable();
+  List<Item> itemList = ObservableList.of([]);
 
   @observable
   TextEditingController warningItemTextController = TextEditingController();
@@ -35,8 +35,8 @@ abstract class ItemListControllerBase with Store {
 
   @action
   removeItem(Item value) {
-    if (itemList.contains(value)) {
-      itemList.remove(value);
+    if (itemList.map((e) => e.id == value.id).isNotEmpty) {
+      itemList.removeWhere((e) => e.id == value.id);
     }
   }
 

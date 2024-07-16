@@ -26,9 +26,8 @@ class _ItemListPageState extends State<ItemListPage> {
 
   @override
   void initState() {
-    globals.dataManager.postItem(globals.itemsMocado.first);
+    // globals.dataManager.postItem(globals.itemsMocado.first);
     getItems();
-
     super.initState();
   }
 
@@ -37,7 +36,7 @@ class _ItemListPageState extends State<ItemListPage> {
     return Scaffold(
       body: Center(
         child: SizedBox(
-          width: MediaQuery.of(context).size.width > 1000 ? MediaQuery.of(context).size.width * 0.8 : MediaQuery.of(context).size.width,
+          width: MediaQuery.of(context).size.width > 640 ? 640 : MediaQuery.of(context).size.width,
           child: Observer(
             builder: (_) => Stack(
               alignment: Alignment.topCenter,
@@ -113,15 +112,24 @@ class _ItemListPageState extends State<ItemListPage> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Observer(
-                                        builder: (_) => ListView.builder(
-                                          shrinkWrap: true,
-                                          clipBehavior: Clip.hardEdge,
-                                          itemCount: controller.itemList.length,
-                                          itemBuilder: (context, index) => CustomListTile(
-                                            controller.itemList[index],
-                                            tileColor: _getTileColor(index),
-                                          ),
+                                        builder: (_) => Column(
+                                          children: [
+                                            for (var item in controller.itemList)
+                                              CustomListTile(
+                                                item,
+                                                tileColor: _getTileColor(item.qtd!),
+                                              )
+                                          ],
                                         ),
+                                        // ListView.builder(
+                                        //   shrinkWrap: true,
+                                        //   clipBehavior: Clip.hardEdge,
+                                        //   itemCount: controller.itemList.length,
+                                        //   itemBuilder: (context, index) => CustomListTile(
+                                        //     controller.itemList[index],
+                                        //     tileColor: _getTileColor(index),
+                                        //   ),
+                                        // ),
                                       ),
                                     ],
                                   ),
@@ -171,15 +179,18 @@ class _ItemListPageState extends State<ItemListPage> {
             children: [
               Flexible(
                 child: RichText(
-                  text: TextSpan(text: 'Limite para aviso de estoque ', style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600), children: <TextSpan>[
-                    TextSpan(
-                      text: 'baixo',
-                      style: GoogleFonts.montserrat(fontWeight: FontWeight.w800, color: Colors.yellow[800]),
-                    ),
-                    const TextSpan(
-                      text: ':',
-                    )
-                  ]),
+                  text: TextSpan(
+                      text: 'Limite para aviso de estoque ',
+                      style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'baixo',
+                          style: GoogleFonts.montserrat(fontWeight: FontWeight.w800, color: Colors.yellow[800]),
+                        ),
+                        const TextSpan(
+                          text: ':',
+                        )
+                      ]),
                 ),
               ),
               const SizedBox(width: 16),
@@ -253,15 +264,18 @@ class _ItemListPageState extends State<ItemListPage> {
             children: [
               Flexible(
                 child: RichText(
-                  text: TextSpan(text: 'Limite para aviso de estoque ', style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600), children: <TextSpan>[
-                    TextSpan(
-                      text: 'muito baixo',
-                      style: GoogleFonts.montserrat(fontWeight: FontWeight.w800, color: Colors.red[700]),
-                    ),
-                    const TextSpan(
-                      text: ':',
-                    )
-                  ]),
+                  text: TextSpan(
+                      text: 'Limite para aviso de estoque ',
+                      style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'muito baixo',
+                          style: GoogleFonts.montserrat(fontWeight: FontWeight.w800, color: Colors.red[700]),
+                        ),
+                        const TextSpan(
+                          text: ':',
+                        )
+                      ]),
                 ),
               ),
               const SizedBox(width: 16),
@@ -336,14 +350,12 @@ class _ItemListPageState extends State<ItemListPage> {
     );
   }
 
-  _getTileColor(int index) {
-    Color aux = controller.itemList[index].qtd! <= controller.dangerItemThreshold
+  _getTileColor(int qtd) {
+    Color aux = qtd <= controller.dangerItemThreshold
         ? Colors.red[600]!
-        : controller.itemList[index].qtd! <= controller.warningItemThreshold
+        : qtd <= controller.warningItemThreshold
             ? Colors.yellow[700]!
             : Colors.white;
-    return index % 2 == 0
-        ? aux
-        : aux = aux.withBlue(aux.blue < 15 ? 0 : aux.blue - 15).withGreen(aux.green < 15 ? 0 : aux.green - 15).withRed(aux.red < 15 ? 0 : aux.red - 15);
+    return aux;
   }
 }
