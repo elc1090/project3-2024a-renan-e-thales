@@ -17,6 +17,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   RegisterController controller = globals.registerController;
   final _registerFormKey = GlobalKey<FormState>();
+  RegExp regex = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z]).{6,}$');
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -125,10 +126,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     builder: (_) => TextFormField(
                       controller: passwordController,
                       validator: (value) {
-                        if (value != null && value.isNotEmpty) {
-                          return null;
-                        } else {
+                        if (value == null || value.isEmpty) {
                           return '*Campo obrigatório';
+                        } else if (!regex.hasMatch(value)) {
+                          return '*Senha muito fraca, deve conter ao menos 6 caractéres, uma letra maiúscula, uma letra minúscula e um número';
+                        } else {
+                          return null;
                         }
                       },
                       decoration: InputDecoration(
@@ -144,6 +147,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.circular(5),
                           borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
                         ),
+                        errorMaxLines: 3,
                         suffixIcon: IconButton(
                           icon: Icon(controller.hidePassword ? CarbonIcons.view_off : CarbonIcons.view),
                           onPressed: () => controller.hidePassword = !controller.hidePassword,
