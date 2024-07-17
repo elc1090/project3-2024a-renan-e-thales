@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_front/modules/home/home_page.dart';
 import 'package:flutter_front/modules/login/login_page.dart';
 
 void main() async {
@@ -12,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Front',
+      title: 'EstoqueRS',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue[400]!),
         useMaterial3: true,

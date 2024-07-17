@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_front/core/widgets/custom_text.dart';
@@ -68,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: Text(
-                  "Estoque",
+                  "EstoqueRS",
                   style: GoogleFonts.montserrat(fontSize: 32, fontWeight: FontWeight.w600),
                 ),
               ),

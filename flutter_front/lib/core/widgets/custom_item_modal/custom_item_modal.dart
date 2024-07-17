@@ -150,7 +150,7 @@ class _CustomItemModalState extends State<CustomItemModal> {
                           color: Colors.grey,
                         ),
                         CustomText(
-                          controller.item.perecivel ? "${format.parse(widget.item.dataVal!)}" : "Item não perecível",
+                          controller.item.perecivel ? widget.item.dataVal! : "Item não perecível",
                           size: 14,
                           color: Colors.grey[900],
                         ),

@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               color: Colors.white,
             ),
             const SizedBox(width: 8),
-            CustomText('Estoque', color: Colors.white),
+            CustomText('EstoqueRS', color: Colors.white),
           ],
         ),
         titleSpacing: 0,
