@@ -58,6 +58,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             child: Row(
               children: [
                 MenuAnchor(
+                    alignmentOffset: const Offset(40, 0),
                     builder: (BuildContext context, MenuController controller, Widget? child) {
                       return TextButton(
                           onPressed: () {
@@ -67,15 +68,22 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                               controller.open();
                             }
                           },
-                          child: CustomText(
-                            globals.user?.nome ?? 'null',
-                            size: 16,
-                            color: Colors.white,
+                          child: Row(
+                            children: [
+                              const Icon(CarbonIcons.user, color: Colors.white),
+                              const SizedBox(width: 8.0),
+                              CustomText(
+                                globals.user?.nome ?? 'null',
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                            ],
                           ));
                     },
                     menuChildren: [
                       MenuItemButton(
-                        style: MenuItemButton.styleFrom(backgroundColor: Colors.red[700]),
+                        style: MenuItemButton.styleFrom(backgroundColor: Colors.red),
+                        leadingIcon: const Icon(CarbonIcons.logout, color: Colors.white),
                         child: CustomText(
                           "Sair",
                           size: 12,
