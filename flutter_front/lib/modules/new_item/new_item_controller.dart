@@ -105,5 +105,7 @@ abstract class NewItemControllerBase with Store {
     qtdTextController.text = "0";
     validadeTextController.clear();
     categoriasEscolhidas.clear();
+    pesoTextController.clear();
+    medidaTextController.clear();
   }
 }
