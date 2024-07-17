@@ -1,13 +1,16 @@
 # project3-2024a-renan-e-thales
 
-![image](https://github.com/elc1090/project3-2024a-renan-e-thales/assets/76953726/9f2773cd-bf59-4464-826f-0f9413ec676b)
-![image](https://github.com/elc1090/project3-2024a-renan-e-thales/assets/76953726/39402ff8-2861-4413-8a4a-cc5e34ec1e41)
-![image](https://github.com/elc1090/project3-2024a-renan-e-thales/assets/76953726/8b8e32dd-79a1-4730-a16b-4a56999f86ff)
-![image](https://github.com/elc1090/project3-2024a-renan-e-thales/assets/76953726/65c55ed1-e8c9-494f-85e1-ed718558cb40)
+![image](https://github.com/user-attachments/assets/ff04f44b-e1b8-4789-9696-32009b0ff61d)
+![image](https://github.com/user-attachments/assets/cdd09f60-30bd-401f-a497-6f12433a31c4)
+![image](https://github.com/user-attachments/assets/8e8c01b2-3701-4759-82bb-5f0ee5be3605)
+![image](https://github.com/user-attachments/assets/06aa63c6-18ce-47d8-82c8-8a32f71a0212)
+![image](https://github.com/user-attachments/assets/2abc3bf3-1307-4a3f-8cad-17c08c5b4f82)
+![image](https://github.com/user-attachments/assets/afb520b8-297b-4a46-95da-b2a8a7a71f7d)
+![image](https://github.com/user-attachments/assets/9c5d5330-24e0-418e-a5b8-39eba44de3cc)
 
 Deploy front: https://project3-2024a-renan-e-thales.vercel.app/
 
-Deploy back: https://apiback.netlify.app/
+Deploy back: https://api-dw3.vercel.app/
 
 ### Desenvolvedores
 
@@ -28,15 +31,17 @@ Aplicativo voltado ao mobile com o intuito de ajudar as pessoas atingidas na enc
 5) Após não conseguir garantir um bom projeto com laravel deixamos essa parte de lado e abrimos um novo deploy na netlify com outro arquivo somente em javascript
 6) Utilizando o javascript e outra rota funcionou a conexão entre os dois
 7) Então, após um bom tempo corrigindo problemas no programa, chegamos a um fluxo de exexução funcional e bem decente.
-
+8) Atualizamos o projeto para a apresentação final, alterando tanto o front quanto o back, mudamos o back de hospedagem e tecnologias
+9) Foi um trabalho demorado e com muitos imprevistos mas implementamos bem o front em flutter e o back em JavaScript com Express 
 #### Tecnologias
 
 
 - [JavaScript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript) (API e Backend)
-- [Vue](https://vuejs.org/) (Frontend)
+- [Flutter]([https://vuejs.org/](https://flutter.dev/)) (Frontend)
 - [Bulma](https://bulma.io/) (Styling)
 - [Netlify](https://app.netlify.com/) (Deploy)
-- [FaunaDB](https://dashboard.fauna.com/) (Database)
+- [Postgres](https://www.postgresql.org/download/) (Database)
+- [Zenstack](https://zenstack.dev/)(API)
 - [Vercel](https://vercel.com/) (Deploy)
 - [ChatGPT](https://chat.openai.com/)
 
