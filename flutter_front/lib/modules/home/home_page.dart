@@ -58,31 +58,36 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             child: Row(
               children: [
                 MenuAnchor(
-                    alignmentOffset: const Offset(40, 0),
+                    alignmentOffset: const Offset(12, 0),
                     builder: (BuildContext context, MenuController controller, Widget? child) {
-                      return TextButton(
-                          onPressed: () {
-                            if (controller.isOpen) {
-                              controller.close();
-                            } else {
-                              controller.open();
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              const Icon(CarbonIcons.user, color: Colors.white),
-                              const SizedBox(width: 8.0),
-                              CustomText(
-                                globals.user?.nome ?? 'null',
-                                size: 16,
-                                color: Colors.white,
-                              ),
-                            ],
-                          ));
+                      return OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          visualDensity: VisualDensity.compact,
+                          shape: RoundedRectangleBorder(side: const BorderSide(color: Colors.white, width: 2), borderRadius: BorderRadius.circular(16)),
+                          side: const BorderSide(color: Colors.white, width: 1.5),
+                        ),
+                        onPressed: () {
+                          if (controller.isOpen) {
+                            controller.close();
+                          } else {
+                            controller.open();
+                          }
+                        },
+                        icon: const Icon(CarbonIcons.user, color: Colors.white),
+                        label: CustomText(
+                          globals.user?.nome ?? 'null',
+                          size: 16,
+                          color: Colors.white,
+                        ),
+                      );
                     },
                     menuChildren: [
                       MenuItemButton(
-                        style: MenuItemButton.styleFrom(backgroundColor: Colors.red),
+                        style: MenuItemButton.styleFrom(
+                          backgroundColor: Colors.red[400],
+                          side: const BorderSide(color: Colors.white, width: 2),
+                          shape: const RoundedRectangleBorder(side: BorderSide(color: Colors.white)),
+                        ),
                         leadingIcon: const Icon(CarbonIcons.logout, color: Colors.white),
                         child: CustomText(
                           "Sair",
