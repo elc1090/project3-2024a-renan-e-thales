@@ -30,6 +30,7 @@ abstract class CustomItemControllerBase with Store {
   @action
   Future<void> updateQtd(int qtd) async {
     item.qtd = qtd;
+    globals.itemsMocado.where((element) => element.id == item.id).first.qtd = qtd;
   }
 
   @action
